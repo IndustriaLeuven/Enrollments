@@ -1,0 +1,19 @@
+assetic:
+    debug:          %kernel.debug%
+    use_controller: false
+    filters:
+        cssrewrite: ~
+        less:
+            node_paths: [ %kernel.root_dir%/../node_modules ]
+
+braincrafted_bootstrap:
+    jquery_path: %kernel.root_dir%/../vendor/components/jquery/jquery.min.js
+    icon_prefix: fa
+    customize:
+        variables_file: %kernel.root_dir%/Resources/less/variables.less
+    auto_configure:
+        knp_menu: false
+
+knp_menu:
+    twig:
+        template: "AppBundle:Menu:bootstrap.html.twig"

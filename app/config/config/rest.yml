@@ -1,0 +1,12 @@
+sensio_framework_extra:
+    view: { annotations: false }
+
+fos_rest:
+    param_fetcher_listener: true
+    view:
+        view_response_listener: force
+        templating_formats:
+            html: true
+    format_listener:
+        rules:
+            - { path: ^/, priorities: [ html ], fallback_format: html }

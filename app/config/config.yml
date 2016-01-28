@@ -1,0 +1,10 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: config/assetic.yml }
+    - { resource: config/doctrine.yml }
+    - { resource: config/framework.yml }
+    - { resource: config/oauth.yml }
+    - { resource: config/rest.yml }
+    - { resource: config/security.yml }
+
+

@@ -1,0 +1,10 @@
+{% extends 'TwigBundle:Exception:error.html.twig' %}
+{% block error_icon %}
+  <i class="fa fa-hdd-o fa-stack-2x"></i>
+  <i class="fa fa-wrench text-muted fa-stack-1x"></i>
+{% endblock %}
+{% block error_title %}Maintenance{% endblock %}
+{% block error_description %}
+  <p>Application is currently under maintenance.</p>
+  <p>Please try again later.</p>
+{% endblock %}

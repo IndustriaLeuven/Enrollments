@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% trans %}Industria Enrollments{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/main.css') }}">
+    {% if app.environment == 'staging' %}
+        <style>
+            .env-staging {
+                background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjMwIiB3aWR0aD0iMzIwIj48dGV4dCB4PSItOTAiIHk9IjIwMCIgZmlsbD0icmVkIiB0cmFuc2Zvcm09InJvdGF0ZSgtMzAgMCwwKSIgZm9udC1zaXplPSI4MCIgaWQ9InRleHQ0Ij5TVEFHSU5HPC90ZXh0Pjwvc3ZnPg==);
+            }
+        </style>
+    {% endif %}
+    {% block head %}
+    {% endblock %}
+</head>
+<body class="env-{{ app.environment }}">
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ url('home') }}">{% trans %}Industria Enrollments{% endtrans %}</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            {{ knp_menu_render('main', {style: 'navbar'}) }}
+            <ul class="nav navbar-nav navbar-right">
+                {% if app.user %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ icon('user fa-fw') }} {{ app.user.realname }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url('logout') }}">{{ icon('sign-out fa-fw') }} {{ "Sign out"|trans }}</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li><a href="{{ url('login') }}">{{ icon('sign-in fa-fw') }} {{ "Sign in"|trans }}</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
+        </div>
+    </div>
+</div>
+{% block body %}
+{% endblock %}
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4">
+                <span class="text-muted">{% trans %}Industria Enrollments{% endtrans %}</span>
+            </div>
+            <div class="col-xs-4 pull-right text-right text-muted">
+                {% spaceless %}
+                    <span title="Env: {{ app.environment }}">
+                                {% if app.environment == 'prod' %}
+                                    {{ icon('bolt fa-fw') }}
+                                {% else %}
+                                    {{ icon('bomb fa-fw') }}
+                                {% endif %}
+                            </span>
+                    {% if app.user %}
+                        <span title="Roles: {{ app.user.roles|join(', ') }}">
+                            {% if is_granted('ROLE_ADMIN') %}
+                                {{ icon('magic fa-fw') }}
+                            {% else%}
+                                {{ icon('smile-o fa-fw') }}
+                            {% endif %}
+                        </span>
+                    {% else %}
+                        {{ icon('globe fa-fw') }}
+                    {% endif %}
+                    <a href="https://github.com/IndustriaLeuven/Enrollments" class="text-muted">{{ icon('code fa-fw') }}</a>
+                {% endspaceless %}
+            </div>
+        </div>
+    </div>
+</footer>
+{% block javascript %}
+    <script src="{{ asset('js/jquery.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.js') }}"></script>
+{% endblock %}
+</body>
+</html>
+

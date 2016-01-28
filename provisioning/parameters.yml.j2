@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+parameters:
+    database_driver:   pdo_mysql
+    database_host:     localhost
+    database_port:     ~
+    database_name:     enrollments
+    database_user:     enrollments
+    database_password: enrollments
+
+    oauth_client_server: http://192.168.80.2
+    oauth_client_id: 8_6db2htrz9u4o84w4oskk8so84cgog0wok00ockokgws40cw8o0
+    oauth_client_secret: 17oj5x0amcao408440wck8gckoo48okws48sogw0wsks4sg8cs
+
+    secret: {{ random.stdout }}
+
