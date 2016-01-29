@@ -43,7 +43,7 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
                 $enrollment->setData($submittedForm->getData());
                 $this->getEntityManager()->persist($enrollment);
                 $this->getEntityManager()->flush();
-                return $this->redirectToRoute('app_get_enrollment_enrollment', [
+                return $this->redirectToRoute('app_get_enrollment_submission', [
                     'form' => $form->getId(),
                     'enrollment' => $enrollment->getId(),
                 ]);
@@ -53,7 +53,7 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
         return $formTemplateEvent;
     }
 
-    public function getEnrollmentAction(Form $form, Enrollment $enrollment)
+    public function getSubmissionAction(Form $form, Enrollment $enrollment)
     {
         return $this->getEventDispatcher()->dispatch(UIEvents::SUCCESS, new SuccessTemplateEvent($form, $enrollment));
     }

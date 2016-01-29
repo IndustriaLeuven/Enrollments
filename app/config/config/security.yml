@@ -3,9 +3,7 @@ security:
         Symfony\Component\Security\Core\User\User: plaintext
 
     role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_API:         ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_GROUP_ENROLLMENTS_ADMIN: ROLE_ADMIN
 
     providers:
         main:
@@ -29,4 +27,6 @@ security:
             logout:
                 target: %oauth_client_server%/usr/kill-session
             anonymous: ~
+    access_control:
+        - { path: ^/admin, role: ROLE_ADMIN }
 

@@ -1,0 +1,4 @@
+app_enrollment:
+    resource: "AppBundle:Enrollment"
+    type: rest
+    name_prefix: app_

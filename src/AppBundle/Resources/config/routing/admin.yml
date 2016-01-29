@@ -1,0 +1,4 @@
+admin_form:
+    resource: "AppBundle:Admin/Form"
+    type: rest
+    name_prefix: admin_

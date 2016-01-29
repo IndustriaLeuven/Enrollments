@@ -13,8 +13,16 @@ login_check:
 logout:
     path: /logout
 
-app:
-    resource: "@AppBundle/Resources/config/routing.yml"
+public:
+    resource: "@AppBundle/Resources/config/routing/public.yml"
+    prefix: /{_locale}/
+    requirements:
+        _locale: en|nl
+    type: rest
+
+admin:
+    resource: "@AppBundle/Resources/config/routing/admin.yml"
+    prefix: /admin
     type: rest
 
 home:
