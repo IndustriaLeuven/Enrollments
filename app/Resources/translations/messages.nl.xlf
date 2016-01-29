@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="nl" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="77380d55d951a6022086840a117543e6" resname="Industria Enrollments">
+        <source>Industria Enrollments</source>
+        <target>Industria Inschrijvingen</target>
+      </trans-unit>
+      <trans-unit id="c87aacf5673fada1108c9f809d354311" resname="Sign out">
+        <source>Sign out</source>
+        <target>Log uit</target>
+      </trans-unit>
+      <trans-unit id="b6d4223e60986fa4c9af77ee5f7149c5" resname="Sign in">
+        <source>Sign in</source>
+        <target>Log in</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
