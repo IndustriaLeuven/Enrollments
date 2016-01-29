@@ -12,3 +12,10 @@ login_check:
 
 logout:
     path: /logout
+
+app:
+    resource: "@AppBundle/Resources/config/routing.yml"
+    type: rest
+
+home:
+    path: /

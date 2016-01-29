@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             new vierbergenlars\Bundle\AuthClientBundle\VlAuthClientBundle(),
             new AppBundle\AppBundle(),
+            new PluginBundle\PluginBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

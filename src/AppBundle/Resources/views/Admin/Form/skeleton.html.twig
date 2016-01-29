@@ -1,0 +1,5 @@
+{% set route_postfix='form' %}
+{% if form.id is defined %}
+    {% set route_data={form: form.id} %}
+{% endif %}
+{% extends 'AppBundle:Admin:skeleton.html.twig' %}

@@ -1,0 +1,9 @@
+{% extends 'AppBundle:Admin/Form:skeleton.html.twig' %}
+{% block content %}
+    <div class="panel-heading">
+        <h3 class="panel-title">Edit {{ form.name }}</h3>
+    </div>
+    <div class="panel-body">
+        {{ form(data) }}
+    </div>
+{% endblock %}

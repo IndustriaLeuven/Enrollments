@@ -1,0 +1,31 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-md-9 pull-right">
+                <div class="panel panel-
+                {%- spaceless %}
+                    {% set _route = app.request.attributes.get('_route') %}
+                    {% if _route starts with 'admin_get_' %}
+                        info
+                    {% elseif _route starts with 'admin_post_' or _route starts with 'admin_put_' or _route starts with 'admin_delete_' %}
+                        warning
+                    {% elseif _route starts with 'admin_remove_' %}
+                        danger
+                    {% else %}
+                        primary
+                    {% endif %}
+                {% endspaceless -%}
+                ">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-3">
+                {% block sidebar %}
+                    {% include 'AppBundle:Admin:sidebar.html.twig' %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

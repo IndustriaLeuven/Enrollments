@@ -8,6 +8,7 @@ framework:
     validation:      { enable_annotations: true }
     templating:
         engines: ['twig']
+    form: ~
     default_locale:  "%locale%"
     trusted_proxies: ~
     session:
