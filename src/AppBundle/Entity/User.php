@@ -20,24 +20,11 @@ class User extends AUser
     private $id;
 
     /**
-     * @ORM\Column(type="string")
-     */
-    protected $realname;
-
-    /**
      * @return mixed
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRealname()
-    {
-        return $this->realname;
     }
 
     /**
