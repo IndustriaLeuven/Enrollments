@@ -10,7 +10,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class CorePlugin implements PluginInterface
+class FormTemplatePlugin implements PluginInterface
 {
     private $searchDirs;
 
@@ -21,14 +21,13 @@ class CorePlugin implements PluginInterface
 
     public function getName()
     {
-        return 'core';
+        return 'form_template';
     }
 
     public function getTemplateReference($template)
     {
-        return new TemplateReference('PluginBundle', 'CorePlugin', $template, 'html', 'twig');
+        return new TemplateReference('PluginBundle', 'FormTemplatePlugin', $template, 'html', 'twig');
     }
-
 
     public function buildConfigurationForm(FormBuilderInterface $formBuilder)
     {

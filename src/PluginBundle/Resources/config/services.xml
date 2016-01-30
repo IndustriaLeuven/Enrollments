@@ -7,7 +7,7 @@
     <services>
         <service class="PluginBundle\EventListener\PluginListener">
             <argument type="service">
-                <service class="PluginBundle\Plugins\CorePlugin">
+                <service class="PluginBundle\Plugins\FormTemplatePlugin">
                     <argument type="collection">
                         <argument>%kernel.root_dir%/Resources/forms</argument>
                     </argument>
