@@ -1,7 +1,7 @@
 {% extends 'AppBundle:Admin/Form:skeleton.html.twig' %}
 {% block content %}
     <div class="panel-heading">
-        <h3 class="panel-title">Form {{ form.name }}</h3>
+        <h3 class="panel-title">{{ icon('list-alt') }} Form {{ form.name }}</h3>
     </div>
     <div class="panel-body">
         {% for template in data.templates %}

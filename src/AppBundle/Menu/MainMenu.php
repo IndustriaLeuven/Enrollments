@@ -20,6 +20,10 @@ class MainMenu extends MenuItem
 
         try {
             if($authorizationChecker->isGranted('ROLE_ADMIN')) {
+                $this->addChild('admin_form', [
+                    'label' => '.icon-list-alt Forms',
+                    'route' => 'admin_get_forms',
+                ]);
             }
         } catch(AuthenticationCredentialsNotFoundException $ex) {
             // Thrown when there is no token (on error pages)
