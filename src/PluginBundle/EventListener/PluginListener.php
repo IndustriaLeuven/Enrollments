@@ -67,7 +67,7 @@ class PluginListener implements EventSubscriberInterface
             ->add('enable', 'checkbox', [
                 'label' => 'Enable',
                 'required' => false,
-                'data' => !$this->isPluginEnabled($event->getForm()),
+                'data' => !$event->isNew()&&!$this->isPluginEnabled($event->getForm()),
             ]);
         $dataBuilder = $builder
             ->add('data', 'form', [
