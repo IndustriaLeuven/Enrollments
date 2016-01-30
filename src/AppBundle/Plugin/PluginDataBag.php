@@ -47,4 +47,14 @@ class PluginDataBag
        return isset($this->parameters[$plugin->getName()]);
     }
 
+    /**
+     * @param PluginInterface $plugin
+     * @return $this
+     */
+    public function remove(PluginInterface $plugin)
+    {
+        unset($this->parameters[$plugin->getName()]);
+        return $this;
+    }
+
 }

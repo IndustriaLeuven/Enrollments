@@ -25,7 +25,8 @@
         "knplabs/knp-paginator-bundle": "^2.5",
         "vierbergenlars/authclient-bundle": "dev-master",
         "doctrine/doctrine-migrations-bundle": "^1.1",
-        "knplabs/knp-menu-bundle": "^2.1"
+        "knplabs/knp-menu-bundle": "^2.1",
+        "adamquaile/symfony-fieldset-bundle": "^1.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

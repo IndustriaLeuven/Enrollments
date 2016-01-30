@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+            new AdamQuaile\Bundle\FieldsetBundle\AdamQuaileFieldsetBundle(),
             new vierbergenlars\Bundle\AuthClientBundle\VlAuthClientBundle(),
             new AppBundle\AppBundle(),
             new PluginBundle\PluginBundle(),

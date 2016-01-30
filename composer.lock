@@ -4,9 +4,59 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "22ef0feeb81e259ffce7fc0e53a4eb48",
-    "content-hash": "9263b935d49da28e7f307bed641ed3a5",
+    "hash": "4306b8557690dbedcc4b21e59311a567",
+    "content-hash": "826ad7538874bade16501b467597c268",
     "packages": [
+        {
+            "name": "adamquaile/symfony-fieldset-bundle",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/adamquaile/AdamQuaileFieldsetBundle.git",
+                "reference": "cd1e3831014cb8d9f0b71813750b9df715458122"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/adamquaile/AdamQuaileFieldsetBundle/zipball/cd1e3831014cb8d9f0b71813750b9df715458122",
+                "reference": "cd1e3831014cb8d9f0b71813750b9df715458122",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "symfony/config": "~2.5.0",
+                "symfony/dependency-injection": "~2.5.0",
+                "symfony/form": "~2.5.0",
+                "symfony/http-kernel": "~2.5.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "AdamQuaile\\Bundle\\FieldsetBundle\\": [
+                        "",
+                        "Tests/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Adam Quaile",
+                    "email": "adamquaile@gmail.com"
+                }
+            ],
+            "description": "Fieldset Type in Symfony Forms",
+            "keywords": [
+                "Forms",
+                "fieldset",
+                "symfony"
+            ],
+            "time": "2014-11-07 19:30:22"
+        },
         {
             "name": "braincrafted/bootstrap-bundle",
             "version": "v2.2.0",
