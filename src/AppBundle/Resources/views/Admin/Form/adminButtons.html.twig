@@ -1,0 +1,7 @@
+{% if is_granted('ROLE_ADMIN') %}
+    <div class="btn-group pull-right">
+        <a class="btn btn-default" href="{{ url('admin_get_form', {form: form.id}) }}" title="Form admin">
+            {{ icon('cog') }} Form admin
+        </a>
+    </div>
+{% endif %}

@@ -10,5 +10,8 @@
             <argument type="service" id="form.factory" />
             <tag name="kernel.event_subscriber" />
         </service>
+        <service class="AppBundle\EventListener\AdminButtonsListener">
+            <tag name="kernel.event_subscriber" />
+        </service>
     </services>
 </container>
