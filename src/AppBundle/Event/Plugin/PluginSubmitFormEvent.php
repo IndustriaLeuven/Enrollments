@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class SubmitFormEvent extends Event
+class PluginSubmitFormEvent extends Event
 {
     /**
      * @var Form
@@ -28,7 +28,7 @@ class SubmitFormEvent extends Event
     const TYPE_DELETE = 2;
 
     /**
-     * SubmitFormEvent constructor.
+     * PluginSubmitFormEvent constructor.
      * @param Form $submittedForm
      * @param \AppBundle\Entity\Form $form
      */

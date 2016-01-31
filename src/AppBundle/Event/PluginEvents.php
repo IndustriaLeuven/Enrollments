@@ -5,15 +5,11 @@ namespace AppBundle\Event;
 final class PluginEvents
 {
     /**
-     * Emits {@link Plugin\GetPluginEvent}
-     */
-    const GET = 'app.plugin.get';
-    /**
-     * Emits {@link Plugin\BuildFormEvent}
+     * Emits {@link Plugin\PluginBuildFormEvent}
      */
     const BUILD_FORM = 'app.plugin.form.build';
     /**
-     * Emits {@link Plugin\SubmitFormEvent}
+     * Emits {@link Plugin\PluginSubmitFormEvent}
      */
     const SUBMIT_FORM = 'app.plugin.form.submit';
 }

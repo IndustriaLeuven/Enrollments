@@ -6,7 +6,7 @@ use AppBundle\Entity\Form;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class BuildFormEvent extends Event
+class PluginBuildFormEvent extends Event
 {
     /**
      * @var Form|null
@@ -19,7 +19,7 @@ class BuildFormEvent extends Event
     private $formBuilder;
 
     /**
-     * BuildFormEvent constructor.
+     * PluginBuildFormEvent constructor.
      * @param FormBuilderInterface $formBuilder
      */
     public function __construct(FormBuilderInterface $formBuilder, Form $form = null)

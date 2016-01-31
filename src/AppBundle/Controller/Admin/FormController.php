@@ -5,8 +5,8 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Controller\BaseController;
 use AppBundle\Entity\Form;
 use AppBundle\Event\AdminEvents;
-use AppBundle\Event\Plugin\BuildFormEvent;
-use AppBundle\Event\Plugin\SubmitFormEvent;
+use AppBundle\Event\Plugin\PluginBuildFormEvent;
+use AppBundle\Event\Plugin\PluginSubmitFormEvent;
 use AppBundle\Event\PluginEvents;
 use AppBundle\Event\UI\FormTemplateEvent;
 use FOS\RestBundle\Routing\ClassResourceInterface;
@@ -53,7 +53,7 @@ class FormController extends BaseController implements ClassResourceInterface
             $form = new Form();
             $form->setName($submittedForm->get('name')->getData());
 
-            $this->getEventDispatcher()->dispatch(PluginEvents::SUBMIT_FORM, new SubmitFormEvent($submittedForm, $form, SubmitFormEvent::TYPE_NEW));
+            $this->getEventDispatcher()->dispatch(PluginEvents::SUBMIT_FORM, new PluginSubmitFormEvent($submittedForm, $form, PluginSubmitFormEvent::TYPE_NEW));
 
             $this->getEntityManager()->persist($form);
             $this->getEntityManager()->flush();
@@ -87,7 +87,7 @@ class FormController extends BaseController implements ClassResourceInterface
         if($submittedForm->isValid()) {
             $form->setName($submittedForm->get('name')->getData());
 
-            $this->getEventDispatcher()->dispatch(PluginEvents::SUBMIT_FORM, new SubmitFormEvent($submittedForm, $form, SubmitFormEvent::TYPE_EDIT));
+            $this->getEventDispatcher()->dispatch(PluginEvents::SUBMIT_FORM, new PluginSubmitFormEvent($submittedForm, $form, PluginSubmitFormEvent::TYPE_EDIT));
 
             $this->getEntityManager()->flush();
 
@@ -125,7 +125,7 @@ class FormController extends BaseController implements ClassResourceInterface
         $submittedForm->handleRequest($request);
 
         if($submittedForm->isValid()) {
-            $this->getEventDispatcher()->dispatch(PluginEvents::SUBMIT_FORM, new SubmitFormEvent($submittedForm, $form, SubmitFormEvent::TYPE_DELETE));
+            $this->getEventDispatcher()->dispatch(PluginEvents::SUBMIT_FORM, new PluginSubmitFormEvent($submittedForm, $form, PluginSubmitFormEvent::TYPE_DELETE));
 
             $this->getEntityManager()->remove($form);
             $this->getEntityManager()->flush();
@@ -144,8 +144,8 @@ class FormController extends BaseController implements ClassResourceInterface
         $formBuilder = $this->createFormBuilder();
         $formBuilder->add('name', 'text', ['data' => $form?$form->getName():'']);
 
-        $buildConfigEvent = $this->getEventDispatcher()->dispatch(PluginEvents::BUILD_FORM, new BuildFormEvent($formBuilder, $form));
-        /* @var $buildConfigEvent BuildFormEvent */
+        $buildConfigEvent = $this->getEventDispatcher()->dispatch(PluginEvents::BUILD_FORM, new PluginBuildFormEvent($formBuilder, $form));
+        /* @var $buildConfigEvent PluginBuildFormEvent */
         return $buildConfigEvent->getFormBuilder()
             ->add('submit', 'submit');
     }

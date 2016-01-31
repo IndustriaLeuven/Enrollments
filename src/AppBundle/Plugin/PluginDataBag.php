@@ -17,43 +17,43 @@ class PluginDataBag
 
 
     /**
-     * @param PluginInterface $plugin
+     * @param $plugin
      * @return mixed
      */
-    public function get(PluginInterface $plugin)
+    public function get($plugin)
     {
         if(!$this->has($plugin))
             return null;
-        return $this->parameters[$plugin->getName()];
+        return $this->parameters[$plugin];
     }
 
     /**
-     * @param PluginInterface $plugin
+     * @param $plugin
      * @param mixed $data
      * @return $this
      */
-    public function set(PluginInterface $plugin, $data)
+    public function set($plugin, $data)
     {
-        $this->parameters[$plugin->getName()] = $data;
+        $this->parameters[$plugin] = $data;
         return $this;
     }
 
     /**
-     * @param PluginInterface $plugin
+     * @param $plugin
      * @return bool
      */
-    public function has(PluginInterface $plugin)
+    public function has($plugin)
     {
-       return isset($this->parameters[$plugin->getName()]);
+       return isset($this->parameters[$plugin]);
     }
 
     /**
-     * @param PluginInterface $plugin
+     * @param $plugin
      * @return $this
      */
-    public function remove(PluginInterface $plugin)
+    public function remove($plugin)
     {
-        unset($this->parameters[$plugin->getName()]);
+        unset($this->parameters[$plugin]);
         return $this;
     }
 
