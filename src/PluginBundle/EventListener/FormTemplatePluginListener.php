@@ -4,12 +4,14 @@ namespace PluginBundle\EventListener;
 
 use AppBundle\Event\AdminEvents;
 use AppBundle\Event\Form\BuildFormEvent;
+use AppBundle\Event\Form\SubmitFormEvent;
 use AppBundle\Event\FormEvents;
 use AppBundle\Event\Plugin\PluginBuildFormEvent;
 use AppBundle\Event\Plugin\PluginSubmitFormEvent;
 use AppBundle\Event\PluginEvents;
 use AppBundle\Event\UI\FormTemplateEvent;
 use AppBundle\Form\FinderChoiceLoader;
+use PluginBundle\Form\FormDefinitionInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
@@ -41,6 +43,7 @@ class FormTemplatePluginListener implements EventSubscriberInterface
             PluginEvents::SUBMIT_FORM => 'onPluginSubmitForm',
             AdminEvents::SHOW_FORM => 'onAdminShowForm',
             FormEvents::BUILD => 'onFormBuild',
+            FormEvents::SUBMIT => 'onFormSubmit',
         ];
     }
 
@@ -78,5 +81,17 @@ class FormTemplatePluginListener implements EventSubscriberInterface
         if(!is_callable($callback))
             throw new \BadFunctionCallException('Callback returned from '. $configuration['formType'].' is not callable.');
         $callback($event->getFormBuilder());
+    }
+
+    public function onFormSubmit(SubmitFormEvent $event)
+    {
+        if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
+            return;
+        $configuration = $event->getForm()->getPluginData()->get(self::PLUGIN_NAME);
+        $callback = @include $this->searchDir.'/'.$configuration['formType'];
+        if(!$callback)
+            throw new FileNotFoundException('File '.$configuration['formType'].' does not exist.');
+        if($callback instanceof FormDefinitionInterface)
+            $callback->handleSubmission($event->getSubmittedForm(), $event->getEnrollment());
     }
 }
