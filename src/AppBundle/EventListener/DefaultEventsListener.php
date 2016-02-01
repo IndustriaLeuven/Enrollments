@@ -43,6 +43,8 @@ class DefaultEventsListener implements EventSubscriberInterface
 
     private function createForm(EventDispatcherInterface $eventDispatcher, FormBuilderInterface $formBuilder, Form $formEntity, Enrollment $enrollment = null)
     {
+        if($enrollment)
+            $formBuilder->setData($enrollment->getData());
         $buildFormEvent = new BuildFormEvent($formEntity, $formBuilder);
         $eventDispatcher->dispatch(FormEvents::BUILD, $buildFormEvent);
         $form = $buildFormEvent->getFormBuilder()->getForm();
