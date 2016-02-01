@@ -1,0 +1,45 @@
+{% if paymentDetailsJavascript %}
+    <div class="well" id="pricing_payment_details">
+
+    </div>
+{% endif %}
+<script>
+    window._onJSLoaded = window._onJSLoaded || [];
+    _onJSLoaded.push(function() {
+        function getCompositeKey(serializedKey) {
+            var components = [];
+            var component_start = 0;
+            var i = serializedKey.indexOf('[');
+            components.push(serializedKey.substring(0, i >= 0 ? i : serializedKey.length));
+            for (; i < serializedKey.length; i++) {
+                switch (serializedKey[i]) {
+                    case '[':
+                        component_start = i + 1;
+                        break;
+                    case ']':
+                        components.push(serializedKey.substring(component_start, i));
+                }
+            }
+            return components;
+        }
+
+        $('[data-pricing-reload]').on('change', function () {
+            var $formData = {};
+            $.each($('form').serializeArray(), function (_, element) {
+                var keys = getCompositeKey(element.name);
+                var data = element.value;
+                for (var i = keys.length; i > 0; i--) {
+                    var dataObject = {};
+                    dataObject[keys[i - 1]] = data;
+                    data = dataObject;
+                }
+                $.extend(true, $formData, data);
+            });
+            var $totalPrice = {{ priceJavascipt|raw }};
+            {% if paymentDetailsJavascript %}
+            var paymentDetails = {{ paymentDetailsJavascript|raw }};
+            $('#pricing_payment_details').text(paymentDetails);
+            {% endif %}
+        });
+    });
+</script>

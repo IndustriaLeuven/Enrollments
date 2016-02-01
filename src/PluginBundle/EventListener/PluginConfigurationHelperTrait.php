@@ -58,4 +58,5 @@ trait PluginConfigurationHelperTrait
         }
         $pluginDataBag->set($name, $submittedPluginForm->get('data')->getData());
     }
+
 }
