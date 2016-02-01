@@ -18,7 +18,7 @@
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
         "friendsofsymfony/rest-bundle": "^1.0",
-        "braincrafted/bootstrap-bundle": "^2.2",
+        "braincrafted/bootstrap-bundle": "^2.1",
         "twbs/bootstrap": "^3.3",
         "components/jquery": "^2.2",
         "fortawesome/font-awesome": "^4.5",
@@ -30,6 +30,9 @@
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
+    },
+    "conflict": {
+        "braincrafted/bootstrap-bundle": "2.2.0"
     },
     "scripts": {
         "post-install-cmd": [
