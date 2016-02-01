@@ -54,8 +54,7 @@ class FinderChoiceLoader implements ChoiceLoaderInterface
             $this->choices = array();
             foreach ($this->finder as $file) {
                 /* @var $file SplFileInfo */
-                $relPath = str_replace('/', '\\', ($file->getRelativePath()?$file->getRelativePath() . '/':'') . $file->getBasename($this->extension));
-                $this->choices[$relPath] = $file->getPathname();
+                $this->choices[$file->getRelativePathname()] = $file->getRelativePathname();
             }
         }
         return new ArrayChoiceList($this->choices, $value);

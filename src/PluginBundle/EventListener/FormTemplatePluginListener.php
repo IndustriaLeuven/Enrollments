@@ -48,7 +48,7 @@ class FormTemplatePluginListener implements EventSubscriberInterface
     {
         $this->buildPluginForm($event, self::PLUGIN_NAME)
             ->add('formType', 'choice', [
-                'choice_loader' => new FinderChoiceLoader(Finder::create()->in($this->searchDir), '.php'),
+                'choice_loader' => new FinderChoiceLoader(Finder::create()->files()->in($this->searchDir), '.php'),
             ]);
     }
 
@@ -72,7 +72,7 @@ class FormTemplatePluginListener implements EventSubscriberInterface
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
         $configuration = $event->getForm()->getPluginData()->get(self::PLUGIN_NAME);
-        $callback = @include $configuration['formType'];
+        $callback = @include $this->searchDir.'/'.$configuration['formType'];
         if(!$callback)
             throw new FileNotFoundException('File '.$configuration['formType'].' does not exist.');
         if(!is_callable($callback))
