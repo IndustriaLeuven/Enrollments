@@ -20,6 +20,5 @@ return function(FormBuilderInterface $formBuilder)
                 new Email(),
             ]
         ])
-        ->add('submit', 'submit')
     ;
 };
