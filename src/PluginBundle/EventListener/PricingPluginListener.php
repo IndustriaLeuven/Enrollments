@@ -30,19 +30,25 @@ class PricingPluginListener implements EventSubscriberInterface
      */
     private $expressionLanguage;
 
+
     /**
      * PricingPluginListener constructor.
      */
     public function __construct()
     {
         $this->expressionLanguage = new ExpressionLanguage();
-        $this->expressionLanguage->addFunction(new ExpressionFunction('concat', function() {
-            return '('.implode(').(', func_get_args()).')';
+        $this->expressionLanguage->register('concat', function() {
+            return '('.implode(')+(', func_get_args()).')';
         }, function() {
             $args = func_get_args();
             array_shift($args);
             return implode('', $args);
-        }));
+        });
+        $this->expressionLanguage->register('if', function($condition, $trueExpr, $falseExpr) {
+            return "(($condition)?($trueExpr):($falseExpr))";
+        }, function($vars, $condition, $trueExpr, $falseExpr) {
+            return $condition?$trueExpr:$falseExpr;
+        });
     }
 
     public static function getSubscribedEvents()
@@ -111,12 +117,6 @@ class PricingPluginListener implements EventSubscriberInterface
     {
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
-        // Add function to create javascript concatenations
-        $this->expressionLanguage->addFunction(new ExpressionFunction('concat', function() {
-            return '('.implode(')+(', func_get_args()).')';
-        }, function() {
-            return implode('', func_get_args());
-        }));
         $event->addTemplate(new TemplateReference('PluginBundle', 'PricingPlugin', 'UI/form', 'html', 'twig'), [
             'priceJavascipt' => $this->expressionLanguage->compile($event->getForm()->getPluginData()->get(self::PLUGIN_NAME)['formula'], [
                 'formData'
