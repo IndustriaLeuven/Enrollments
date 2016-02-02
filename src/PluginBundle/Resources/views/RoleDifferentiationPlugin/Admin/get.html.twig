@@ -1,0 +1,24 @@
+<h4>Role differentiation</h4>
+<p class="text-muted">Configuration is applied from top to bottom.</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>If</th>
+        <th>Use form</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for rule in pluginData.rules %}
+        <tr>
+            <td>{{ rule.condition }}</td>
+            <td>
+                {% if rule.target_form %}
+                    <a href="{{ url('admin_get_form', {form: rule.target_form}) }}">{{ rule.target_form }}</a>
+                {% else %}
+                    Deny access
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

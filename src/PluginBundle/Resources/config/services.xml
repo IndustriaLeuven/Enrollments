@@ -12,5 +12,12 @@
             <argument type="service" id="request_stack" />
             <tag name="kernel.event_subscriber" />
         </service>
+        <service class="PluginBundle\EventListener\RoleDifferentiationPluginListener">
+            <argument type="service" id="security.expression_language" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="security.access.decision_manager" />
+            <argument type="service" id="security.token_storage" />
+            <tag name="kernel.event_subscriber" />
+        </service>
    </services>
 </container>
