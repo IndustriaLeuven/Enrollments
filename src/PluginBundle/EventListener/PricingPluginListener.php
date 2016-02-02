@@ -68,8 +68,12 @@ class PricingPluginListener implements EventSubscriberInterface
 
     public function onPluginBuildForm(PluginBuildFormEvent $event)
     {
-        $this->buildPluginForm($event, '' . self::PLUGIN_NAME . '')
+        $this->buildPluginForm($event, self::PLUGIN_NAME)
             ->add('formula', 'text', [
+                'attr' => [
+                    'help_text' => 'Available variables: formData, _locale',
+                ],
+                'required' => false,
                 'constraints' => [
                     new NotBlank(),
                     new Callback(\Closure::bind(
@@ -84,6 +88,9 @@ class PricingPluginListener implements EventSubscriberInterface
                 ]
             ])
             ->add('payment_expression', 'text', [
+                'attr' => [
+                    'help_text' => 'Available variables: formData, totalPrice, _locale',
+                ],
                 'required' => false,
                 'constraints' => [
                     new Callback(\Closure::bind(
