@@ -4,6 +4,7 @@ namespace PluginBundle\EventListener;
 
 use AppBundle\Event\Plugin\PluginBuildFormEvent;
 use AppBundle\Event\Plugin\PluginSubmitFormEvent;
+use Symfony\Component\Form\FormInterface;
 
 trait PluginConfigurationHelperTrait
 {
@@ -20,6 +21,9 @@ trait PluginConfigurationHelperTrait
             ->add($name, 'fieldset', [
                 'legend' => ucfirst(trim(strtolower(preg_replace(array('/([A-Z])/', '/[_\s]+/'), array('_$1', ' '), $name)))),
                 'label' => false,
+                'validation_groups' => function(FormInterface $form) {
+                    return $form->get('enable')->getData()?['Default']:false;
+                }
             ])
             ->get($name)
             ->add('enable', 'checkbox', [
