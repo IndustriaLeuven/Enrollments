@@ -16,6 +16,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -30,12 +31,14 @@ class PricingPluginListener implements EventSubscriberInterface
      */
     private $expressionLanguage;
 
-
     /**
-     * PricingPluginListener constructor.
+     * @var RequestStack
      */
-    public function __construct()
+    private $requestStack;
+
+    public function __construct(RequestStack $requestStack)
     {
+        $this->requestStack = $requestStack;
         $this->expressionLanguage = new ExpressionLanguage();
         $this->expressionLanguage->register('concat', function() {
             return '('.implode(')+(', func_get_args()).')';
@@ -72,7 +75,7 @@ class PricingPluginListener implements EventSubscriberInterface
                     new Callback(\Closure::bind(
                         function($formula, ExecutionContextInterface $executionContext) {
                             try {
-                                $this->expressionLanguage->parse($formula, ['formData']);
+                                $this->expressionLanguage->parse($formula, ['formData', '_locale']);
                             } catch(SyntaxError $error) {
                                 $executionContext->addViolation($error->getMessage());
                             }
@@ -87,7 +90,7 @@ class PricingPluginListener implements EventSubscriberInterface
                         function($expression, ExecutionContextInterface $executionContext) {
                             try {
                                 if($expression) {
-                                    $this->expressionLanguage->parse($expression, ['formData', 'totalPrice']);
+                                    $this->expressionLanguage->parse($expression, ['formData', 'totalPrice', '_locale']);
                                 }
                             } catch(SyntaxError $error) {
                                 $executionContext->addViolation($error->getMessage());
@@ -119,11 +122,16 @@ class PricingPluginListener implements EventSubscriberInterface
             return;
         $event->addTemplate(new TemplateReference('PluginBundle', 'PricingPlugin', 'UI/form', 'html', 'twig'), [
             'priceJavascipt' => $this->expressionLanguage->compile($event->getForm()->getPluginData()->get(self::PLUGIN_NAME)['formula'], [
-                'formData'
+                'formData',
+                '_locale',
             ]),
             'paymentDetailsJavascript' =>
                 $event->getForm()->getPluginData()->get(self::PLUGIN_NAME)['payment_expression']
-                    ?$this->expressionLanguage->compile($event->getForm()->getPluginData()->get(self::PLUGIN_NAME)['payment_expression'], ['formData', 'totalPrice'])
+                    ?$this->expressionLanguage->compile($event->getForm()->getPluginData()->get(self::PLUGIN_NAME)['payment_expression'], [
+                        'formData',
+                        'totalPrice',
+                        '_locale',
+                    ])
                     :null
         ]);
     }
@@ -135,7 +143,8 @@ class PricingPluginListener implements EventSubscriberInterface
 
         $formData = $event->getSubmittedForm()->getData();
         $totalPrice = $this->expressionLanguage->evaluate($event->getForm()->getPluginData()->get(self::PLUGIN_NAME)['formula'], [
-            'formData' => ['form' => $formData],
+            'formData' => $formData,
+            '_locale' => $this->requestStack->getMasterRequest()->attributes->get('_locale', 'en'),
         ]);
         $event->getEnrollment()->getPluginData()->set(self::PLUGIN_NAME,['totalPrice' => $totalPrice]);
     }
@@ -152,8 +161,9 @@ class PricingPluginListener implements EventSubscriberInterface
             $paymentDetails = $this->expressionLanguage->evaluate(
                 $pluginData['payment_expression'],
                 [
-                    'formData' => ['form'=>$event->getEnrollment()->getData()],
+                    'formData' => $event->getEnrollment()->getData(),
                     'totalPrice' => $totalPrice,
+                    '_locale' => $this->requestStack->getMasterRequest()->attributes->get('_locale', 'en'),
                 ]
             );
 

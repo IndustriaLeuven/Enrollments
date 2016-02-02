@@ -10,7 +10,6 @@
             var components = [];
             var component_start = 0;
             var i = serializedKey.indexOf('[');
-            components.push(serializedKey.substring(0, i >= 0 ? i : serializedKey.length));
             for (; i < serializedKey.length; i++) {
                 switch (serializedKey[i]) {
                     case '[':
@@ -24,6 +23,7 @@
         }
 
         $('[data-pricing-reload]').on('change', function () {
+            var $_locale = '{{ app.request.attributes.get('_locale')|e('js') }}';
             var $formData = {};
             $.each($('form').serializeArray(), function (_, element) {
                 var keys = getCompositeKey(element.name);
