@@ -3,16 +3,12 @@
 namespace AppBundle\Event\Form;
 
 use AppBundle\Entity\Form;
+use AppBundle\Event\AbstractFormEvent;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class BuildFormEvent extends Event
+class BuildFormEvent extends AbstractFormEvent
 {
-    /**
-     * @var Form
-     */
-    private $form;
-
     /**
      * @var FormBuilderInterface
      */
@@ -25,16 +21,8 @@ class BuildFormEvent extends Event
      */
     public function __construct(Form $form, FormBuilderInterface $formBuilder)
     {
-        $this->form = $form;
+        parent::__construct($form);
         $this->formBuilder = $formBuilder;
-    }
-
-    /**
-     * @return Form
-     */
-    public function getForm()
-    {
-        return $this->form;
     }
 
     /**

@@ -2,21 +2,15 @@
 
 namespace AppBundle\Event\Plugin;
 
-use Symfony\Component\EventDispatcher\Event;
+use AppBundle\Event\AbstractFormEvent;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormBuilderInterface;
 
-class PluginSubmitFormEvent extends Event
+class PluginSubmitFormEvent extends AbstractFormEvent
 {
     /**
      * @var Form
      */
     private $submittedForm;
-
-    /**
-     * @var \AppBundle\Entity\Form
-     */
-    private $form;
 
     /**
      * @var int
@@ -34,8 +28,8 @@ class PluginSubmitFormEvent extends Event
      */
     public function __construct(Form $submittedForm, \AppBundle\Entity\Form $form, $type)
     {
+        parent::__construct($form);
         $this->submittedForm = $submittedForm;
-        $this->form = $form;
         $this->type = $type;
     }
 
@@ -48,19 +42,10 @@ class PluginSubmitFormEvent extends Event
     }
 
     /**
-     * @return \AppBundle\Entity\Form
-     */
-    public function getForm()
-    {
-        return $this->form;
-    }
-
-    /**
      * @return int {@link self::TYPE_NEW}, {@link self::TYPE_EDIT} or {@link self::TYPE_DELETE}
      */
     public function getType()
     {
         return $this->type;
     }
-
 }

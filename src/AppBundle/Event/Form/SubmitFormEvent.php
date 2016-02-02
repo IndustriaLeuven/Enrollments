@@ -6,50 +6,17 @@ use AppBundle\Entity\Enrollment;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Form\Form;
 
-class SubmitFormEvent extends Event
+class SubmitFormEvent extends AbstractFilledFormEvent
 {
     /**
-     * @var Form
-     */
-    private $submittedForm;
-
-    /**
-     * @var \AppBundle\Entity\Form
-     */
-    private $form;
-
-    /**
-     * @var Enrollment
-     */
-    private $enrollment;
-
-    /**
      * SubmitFormEvent constructor.
-     * @param Form $submittedForm
      * @param \AppBundle\Entity\Form $form
+     * @param Form $submittedForm
      * @param Enrollment $enrollment
      */
-    public function __construct(Form $submittedForm, \AppBundle\Entity\Form $form, Enrollment $enrollment)
+    public function __construct(\AppBundle\Entity\Form $form, Form $submittedForm, Enrollment $enrollment)
     {
-        $this->submittedForm = $submittedForm;
-        $this->form = $form;
-        $this->enrollment = $enrollment;
-    }
-
-    /**
-     * @return Form
-     */
-    public function getSubmittedForm()
-    {
-        return $this->submittedForm;
-    }
-
-    /**
-     * @return \AppBundle\Entity\Form
-     */
-    public function getForm()
-    {
-        return $this->form;
+        parent::__construct($form, $submittedForm, $enrollment);
     }
 
     /**
@@ -57,6 +24,6 @@ class SubmitFormEvent extends Event
      */
     public function getEnrollment()
     {
-        return $this->enrollment;
+        return parent::getEnrollment();
     }
 }
