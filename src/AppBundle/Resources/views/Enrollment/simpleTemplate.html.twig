@@ -10,3 +10,9 @@
         </div>
     </div>
 {% endblock %}
+{% block javascript %}
+    {{ parent() }}
+    <script>
+        $('[data-onload=onchange][onchange]').trigger('onchange');
+    </script>
+{% endblock %}
