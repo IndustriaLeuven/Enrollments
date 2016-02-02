@@ -38,6 +38,16 @@ class PluginDataBag
         return $this;
     }
 
+    public function add($plugin, $data)
+    {
+        if(!$this->has($plugin)) {
+            $this->set($plugin, $data);
+        } else {
+            $this->parameters[$plugin] += $data;
+        }
+        return $this;
+    }
+
     /**
      * @param $plugin
      * @return bool
