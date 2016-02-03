@@ -5,7 +5,7 @@ namespace AppBundle\Event;
 final class AdminEvents
 {
     /**
-     * Emits {@link UI\FormTemplateEvent}
+     * Emits {@link UI\SubmittedFormTemplateEvent}
      */
-    const SHOW_FORM = 'app.admin.form.get';
+    const FORM_GET = 'app.admin.form.get';
 }

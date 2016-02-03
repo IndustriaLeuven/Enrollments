@@ -8,7 +8,7 @@ use AppBundle\Event\AdminEvents;
 use AppBundle\Event\Plugin\PluginBuildFormEvent;
 use AppBundle\Event\Plugin\PluginSubmitFormEvent;
 use AppBundle\Event\PluginEvents;
-use AppBundle\Event\UI\FormTemplateEvent;
+use AppBundle\Event\UI\SubmittedFormTemplateEvent;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\View;
 use Symfony\Component\Form\FormBuilder;
@@ -27,7 +27,7 @@ class FormController extends BaseController implements ClassResourceInterface
     public function getAction(Form $form)
     {
         return ['data' => $this->getEventDispatcher()
-            ->dispatch(AdminEvents::SHOW_FORM, new FormTemplateEvent($form))];
+            ->dispatch(AdminEvents::FORM_GET, new SubmittedFormTemplateEvent($form))];
     }
 
     public function newAction()

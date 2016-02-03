@@ -8,8 +8,8 @@ use AppBundle\Event\Form\BuildFormEvent;
 use AppBundle\Event\Form\SetDataEvent;
 use AppBundle\Event\Form\SubmitFormEvent;
 use AppBundle\Event\FormEvents;
-use AppBundle\Event\UI\FormTemplateEvent;
-use AppBundle\Event\UI\SuccessTemplateEvent;
+use AppBundle\Event\UI\SubmittedFormTemplateEvent;
+use AppBundle\Event\UI\EnrollmentTemplateEvent;
 use AppBundle\Event\UIEvents;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\View;
@@ -23,12 +23,12 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
 {
     public function getAction(Form $form)
     {
-        return $this->getEventDispatcher()->dispatch(UIEvents::FORM, new FormTemplateEvent($form));
+        return $this->getEventDispatcher()->dispatch(UIEvents::FORM, new SubmittedFormTemplateEvent($form));
     }
 
     public function postAction(Request $request, Form $form)
     {
-        $formTemplateEvent = new FormTemplateEvent($form);
+        $formTemplateEvent = new SubmittedFormTemplateEvent($form);
         $this->getEventDispatcher()->dispatch(UIEvents::FORM, $formTemplateEvent);
 
         $submittedForm = $formTemplateEvent->getSubmittedForm();
@@ -55,6 +55,6 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
 
     public function getSubmissionAction(Form $form, Enrollment $enrollment)
     {
-        return $this->getEventDispatcher()->dispatch(UIEvents::SUCCESS, new SuccessTemplateEvent($form, $enrollment));
+        return $this->getEventDispatcher()->dispatch(UIEvents::SUCCESS, new EnrollmentTemplateEvent($form, $enrollment));
     }
 }

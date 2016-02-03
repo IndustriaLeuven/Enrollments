@@ -10,9 +10,9 @@ use AppBundle\Event\FormEvents;
 use AppBundle\Event\Plugin\PluginBuildFormEvent;
 use AppBundle\Event\Plugin\PluginSubmitFormEvent;
 use AppBundle\Event\PluginEvents;
-use AppBundle\Event\UI\AbstractTemplateEvent;
 use AppBundle\Event\UI\FormTemplateEvent;
-use AppBundle\Event\UI\SuccessTemplateEvent;
+use AppBundle\Event\UI\SubmittedFormTemplateEvent;
+use AppBundle\Event\UI\EnrollmentTemplateEvent;
 use AppBundle\Event\UIEvents;
 use Doctrine\ORM\EntityManager;
 use PluginBundle\Form\RoleDifferentiationPluginConfigType;
@@ -88,7 +88,7 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
         return [
             PluginEvents::BUILD_FORM => 'onPluginBuildForm',
             PluginEvents::SUBMIT_FORM => 'onPluginSubmitForm',
-            AdminEvents::SHOW_FORM => 'onAdminShowForm',
+            AdminEvents::FORM_GET => 'onAdminShowForm',
             UIEvents::FORM => ['onUIForm', 255],
             UIEvents::SUCCESS => ['onUISuccess', 255],
             FormEvents::SUBMIT => ['onFormSubmit', 255],
@@ -125,7 +125,7 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
         $this->submitPluginForm($event, self::PLUGIN_NAME);
     }
 
-    public function onAdminShowForm(FormTemplateEvent $event)
+    public function onAdminShowForm(SubmittedFormTemplateEvent $event)
     {
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
@@ -134,11 +134,11 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
         ]);
     }
 
-    public function onUIForm(FormTemplateEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
+    public function onUIForm(SubmittedFormTemplateEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
     {
         $this->doSwitchForm($event, $eventName, $eventDispatcher, function(Form $form) use($event) {
-            return new FormTemplateEvent($form);
-        }, function(FormTemplateEvent $childEvent, FormTemplateEvent $parentEvent) {
+            return new SubmittedFormTemplateEvent($form);
+        }, function(SubmittedFormTemplateEvent $childEvent, SubmittedFormTemplateEvent $parentEvent) {
             $templates = $childEvent->getTemplates();
             foreach ($templates as $template)
                 $parentEvent->addTemplate($template, $templates->getInfo());
@@ -147,7 +147,7 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
     }
 
 
-    public function onUISuccess(SuccessTemplateEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
+    public function onUISuccess(EnrollmentTemplateEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
     {
         $pluginData = $event->getEnrollment()->getPluginData()->get(self::PLUGIN_NAME);
         $pluginDataKey = $this->buildPluginDataKey($event);
@@ -159,7 +159,7 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
             throw new NotFoundHttpException('Form with id '.$formId.' does not exist.');
         /* @var $form Form */
         // Create a new child event with the form substituted and dispatch it.
-        $childEvent = new SuccessTemplateEvent($form, $event->getEnrollment());
+        $childEvent = new EnrollmentTemplateEvent($form, $event->getEnrollment());
         $eventDispatcher->dispatch($eventName, $childEvent);
         // Copy data from the child event to the original event
         $templates = $childEvent->getTemplates();
@@ -212,7 +212,7 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
                 /* @var $form Form */
                 // Create new child event and dispatch it
                 $childEvent = $eventFactory($form);
-                /* @var $childEvent AbstractTemplateEvent */
+                /* @var $childEvent FormTemplateEvent */
                 $eventDispatcher->dispatch($eventName, $childEvent);
                 // Copy data from child event to parent event
                 $dataCopier($childEvent, $event);

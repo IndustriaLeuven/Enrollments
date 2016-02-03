@@ -7,8 +7,8 @@ use AppBundle\Entity\Form;
 use AppBundle\Event\Form\BuildFormEvent;
 use AppBundle\Event\Form\SetDataEvent;
 use AppBundle\Event\FormEvents;
-use AppBundle\Event\UI\FormTemplateEvent;
-use AppBundle\Event\UI\SuccessTemplateEvent;
+use AppBundle\Event\UI\SubmittedFormTemplateEvent;
+use AppBundle\Event\UI\EnrollmentTemplateEvent;
 use AppBundle\Event\UIEvents;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -52,14 +52,14 @@ class DefaultEventsListener implements EventSubscriberInterface
         return $form;
     }
 
-    public function uiFormEvent(FormTemplateEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
+    public function uiFormEvent(SubmittedFormTemplateEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
     {
         $form = $this->createForm($eventDispatcher, $this->formFactory->createBuilder(), $event->getForm());
         $event->addTemplate(new TemplateReference('AppBundle', 'Enrollment', 'form', 'html', 'twig'), ['form'=>$form]);
         $event->setSubmittedForm($form);
     }
 
-    public function uiSuccessEvent(SuccessTemplateEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
+    public function uiSuccessEvent(EnrollmentTemplateEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
     {
         $form = $this->createForm($eventDispatcher, $this->formFactory->createBuilder()->setDisabled(true), $event->getForm(), $event->getEnrollment());
         if(!$event->getTemplates()->count())

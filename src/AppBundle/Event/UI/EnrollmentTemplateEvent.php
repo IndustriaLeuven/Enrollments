@@ -7,7 +7,7 @@ use AppBundle\Entity\Form;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Templating\TemplateReferenceInterface;
 
-class SuccessTemplateEvent extends AbstractTemplateEvent
+class EnrollmentTemplateEvent extends FormTemplateEvent
 {
     /**
      * @var Enrollment
@@ -15,7 +15,7 @@ class SuccessTemplateEvent extends AbstractTemplateEvent
     private $enrollment;
 
     /**
-     * FormTemplateEvent constructor.
+     * SubmittedFormTemplateEvent constructor.
      * @param Form $form
      */
     public function __construct(Form $form, Enrollment $enrollment)

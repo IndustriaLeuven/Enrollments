@@ -9,7 +9,7 @@ use AppBundle\Event\FormEvents;
 use AppBundle\Event\Plugin\PluginBuildFormEvent;
 use AppBundle\Event\Plugin\PluginSubmitFormEvent;
 use AppBundle\Event\PluginEvents;
-use AppBundle\Event\UI\FormTemplateEvent;
+use AppBundle\Event\UI\SubmittedFormTemplateEvent;
 use AppBundle\Form\FinderChoiceLoader;
 use PluginBundle\Form\FormDefinitionInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
@@ -41,7 +41,7 @@ class FormTemplatePluginListener implements EventSubscriberInterface
         return [
             PluginEvents::BUILD_FORM => 'onPluginBuildForm',
             PluginEvents::SUBMIT_FORM => 'onPluginSubmitForm',
-            AdminEvents::SHOW_FORM => 'onAdminShowForm',
+            AdminEvents::FORM_GET => 'onAdminShowForm',
             FormEvents::BUILD => 'onFormBuild',
             FormEvents::SUBMIT => 'onFormSubmit',
         ];
@@ -60,7 +60,7 @@ class FormTemplatePluginListener implements EventSubscriberInterface
         $this->submitPluginForm($event, self::PLUGIN_NAME);
     }
 
-    public function onAdminShowForm(FormTemplateEvent $event)
+    public function onAdminShowForm(SubmittedFormTemplateEvent $event)
     {
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;

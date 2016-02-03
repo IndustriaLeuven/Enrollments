@@ -13,7 +13,7 @@ abstract class AbstractFormEvent extends Event
     private $form;
 
     /**
-     * FormTemplateEvent constructor.
+     * SubmittedFormTemplateEvent constructor.
      * @param Form $form
      */
     public function __construct(Form $form)

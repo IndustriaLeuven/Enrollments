@@ -3,32 +3,48 @@
 namespace AppBundle\Event\UI;
 
 use AppBundle\Entity\Form;
-use Symfony\Component\EventDispatcher\Event;
+use AppBundle\Event\AbstractFormEvent;
 use Symfony\Component\Templating\TemplateReferenceInterface;
 
-class FormTemplateEvent extends AbstractTemplateEvent
+class FormTemplateEvent extends AbstractFormEvent
 {
-
     /**
-     * @var \Symfony\Component\Form\Form
+     * @var \SplObjectStorage
      */
-    private $submittedForm;
+    private $templates;
 
-    /**
-     * @param \Symfony\Component\Form\Form $submittedForm
-     * @return FormTemplateEvent
-     */
-    public function setSubmittedForm($submittedForm)
+    public function __construct(Form $form)
     {
-        $this->submittedForm = $submittedForm;
+        parent::__construct($form);
+        $this->templates = new \SplObjectStorage();
+    }
+
+    /**
+     * @param TemplateReferenceInterface $templateReference
+     * @param array $extraData
+     * @return $this
+     */
+    public function addTemplate(TemplateReferenceInterface $templateReference, array $extraData = [])
+    {
+        $this->templates->attach($templateReference, $extraData);
         return $this;
     }
 
     /**
-     * @return \Symfony\Component\Form\Form
+     * @internal
+     * @return \SplObjectStorage
      */
-    public function getSubmittedForm()
+    public function getTemplates()
     {
-        return $this->submittedForm;
+        return $this->templates;
+    }
+
+    /**
+     * @return $this
+     */
+    public function clearTemplates()
+    {
+        $this->templates = new \SplObjectStorage();
+        return $this;
     }
 }

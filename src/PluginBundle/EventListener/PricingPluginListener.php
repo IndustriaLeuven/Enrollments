@@ -8,8 +8,8 @@ use AppBundle\Event\FormEvents;
 use AppBundle\Event\Plugin\PluginBuildFormEvent;
 use AppBundle\Event\Plugin\PluginSubmitFormEvent;
 use AppBundle\Event\PluginEvents;
-use AppBundle\Event\UI\FormTemplateEvent;
-use AppBundle\Event\UI\SuccessTemplateEvent;
+use AppBundle\Event\UI\SubmittedFormTemplateEvent;
+use AppBundle\Event\UI\EnrollmentTemplateEvent;
 use AppBundle\Event\UIEvents;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -59,7 +59,7 @@ class PricingPluginListener implements EventSubscriberInterface
         return [
             PluginEvents::BUILD_FORM => 'onPluginBuildForm',
             PluginEvents::SUBMIT_FORM => 'onPluginSubmitForm',
-            AdminEvents::SHOW_FORM => 'onAdminShowForm',
+            AdminEvents::FORM_GET => 'onAdminShowForm',
             UIEvents::FORM => ['onUIForm', -253],
             FormEvents::SUBMIT => 'onFormSubmit',
             UIEvents::SUCCESS => ['onUISuccess', -253],
@@ -116,7 +116,7 @@ class PricingPluginListener implements EventSubscriberInterface
         $this->submitPluginForm($event, self::PLUGIN_NAME);
     }
 
-    public function onAdminShowForm(FormTemplateEvent $event)
+    public function onAdminShowForm(SubmittedFormTemplateEvent $event)
     {
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
@@ -125,7 +125,7 @@ class PricingPluginListener implements EventSubscriberInterface
         ]);
     }
 
-    public function onUIForm(FormTemplateEvent $event)
+    public function onUIForm(SubmittedFormTemplateEvent $event)
     {
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
@@ -158,7 +158,7 @@ class PricingPluginListener implements EventSubscriberInterface
         $event->getEnrollment()->getPluginData()->set(self::PLUGIN_NAME,['totalPrice' => $totalPrice]);
     }
 
-    public function onUISuccess(SuccessTemplateEvent $event)
+    public function onUISuccess(EnrollmentTemplateEvent $event)
     {
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
