@@ -21,6 +21,9 @@ twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     exception_controller: 'FOS\RestBundle\Controller\ExceptionController::showAction'
+    form:
+        resources:
+            - AppBundle:Form:form_div_layout.html.twig
 
 swiftmailer:
     transport: %mailer_transport%
