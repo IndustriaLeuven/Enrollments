@@ -1,0 +1,44 @@
+{% extends 'AppBundle:Admin/Enrollment:skeleton.html.twig' %}
+{% block content %}
+    <div class="panel-heading">
+        <h3 class="panel-title">{{ icon('file-text-o') }} Enrollments for {{ form.name }}</h3>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    {% for columnDef in event.fields %}
+                        <th>{{ columnDef.friendlyName }}</th>
+                    {% endfor %}
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for obj in data %}
+                    <tr>
+                        {% for columnDef in event.fields %}
+                            <td>
+                                {% include columnDef.template with columnDef.extraData|merge({data: obj}) %}
+                            </td>
+                        {% endfor %}
+                        <td>
+                            {% spaceless %}
+                                <div class="btn-group btn-group-sm">
+                                    <a class="btn btn-info" href="{{ url('admin_get_form_enrollment', {form: form.id, enrollment: obj.id}) }}" title="View">
+                                        {{ icon('eye') }}<span class="sr-only">View</span>
+                                    </a>
+                                    <a class="btn btn-default" href="{{ url('admin_edit_form_enrollment', {form: form.id, enrollment: obj.id}) }}" title="Edit">
+                                        {{ icon('edit') }}<span class="sr-only">Edit</span>
+                                    </a>
+                                    <a class="btn btn-danger" href="{{ url('admin_remove_form_enrollment', {form: form.id, enrollment: obj.id}) }}" title="Delete">
+                                        {{ icon('trash-o') }}<span class="sr-only">Delete</span>
+                                    </a>
+                                </div>
+                            {% endspaceless %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

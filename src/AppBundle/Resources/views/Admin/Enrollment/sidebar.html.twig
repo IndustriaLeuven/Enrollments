@@ -1,0 +1,3 @@
+{% for template in data.templates %}
+    {% include template with data.templates[template] %}
+{% endfor %}

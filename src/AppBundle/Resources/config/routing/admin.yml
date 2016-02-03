@@ -2,3 +2,8 @@ admin_form:
     resource: "AppBundle:Admin/Form"
     type: rest
     name_prefix: admin_
+admin_enrollment:
+    resource: "AppBundle:Admin/Enrollment"
+    type: rest
+    name_prefix: admin_
+    parent: admin_form

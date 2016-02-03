@@ -1,0 +1,18 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Navigation</h3>
+    </div>
+    <div class="list-group">
+        {% macro render_link(_route, route, param, ico, name) %}
+            <a class="list-group-item {% if _route == route %} active{% endif%}" href="{{ url(route, param) }}">{{ icon(ico~' fa-fw') }} {{ name }}</a>
+        {% endmacro %}
+        {% import _self as self %}
+        {{ self.render_link(_route, 'admin_get_form', {form: form.id}, 'arrow-left', 'Back to form') }}
+        {% if enrollment %}
+            {{ self.render_link(_route, 'admin_get_form_enrollment', {form: form.id, enrollment: enrollment.id}, 'eye', 'View') }}
+            {{ self.render_link(_route, 'admin_edit_form_enrollment', {form: form.id, enrollment: enrollment.id}, 'pencil', 'Edit') }}
+            {{ self.render_link(_route, 'admin_remove_form_enrollment', {form: form.id, enrollment: enrollment.id}, 'trash', 'Delete') }}
+        {% endif %}
+        {{ self.render_link(_route, 'admin_get_form_enrollments', {form: form.id}, 'list', 'List') }}
+    </div>
+</div>

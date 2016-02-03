@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use AppBundle\Plugin\PluginDataBag;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -114,7 +115,7 @@ class Form
     /**
      * Get enrollments
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection|Selectable
      */
     public function getEnrollments()
     {

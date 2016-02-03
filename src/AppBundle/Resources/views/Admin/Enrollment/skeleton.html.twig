@@ -1,0 +1,7 @@
+{% extends 'AppBundle:Admin:skeleton.html.twig' %}
+{% block sidebar %}
+    {{ render(controller('AppBundle:Admin/Enrollment:sidebar', {
+        form: app.request.attributes.get('form'),
+        enrollment: app.request.attributes.get('enrollment')
+    })) }}
+{% endblock %}

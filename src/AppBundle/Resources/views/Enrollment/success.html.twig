@@ -1,4 +1,6 @@
-<div class="alert alert-success">
-    {% trans %}Your enrollment has been registered. You can find a copy of it below.{% endtrans %}
-</div>
+{% if not (app.request.attributes.get('_route') starts with 'admin_') %}
+    <div class="alert alert-success">
+        {% trans %}Your enrollment has been registered. You can find a copy of it below.{% endtrans %}
+    </div>
+{% endif %}
 {% include 'AppBundle:Enrollment:form.html.twig' %}

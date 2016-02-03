@@ -16,5 +16,9 @@
         <service class="AppBundle\EventListener\AdminButtonsListener">
             <tag name="kernel.event_subscriber" />
         </service>
+        <service class="AppBundle\EventListener\AdminEnrollmentDefaultsListener">
+            <argument type="service" id="request_stack" />
+            <tag name="kernel.event_subscriber" />
+        </service>
     </services>
 </container>
