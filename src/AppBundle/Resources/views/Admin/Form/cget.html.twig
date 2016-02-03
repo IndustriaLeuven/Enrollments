@@ -20,6 +20,9 @@
                                     <a class="btn btn-default" href="{{ url('app_get_enrollment', {form: obj.id}) }}" title="Show form">
                                         {{ icon('list-alt') }}<span class="sr-only">Show form</span>
                                     </a>
+                                    <a class="btn btn-primary" href="{{ url('admin_get_form_enrollments', {form: obj.id}) }}" title="List enrollments">
+                                        {{ icon('file-text-o') }}<span class="sr-only">List enrollments</span>
+                                    </a>
                                     <a class="btn btn-info" href="{{ url('admin_get_form', {form: obj.id}) }}" title="View">
                                         {{ icon('eye') }}<span class="sr-only">View</span>
                                     </a>

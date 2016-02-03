@@ -1,0 +1,26 @@
+{% macro render_link(route, param, ico, name) %}
+    <a class="list-group-item {% if app.request.attributes.get('_route') == route %} active{% endif%}" href="{{ url(route, param) }}">{{ icon(ico~' fa-fw') }} {{ name }}</a>
+{% endmacro %}
+{% import _self as self %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Navigation</h3>
+    </div>
+    <div class="list-group">
+        {% if form is defined %}
+            {{ self.render_link('admin_get_form', {form: form.id}, 'eye', 'View') }}
+            {{ self.render_link('admin_edit_form', {form: form.id}, 'pencil', 'Edit') }}
+            {{ self.render_link('admin_remove_form', {form: form.id}, 'trash', 'Delete') }}
+        {% endif %}
+        {{ self.render_link('admin_get_forms', {}, 'list', 'List') }}
+        {{ self.render_link('admin_new_form', {}, 'plus', 'Create') }}
+    </div>
+</div>
+{% if form is defined %}
+    <div class="panel panel-default">
+        <div class="list-group">
+            {{ self.render_link('admin_get_form_enrollments', {form: form.id}, 'file-text-o', 'Enrollments') }}
+            {{ self.render_link('app_get_enrollment', {form: form.id}, 'globe', 'Enrollment form') }}
+        </div>
+    </div>
+{% endif %}

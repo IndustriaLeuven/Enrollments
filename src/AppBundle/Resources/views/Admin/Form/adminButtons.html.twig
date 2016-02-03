@@ -3,5 +3,8 @@
         <a class="btn btn-default" href="{{ url('admin_get_form', {form: form.id}) }}" title="Form admin">
             {{ icon('cog') }} Form admin
         </a>
+        <a class="btn btn-default" href="{{ url('admin_get_form_enrollments', {form: form.id}) }}" title="List enrollments">
+            {{ icon('file-text-o') }} Enrollments
+        </a>
     </div>
 {% endif %}
