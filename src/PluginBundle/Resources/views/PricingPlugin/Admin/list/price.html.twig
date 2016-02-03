@@ -1,0 +1,5 @@
+{% if data.pluginData.get('pricing') %}
+    &euro;&nbsp;{{ data.pluginData.get('pricing').totalPrice|default(0)|number_format(2) }}
+{% else %}
+    &mdash;
+{% endif %}

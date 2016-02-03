@@ -2,6 +2,7 @@
 
 namespace PluginBundle\EventListener;
 
+use AppBundle\Event\Admin\EnrollmentListEvent;
 use AppBundle\Event\AdminEvents;
 use AppBundle\Event\Form\SubmitFormEvent;
 use AppBundle\Event\FormEvents;
@@ -60,6 +61,7 @@ class PricingPluginListener implements EventSubscriberInterface
             PluginEvents::BUILD_FORM => 'onPluginBuildForm',
             PluginEvents::SUBMIT_FORM => 'onPluginSubmitForm',
             AdminEvents::FORM_GET => 'onAdminShowForm',
+            AdminEvents::ENROLLMENT_LIST => 'onAdminEnrollmentList',
             UIEvents::FORM => ['onUIForm', -253],
             FormEvents::SUBMIT => 'onFormSubmit',
             UIEvents::SUCCESS => ['onUISuccess', -253],
@@ -123,6 +125,13 @@ class PricingPluginListener implements EventSubscriberInterface
         $event->addTemplate(new TemplateReference('PluginBundle', 'PricingPlugin', 'Admin/get', 'html', 'twig'), [
             'pluginData' => $event->getForm()->getPluginData()->get(self::PLUGIN_NAME),
         ]);
+    }
+
+    public function onAdminEnrollmentList(EnrollmentListEvent $event)
+    {
+        if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
+            return;
+        $event->setField('pricing.totalPrice', 'Price', new TemplateReference('PluginBundle', 'PricingPlugin', 'Admin/list/price', 'html', 'twig'));
     }
 
     public function onUIForm(SubmittedFormTemplateEvent $event)
