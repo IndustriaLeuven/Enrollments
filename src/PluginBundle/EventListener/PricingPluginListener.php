@@ -69,7 +69,7 @@ class PricingPluginListener implements EventSubscriberInterface
     public function onPluginBuildForm(PluginBuildFormEvent $event)
     {
         $this->buildPluginForm($event, self::PLUGIN_NAME)
-            ->add('formula', 'text', [
+            ->add('formula', 'textarea', [
                 'attr' => [
                     'help_text' => "Available functions: if(condition, ifTrue, ifFalse); concat(strings...)\n".
                         "Available variables: formData, _locale",
@@ -88,7 +88,7 @@ class PricingPluginListener implements EventSubscriberInterface
                         , $this))
                 ]
             ])
-            ->add('payment_expression', 'text', [
+            ->add('payment_expression', 'textarea', [
                 'attr' => [
                     'help_text' => "Available functions: if(condition, ifTrue, ifFalse); concat(strings...)\n".
                         "Available variables: formData, totalPrice, _locale",
