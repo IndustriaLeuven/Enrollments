@@ -64,5 +64,6 @@ class DefaultEventsListener implements EventSubscriberInterface
         $form = $this->createForm($eventDispatcher, $this->formFactory->createBuilder()->setDisabled($event->isEditDisabled()), $event->getForm(), $event->getEnrollment());
         if(!$event->getTemplates()->count())
             $event->addTemplate(new TemplateReference('AppBundle', 'Enrollment', 'success', 'html', 'twig'), ['form' => $form]);
+        $event->setSubmittedForm($form);
     }
 }

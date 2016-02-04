@@ -1,3 +1,5 @@
-<div class="well">
-    {{ paymentDetails }}
-</div>
+{% if not (app.request.attributes.get('_route') starts with 'admin_') %}
+    <div class="well">
+        {{ paymentDetails }}
+    </div>
+{% endif %}

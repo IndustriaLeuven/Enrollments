@@ -149,6 +149,7 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
 
     public function onUISuccess(EnrollmentTemplateEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
     {
+        //TODO: Refactor this to a separate function, together with onFormSubmit
         $pluginData = $event->getEnrollment()->getPluginData()->get(self::PLUGIN_NAME);
         $pluginDataKey = $this->buildPluginDataKey($event);
         if(!$pluginData || !isset($pluginData[$pluginDataKey]))
@@ -165,6 +166,7 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
         $templates = $childEvent->getTemplates();
         foreach ($templates as $template)
             $event->addTemplate($template, $templates->getInfo());
+        $event->setSubmittedForm($childEvent->getSubmittedForm());
         // Prevent original event from going through to other handlers, we got all our data already from the child event
         $event->stopPropagation();
     }
@@ -172,12 +174,31 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
     public function onFormSubmit(SubmitFormEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
     {
         $pluginDataKey = $this->buildPluginDataKey($event);
-        $this->doSwitchForm($event, $eventName, $eventDispatcher, function(Form $form) use($event, $pluginDataKey) {
-            // Store this new form we are using in the plugin data of the enrollment
-            $event->getEnrollment()->getPluginData()->add(self::PLUGIN_NAME, [$pluginDataKey => $form->getId()]);
-            return new SubmitFormEvent($event->getSubmittedForm(), $form, $event->getEnrollment());
-        }, function(SubmitFormEvent $childEvent, SubmitFormEvent $parentEvent) {
-        });
+        if($event->getType() === $event::TYPE_CREATE) {
+            $this->doSwitchForm($event, $eventName, $eventDispatcher, function (Form $form) use ($event, $pluginDataKey) {
+                // Store this new form we are using in the plugin data of the enrollment
+                $event->getEnrollment()->getPluginData()->add(self::PLUGIN_NAME, [$pluginDataKey => $form->getId()]);
+                return new SubmitFormEvent($form, $event->getSubmittedForm(), $event->getEnrollment());
+            }, function (SubmitFormEvent $childEvent, SubmitFormEvent $parentEvent) {
+            });
+        } elseif($event->getType() === $event::TYPE_EDIT) {
+            // TODO: Refactor this to a function with onUISuccess
+            $pluginData = $event->getEnrollment()->getPluginData()->get(self::PLUGIN_NAME);
+            if(!$pluginData || !isset($pluginData[$pluginDataKey]))
+                return;
+            $formId = $pluginData[$pluginDataKey];
+            $form = $this->em->find('AppBundle:Form', $formId);
+            if(!$form)
+                throw new NotFoundHttpException('Form with id '.$formId.' does not exist.');
+            /* @var $form Form */
+            // Create a new child event with the form substituted and dispatch it.
+            $childEvent = new SubmitFormEvent($form, $event->getSubmittedForm(), $event->getEnrollment(), $event->getType());
+            $eventDispatcher->dispatch($eventName, $childEvent);
+            // Prevent original event from going through to other handlers, we got all our data already from the child event
+            $event->stopPropagation();
+        } else {
+            throw new \LogicException('Unexpected form event type');
+        }
     }
 
     /**

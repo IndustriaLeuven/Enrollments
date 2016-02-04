@@ -4,10 +4,8 @@ namespace AppBundle\Event\UI;
 
 use AppBundle\Entity\Enrollment;
 use AppBundle\Entity\Form;
-use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\Templating\TemplateReferenceInterface;
 
-class EnrollmentTemplateEvent extends FormTemplateEvent
+class EnrollmentTemplateEvent extends SubmittedFormTemplateEvent
 {
     /**
      * @var Enrollment

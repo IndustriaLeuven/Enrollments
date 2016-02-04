@@ -10,11 +10,14 @@ use AppBundle\Event\Admin\EnrollmentEditSubmitEvent;
 use AppBundle\Event\Admin\EnrollmentListEvent;
 use AppBundle\Event\Admin\EnrollmentSidebarEvent;
 use AppBundle\Event\AdminEvents;
+use AppBundle\Event\Form\SubmitFormEvent;
+use AppBundle\Event\FormEvents;
 use AppBundle\Event\UI\EnrollmentTemplateEvent;
-use AppBundle\Event\UI\SubmittedFormTemplateEvent;
 use AppBundle\Event\UIEvents;
 use AppBundle\Plugin\TableColumnDefinition;
 use Doctrine\Common\Collections\Collection;
+use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\NoRoute;
 use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Routing\ClassResourceInterface;
@@ -132,10 +135,31 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
         return $this->getEventDispatcher()->dispatch(AdminEvents::ENROLLMENT_GET, new EnrollmentTemplateEvent($form, $enrollment));
     }
 
-    public function editAction(Form $form, Enrollment $enrollment)
+    /**
+     * @Get
+     * @Post(name="post_edit_form_enrollment")
+     */
+    public function editAction(Request $request, Form $form, Enrollment $enrollment)
     {
         $userFormEvent = $this->createEnrollmentTemplateEvent($form, $enrollment);
         $adminForm = $this->createEditForm($form, $enrollment);
+
+        $userForm = $userFormEvent->getSubmittedForm();
+        $userForm->handleRequest($request);
+
+        if($userForm->isValid()) {
+            $enrollment->setData($userForm->getData());
+            $submitFormEvent = new SubmitFormEvent($form, $userForm, $enrollment, SubmitFormEvent::TYPE_EDIT);
+            $this->getEventDispatcher()->dispatch(FormEvents::SUBMIT, $submitFormEvent);
+            if(!$userForm->getErrors(true)->count()) {
+                $this->getEntityManager()->flush();
+                return $this->redirectToRoute('admin_get_form_enrollment', [
+                    'form' => $form->getId(),
+                    'enrollment' => $enrollment->getId(),
+                ]);
+            }
+        }
+
         return [
             'userFormEvent' => $userFormEvent,
             'adminForm' => $adminForm->createView(),

@@ -17,7 +17,7 @@ class SubmittedFormTemplateEvent extends FormTemplateEvent
      * @param \Symfony\Component\Form\Form $submittedForm
      * @return SubmittedFormTemplateEvent
      */
-    public function setSubmittedForm($submittedForm)
+    public function setSubmittedForm(\Symfony\Component\Form\Form $submittedForm)
     {
         $this->submittedForm = $submittedForm;
         return $this;
