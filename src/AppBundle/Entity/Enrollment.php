@@ -4,15 +4,24 @@ namespace AppBundle\Entity;
 
 use AppBundle\Plugin\PluginDataBag;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * Enrollment
  *
  * @ORM\Table()
  * @ORM\Entity
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 class Enrollment
 {
+    use SoftDeleteableEntity;
+    use TimestampableEntity;
+    use BlameableEntity;
+
     /**
      * @var integer
      *
@@ -44,13 +53,6 @@ class Enrollment
     private $pluginData = [];
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="timestamp", type="datetimetz")
-     */
-    private $timestamp;
-
-    /**
      * @var Form
      *
      * @ORM\ManyToOne(targetEntity="Form", inversedBy="enrollments")
@@ -64,7 +66,6 @@ class Enrollment
     public function __construct(Form $form)
     {
         $this->form = $form;
-        $this->timestamp = new \DateTime();
     }
 
     /**
@@ -141,11 +142,13 @@ class Enrollment
     /**
      * Get timestamp
      *
+     * @deprecated Use {@link getCreatedAt()} instead
      * @return \DateTime
      */
     public function getTimestamp()
     {
-        return $this->timestamp;
+        @trigger_error(__METHOD__.' is deprecated. Use '.__CLASS__.'::getCreatedAt() instead.', E_USER_DEPRECATED);
+        return $this->getCreatedAt();
     }
 
     /**

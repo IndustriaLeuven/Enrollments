@@ -51,8 +51,8 @@ class AdminEnrollmentDefaultsListener implements EventSubscriberInterface
     public function onAdminEnrollmentList(EnrollmentListEvent $event)
     {
         $event->setField(['html'], '_.data', 'Data', new TemplateReference('AppBundle', 'Admin/Enrollment/list', 'data', 'html', 'twig'));
-        $event->setField(EnrollmentListEvent::ALL_TYPES, '_.timestamp', 'Timestamp', new TemplateReference('AppBundle', 'Admin/Enrollment/list', 'timestamp', 'html', 'twig'));
-        $event->getCriteria()->orderBy(['timestamp' => 'ASC']);
+        $event->setField(EnrollmentListEvent::ALL_TYPES, '_.createdAt', 'Created at', new TemplateReference('AppBundle', 'Admin/Enrollment/list', 'timestamp', 'html', 'twig'));
+        $event->getCriteria()->orderBy(['createdAt' => 'ASC']);
     }
 
     public function onAdminEnrollmentGet(EnrollmentTemplateEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
