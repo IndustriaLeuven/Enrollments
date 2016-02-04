@@ -15,13 +15,21 @@ class EnrollmentTemplateEvent extends FormTemplateEvent
     private $enrollment;
 
     /**
+     * @var boolean
+     */
+    private $disableEdit;
+
+    /**
      * SubmittedFormTemplateEvent constructor.
      * @param Form $form
+     * @param Enrollment $enrollment
+     * @param bool $disableEdit
      */
-    public function __construct(Form $form, Enrollment $enrollment)
+    public function __construct(Form $form, Enrollment $enrollment, $disableEdit = true)
     {
         parent::__construct($form);
         $this->enrollment = $enrollment;
+        $this->disableEdit = $disableEdit;
     }
 
     /**
@@ -30,5 +38,13 @@ class EnrollmentTemplateEvent extends FormTemplateEvent
     public function getEnrollment()
     {
         return $this->enrollment;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEditDisabled()
+    {
+        return $this->disableEdit;
     }
 }

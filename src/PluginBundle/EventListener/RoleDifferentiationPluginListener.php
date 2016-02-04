@@ -159,7 +159,7 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
             throw new NotFoundHttpException('Form with id '.$formId.' does not exist.');
         /* @var $form Form */
         // Create a new child event with the form substituted and dispatch it.
-        $childEvent = new EnrollmentTemplateEvent($form, $event->getEnrollment());
+        $childEvent = new EnrollmentTemplateEvent($form, $event->getEnrollment(), $event->isEditDisabled());
         $eventDispatcher->dispatch($eventName, $childEvent);
         // Copy data from the child event to the original event
         $templates = $childEvent->getTemplates();

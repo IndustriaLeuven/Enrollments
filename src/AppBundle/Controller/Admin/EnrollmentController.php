@@ -5,10 +5,13 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Controller\BaseController;
 use AppBundle\Entity\Enrollment;
 use AppBundle\Entity\Form;
+use AppBundle\Event\Admin\EnrollmentEditEvent;
+use AppBundle\Event\Admin\EnrollmentEditSubmitEvent;
 use AppBundle\Event\Admin\EnrollmentListEvent;
 use AppBundle\Event\Admin\EnrollmentSidebarEvent;
 use AppBundle\Event\AdminEvents;
 use AppBundle\Event\UI\EnrollmentTemplateEvent;
+use AppBundle\Event\UI\SubmittedFormTemplateEvent;
 use AppBundle\Event\UIEvents;
 use AppBundle\Plugin\TableColumnDefinition;
 use Doctrine\Common\Collections\Collection;
@@ -18,6 +21,7 @@ use FOS\RestBundle\Routing\ClassResourceInterface;
 use League\Csv\Modifier\MapIterator;
 use League\Csv\Writer;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -125,17 +129,83 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
 
     public function getAction(Form $form, Enrollment $enrollment)
     {
-        return $this->getEventDispatcher()->dispatch(UIEvents::SUCCESS, new EnrollmentTemplateEvent($form, $enrollment));
+        return $this->getEventDispatcher()->dispatch(AdminEvents::ENROLLMENT_GET, new EnrollmentTemplateEvent($form, $enrollment));
     }
 
     public function editAction(Form $form, Enrollment $enrollment)
     {
-        throw new HttpException(501, 'Enrollment edit not implemented.');
+        $userFormEvent = $this->createEnrollmentTemplateEvent($form, $enrollment);
+        $adminForm = $this->createEditForm($form, $enrollment);
+        return [
+            'userFormEvent' => $userFormEvent,
+            'adminForm' => $adminForm->createView(),
+        ];
+    }
 
+    /**
+     * @View("AppBundle:Admin/Enrollment:edit.html.twig")
+     */
+    public function putAction(Request $request, Form $form, Enrollment $enrollment)
+    {
+        $userFormEvent = $this->createEnrollmentTemplateEvent($form, $enrollment);
+        $adminForm = $this->createEditForm($form, $enrollment);
+
+        $adminForm->handleRequest($request);
+
+        if($adminForm->isValid()) {
+            $this->getEventDispatcher()->dispatch(AdminEvents::ENROLLMENT_EDIT_SUBMIT, new EnrollmentEditSubmitEvent($form, $enrollment, $adminForm));
+            $this->getEntityManager()->flush();
+            return $this->redirectToRoute('admin_get_form_enrollment', [
+                'form' => $form->getId(),
+                'enrollment' => $enrollment->getId()
+            ]);
+        }
+
+        return [
+            'userFormEvent' => $userFormEvent,
+            'adminForm' => $adminForm->createView(),
+        ];
     }
 
     public function removeAction(Form $form, Enrollment $enrollment)
     {
         throw new HttpException(501, 'Enrollment deletion not implemented.');
+    }
+
+    /**
+     * @return FormFactoryInterface
+     */
+    private function getFormFactory()
+    {
+        return $this->get('form.factory');
+    }
+
+    /**
+     * @param Form $form
+     * @param Enrollment $enrollment
+     * @return \Symfony\Component\Form\Form
+     */
+    private function createEditForm(Form $form, Enrollment $enrollment)
+    {
+        $adminFormEvent = new EnrollmentEditEvent($form, $enrollment, $this->getFormFactory()->createNamedBuilder('admin'));
+        $this->getEventDispatcher()->dispatch(AdminEvents::ENROLLMENT_EDIT, $adminFormEvent);
+
+        $adminForm = $adminFormEvent->getFormBuilder()
+            ->setMethod('PUT')
+            ->setAction($this->generateUrl('admin_put_form_enrollment', ['form' => $form->getId(), 'enrollment' => $enrollment->getId()]))
+            ->getForm();
+        return $adminForm;
+    }
+
+    /**
+     * @param Form $form
+     * @param Enrollment $enrollment
+     * @return EnrollmentTemplateEvent
+     */
+    private function createEnrollmentTemplateEvent(Form $form, Enrollment $enrollment)
+    {
+        $userFormEvent = new EnrollmentTemplateEvent($form, $enrollment, false);
+        $this->getEventDispatcher()->dispatch(UIEvents::SUCCESS, $userFormEvent);
+        return $userFormEvent;
     }
 }

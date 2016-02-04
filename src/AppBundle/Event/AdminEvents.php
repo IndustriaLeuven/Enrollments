@@ -19,4 +19,18 @@ final class AdminEvents
      */
     const ENROLLMENT_LIST = 'app.admin.enrollment.list';
 
+    /**
+     * Emits {@link UI\EnrollmentTemplateEvent}
+     */
+    const ENROLLMENT_GET = 'app.admin.enrollment.get';
+
+    /**
+     * Emits {@link Admin\EnrollmentEditEvent}
+     */
+    const ENROLLMENT_EDIT = 'app.admin.enrollment.edit';
+
+    /**
+     * Emits {@link Admin\EnrollmentEditSubmitEvent}
+     */
+    const ENROLLMENT_EDIT_SUBMIT = 'app.admin.enrollment.edit_submit';
 }

@@ -61,7 +61,7 @@ class DefaultEventsListener implements EventSubscriberInterface
 
     public function uiSuccessEvent(EnrollmentTemplateEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
     {
-        $form = $this->createForm($eventDispatcher, $this->formFactory->createBuilder()->setDisabled(true), $event->getForm(), $event->getEnrollment());
+        $form = $this->createForm($eventDispatcher, $this->formFactory->createBuilder()->setDisabled($event->isEditDisabled()), $event->getForm(), $event->getEnrollment());
         if(!$event->getTemplates()->count())
             $event->addTemplate(new TemplateReference('AppBundle', 'Enrollment', 'success', 'html', 'twig'), ['form' => $form]);
     }
