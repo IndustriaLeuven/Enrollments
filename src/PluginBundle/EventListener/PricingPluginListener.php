@@ -131,7 +131,7 @@ class PricingPluginListener implements EventSubscriberInterface
     {
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
-        $event->setField('pricing.totalPrice', 'Price', new TemplateReference('PluginBundle', 'PricingPlugin', 'Admin/list/price', 'html', 'twig'));
+        $event->setField(EnrollmentListEvent::ALL_TYPES, 'pricing.totalPrice', 'Price', new TemplateReference('PluginBundle', 'PricingPlugin', 'Admin/list/price', 'html', 'twig'));
     }
 
     public function onUIForm(SubmittedFormTemplateEvent $event)

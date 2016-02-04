@@ -26,7 +26,8 @@
         "vierbergenlars/authclient-bundle": "dev-master",
         "doctrine/doctrine-migrations-bundle": "^1.1",
         "knplabs/knp-menu-bundle": "^2.1",
-        "adamquaile/symfony-fieldset-bundle": "^1.1"
+        "adamquaile/symfony-fieldset-bundle": "^1.1",
+        "league/csv": "^8.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

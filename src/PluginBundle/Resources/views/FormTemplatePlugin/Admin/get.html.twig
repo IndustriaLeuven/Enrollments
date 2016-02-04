@@ -1,4 +1,9 @@
 <h4>Form template</h4>
 <dl class="dl-horizontal">
    <dt>Form Type</dt><dd>{{ pluginData.formType }}</dd>
+   <dt>Admin enrollment list fields</dt><dd>
+      {% for field in pluginData.admin_enrollment_list_fields %}
+         {{ field }}<br>
+      {% endfor %}
+   </dd>
 </dl>

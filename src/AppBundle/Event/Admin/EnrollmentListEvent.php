@@ -6,12 +6,17 @@ use AppBundle\Entity\Form;
 use AppBundle\Event\AbstractFormEvent;
 use AppBundle\Plugin\TableColumnDefinition;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\DBAL\Schema\Table;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class EnrollmentListEvent extends AbstractFormEvent
 {
+    const ALL_TYPES = null;
+    private static $all_types = [
+        'html',
+        'csv',
+    ];
+
     /**
      * The query string of the request
      * @var ParameterBag
@@ -19,7 +24,7 @@ class EnrollmentListEvent extends AbstractFormEvent
     private $queryString;
 
     /**
-     * @var TableColumnDefinition[]
+     * @var TableColumnDefinition[][]
      */
     private $fields = [];
 
@@ -44,34 +49,61 @@ class EnrollmentListEvent extends AbstractFormEvent
     }
 
     /**
+     * @param array $documentTypes
      * @param string $name
      * @param string $friendlyName
      * @param TemplateReference $templateReference
      * @param array $extraData
-     * @return TableColumnDefinition
+     * @return $this
      */
-    public function setField($name, $friendlyName, TemplateReference $templateReference, array $extraData = [])
+    public function setField(array $documentTypes = self::ALL_TYPES, $name, $friendlyName, TemplateReference $templateReference, array $extraData = [])
     {
-        $this->fields[$name] = new TableColumnDefinition($friendlyName, $templateReference, $extraData);
+        if($documentTypes === self::ALL_TYPES) {
+            $documentTypes = self::$all_types;
+        }
+        $colDef = new TableColumnDefinition($friendlyName, $templateReference, $extraData);
+        foreach($documentTypes as $docType) {
+            $this->fields[$docType][$name] = $colDef;
+        }
+        return $this;
     }
 
     /**
-     * @param $name
+     * @param array $documentTypes
+     * @param string $name
+     * @return $this
+     */
+    public function removeField(array $documentTypes = self::ALL_TYPES, $name)
+    {
+        if($documentTypes === self::ALL_TYPES) {
+            $documentTypes = self::$all_types;
+        }
+        foreach($documentTypes as $docType) {
+            unset($this->fields[$docType][$name]);
+        }
+        return $this;
+    }
+
+    /**
+     * @param string $documentType
+     * @param string $name
      * @return TableColumnDefinition|null
      */
-    public function getField($name)
+    public function getField($documentType, $name)
     {
-        if(isset($this->fields[$name]))
-            return $this->fields[$name];
+        if(isset($this->fields[$documentType]))
+            if(isset($this->fields[$documentType][$name]))
+                return $this->fields[$documentType][$name];
         return null;
     }
 
     /**
-     * @return TableColumnDefinition[]
+     * @param string $documentType
+     * @return \AppBundle\Plugin\TableColumnDefinition[]
      */
-    public function getFields()
+    public function getFields($documentType)
     {
-        return array_values($this->fields);
+        return $this->fields[$documentType];
     }
 
     /**

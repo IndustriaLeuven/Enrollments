@@ -30,6 +30,13 @@ class Enrollment
     private $data;
 
     /**
+     * Cached flattened version of {@link $data}
+     * @internal
+     * @var array
+     */
+    private $_data_flattened;
+
+    /**
      * @var PluginDataBag
      *
      * @ORM\Column(name="plugin_data", type="array")
@@ -79,6 +86,7 @@ class Enrollment
      */
     public function setData($data)
     {
+        $this->_data_flattened = null;
         $this->data = $data;
 
         return $this;
@@ -92,6 +100,34 @@ class Enrollment
     public function getData()
     {
         return $this->data;
+    }
+
+    /**
+     * Get flattened data
+     * @return array
+     */
+    public function getFlattenedData()
+    {
+        if($this->_data_flattened === null) {
+            // Algorithm based on http://stackoverflow.com/a/7858737
+            $stack = $this->getData();
+            $this->_data_flattened = [];
+            while ($stack) {
+                list($key, $value) = each($stack);
+                unset($stack[$key]);
+                if (is_array($value)) {
+                    $build = [];
+                    foreach ($value as $subKey => $node)
+                        $build[$key . '.' . $subKey] = $node;
+                    $stack = $build + $stack;
+                    continue;
+                }
+                $this->_data_flattened[$key] = $value;
+
+            }
+        }
+        return $this->_data_flattened;
+
     }
 
     /**

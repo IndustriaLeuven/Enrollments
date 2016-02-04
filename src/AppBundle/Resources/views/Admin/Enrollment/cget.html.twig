@@ -1,13 +1,16 @@
 {% extends 'AppBundle:Admin/Enrollment:skeleton.html.twig' %}
 {% block content %}
-    <div class="panel-heading">
-        <h3 class="panel-title">{{ icon('file-text-o') }} Enrollments for {{ form.name }}</h3>
+    <div class="panel-heading text-right">
+        <h3 class="panel-title pull-left">{{ icon('file-text-o') }} Enrollments for {{ form.name }}</h3>
+        <a class="btn btn-default btn-sm" href="{{ url('admin_get_form_enrollments', app.request.attributes.get('_route_params')|merge(app.request.query.all())|merge({'_format': 'csv'})) }}">
+            {{ icon('download') }} Download list
+        </a>
     </div>
     <div class="table-responsive">
         <table class="table">
             <thead>
                 <tr>
-                    {% for columnDef in event.fields %}
+                    {% for columnDef in event.getFields('html') %}
                         <th>{{ columnDef.friendlyName }}</th>
                     {% endfor %}
                     <th>Actions</th>
@@ -16,7 +19,7 @@
             <tbody>
                 {% for obj in data %}
                     <tr>
-                        {% for columnDef in event.fields %}
+                        {% for columnDef in event.getFields('html') %}
                             <td>
                                 {% include columnDef.template with columnDef.extraData|merge({data: obj}) %}
                             </td>
