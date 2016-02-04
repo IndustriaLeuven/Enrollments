@@ -2,6 +2,8 @@
 
 namespace PluginBundle\EventListener;
 
+use AppBundle\Event\Admin\EnrollmentEditEvent;
+use AppBundle\Event\Admin\EnrollmentEditSubmitEvent;
 use AppBundle\Event\Admin\EnrollmentListEvent;
 use AppBundle\Event\AdminEvents;
 use AppBundle\Event\Form\SubmitFormEvent;
@@ -12,6 +14,8 @@ use AppBundle\Event\PluginEvents;
 use AppBundle\Event\UI\SubmittedFormTemplateEvent;
 use AppBundle\Event\UI\EnrollmentTemplateEvent;
 use AppBundle\Event\UIEvents;
+use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormStaticControlType;
+use Braincrafted\Bundle\BootstrapBundle\Form\Type\MoneyType;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
@@ -21,11 +25,13 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\VarDumper\VarDumper;
 
 class PricingPluginListener implements EventSubscriberInterface
 {
     const PLUGIN_NAME = 'pricing';
     use PluginConfigurationHelperTrait;
+    use EnrollmentEditHelperTrait;
 
     /**
      * @var ExpressionLanguage
@@ -62,6 +68,9 @@ class PricingPluginListener implements EventSubscriberInterface
             PluginEvents::SUBMIT_FORM => 'onPluginSubmitForm',
             AdminEvents::FORM_GET => 'onAdminShowForm',
             AdminEvents::ENROLLMENT_LIST => 'onAdminEnrollmentList',
+            AdminEvents::ENROLLMENT_GET => 'onAdminEnrollmentGet',
+            AdminEvents::ENROLLMENT_EDIT => 'onAdminEnrollmentEdit',
+            AdminEvents::ENROLLMENT_EDIT_SUBMIT => 'onAdminEnrollmentEditSubmit',
             UIEvents::FORM => ['onUIForm', -253],
             FormEvents::SUBMIT => 'onFormSubmit',
             UIEvents::SUCCESS => ['onUISuccess', -253],
@@ -132,6 +141,34 @@ class PricingPluginListener implements EventSubscriberInterface
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
         $event->setField(EnrollmentListEvent::ALL_TYPES, 'pricing.totalPrice', 'Price', new TemplateReference('PluginBundle', 'PricingPlugin', 'Admin/list/price', 'html', 'twig'));
+        $event->setField(['csv'], 'pricing.paidAmount', 'Paid amount', new TemplateReference('PluginBundle', 'PricingPlugin', 'Admin/list/paidAmount', 'csv', 'twig'));
+    }
+
+    public function onAdminEnrollmentGet(EnrollmentTemplateEvent $event)
+    {
+        if(!$event->getEnrollment()->getPluginData()->has(self::PLUGIN_NAME))
+            return;
+        $event->addTemplate(new TemplateReference('PluginBundle', 'PricingPlugin', 'Admin/Enrollment/get', 'html', 'twig'), [
+            'pluginData' => $event->getEnrollment()->getPluginData()->get(self::PLUGIN_NAME),
+        ]);
+    }
+
+    public function onAdminEnrollmentEdit(EnrollmentEditEvent $event)
+    {
+        if(!$event->getEnrollment()->getPluginData()->has(self::PLUGIN_NAME))
+            return;
+        $this->buildEnrollmentEditForm($event, self::PLUGIN_NAME)
+            ->setData($event->getEnrollment()->getPluginData()->get(self::PLUGIN_NAME))
+            ->add('totalPrice', MoneyType::class, [
+                'disabled' => true,
+            ])
+            ->add('paidAmount', MoneyType::class)
+        ;
+    }
+
+    public function onAdminEnrollmentEditSubmit(EnrollmentEditSubmitEvent $event)
+    {
+        $this->submitEnrollmentEditForm($event, self::PLUGIN_NAME);
     }
 
     public function onUIForm(SubmittedFormTemplateEvent $event)
@@ -164,7 +201,7 @@ class PricingPluginListener implements EventSubscriberInterface
             'formData' => $formData,
             '_locale' => $this->requestStack->getMasterRequest()->attributes->get('_locale', 'en'),
         ]);
-        $event->getEnrollment()->getPluginData()->set(self::PLUGIN_NAME,['totalPrice' => $totalPrice]);
+        $event->getEnrollment()->getPluginData()->add(self::PLUGIN_NAME,['totalPrice' => $totalPrice]);
     }
 
     public function onUISuccess(EnrollmentTemplateEvent $event)

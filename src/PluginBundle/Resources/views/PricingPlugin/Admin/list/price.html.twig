@@ -1,5 +1,11 @@
-{% if data.pluginData.get('pricing') %}
-    &euro;&nbsp;{{ data.pluginData.get('pricing').totalPrice|default(0)|number_format(2) }}
+{% if data.pluginData.has('pricing') %}
+    {% set pricingData = data.pluginData.get('pricing') %}
+    &euro;&nbsp;{{ pricingData.totalPrice|default(0)|number_format(2) }}
+    {% if pricingData.paidAmount|default(0) == pricingData.totalPrice %}
+        {{ label_success('Paid') }}
+    {% elseif pricingData.paidAmount|default(0) > 0 %}
+        {{ label_warning('&euro;&nbsp;'~pricingData.paidAmount|default(0)|number_format(2)~' paid') }}
+    {% endif %}
 {% else %}
     &mdash;
 {% endif %}

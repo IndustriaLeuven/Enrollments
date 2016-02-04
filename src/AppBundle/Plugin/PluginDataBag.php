@@ -43,7 +43,8 @@ class PluginDataBag
         if(!$this->has($plugin)) {
             $this->set($plugin, $data);
         } else {
-            $this->parameters[$plugin] += $data;
+            // Makes sure new data overwrites old data when adding arrays to each other.
+            $this->parameters[$plugin] = $data + $this->parameters[$plugin];
         }
         return $this;
     }

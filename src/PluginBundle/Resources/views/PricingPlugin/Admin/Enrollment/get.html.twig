@@ -1,0 +1,12 @@
+<h4>Pricing</h4>
+<dl class="dl-horizontal">
+    <dt>Total price</dt><dd>&euro;&nbsp;{{ pluginData.totalPrice|number_format(2) }}</dd>
+    <dt>Amount paid</dt><dd>
+        &euro;&nbsp;{{ pluginData.paidAmount|default(0)|number_format(2) }}
+        {% if pluginData.paidAmount|default(0) == pluginData.totalPrice %}
+            {{ label_success('Paid') }}
+        {% elseif pluginData.paidAmount|default(0) > 0 %}
+            {{ label_warning('Partially paid') }}
+        {% endif %}
+    </dd>
+</dl>
