@@ -2,6 +2,7 @@
 
 namespace PluginBundle\EventListener;
 
+use AppBundle\Entity\Enrollment;
 use AppBundle\Entity\Form;
 use AppBundle\Event\AbstractFormEvent;
 use AppBundle\Event\AdminEvents;
@@ -136,7 +137,7 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
 
     public function onUIForm(SubmittedFormTemplateEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
     {
-        $this->doSwitchForm($event, $eventName, $eventDispatcher, function(Form $form) use($event) {
+        $this->doRoleDifferentiation($event, $eventName, $eventDispatcher, function(Form $form) use($event) {
             return new SubmittedFormTemplateEvent($form);
         }, function(SubmittedFormTemplateEvent $childEvent, SubmittedFormTemplateEvent $parentEvent) {
             $templates = $childEvent->getTemplates();
@@ -149,8 +150,52 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
 
     public function onUISuccess(EnrollmentTemplateEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
     {
-        //TODO: Refactor this to a separate function, together with onFormSubmit
-        $pluginData = $event->getEnrollment()->getPluginData()->get(self::PLUGIN_NAME);
+        $this->doPresetDifferentiation($event, $eventName, $eventDispatcher, $event->getEnrollment(), function (Form $form) use ($event) {
+            return new EnrollmentTemplateEvent($form, $event->getEnrollment(), $event->isEditDisabled());
+        }, function (EnrollmentTemplateEvent $childEvent, EnrollmentTemplateEvent $parentEvent) {
+            $templates = $childEvent->getTemplates();
+            foreach ($templates as $template)
+                $parentEvent->addTemplate($template, $templates->getInfo());
+            $parentEvent->setSubmittedForm($childEvent->getSubmittedForm());
+        });
+    }
+
+    public function onFormSubmit(SubmitFormEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
+    {
+        $pluginDataKey = $this->buildPluginDataKey($event);
+        if($event->getType() === $event::TYPE_CREATE) {
+            $this->doRoleDifferentiation($event, $eventName, $eventDispatcher, function (Form $form) use ($event, $pluginDataKey) {
+                // Store this new form we are using in the plugin data of the enrollment
+                $event->getEnrollment()->getPluginData()->add(self::PLUGIN_NAME, [$pluginDataKey => $form->getId()]);
+                return new SubmitFormEvent($form, $event->getSubmittedForm(), $event->getEnrollment());
+            }, function (SubmitFormEvent $childEvent, SubmitFormEvent $parentEvent) {
+            });
+        } elseif($event->getType() === $event::TYPE_EDIT) {
+            $this->doPresetDifferentiation($event, $eventName, $eventDispatcher, $event->getEnrollment(), function (Form $form) use ($event) {
+                return new SubmitFormEvent($form, $event->getSubmittedForm(), $event->getEnrollment(), $event->getType());
+            }, function (SubmitFormEvent $childEvent, SubmitFormEvent $parentEvent) {
+
+            });
+        } else {
+            throw new \LogicException('Unexpected form event type');
+        }
+    }
+
+    /**
+     * Applies differentiation based on a previously defined property on an enrollment
+     * @param AbstractFormEvent $event Current event
+     * @param string $eventName Name of current event
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param Enrollment $enrollment The enrollment to do differentiation for
+     * @param \Closure $eventFactory Callback to create a new child event. Takes the new form as argument.
+     * @param \Closure $dataCopier copies data from the child event to the parent event, after it has been dispatched
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
+     */
+    public function doPresetDifferentiation(AbstractFormEvent $event, $eventName, EventDispatcherInterface $eventDispatcher, Enrollment $enrollment, \Closure $eventFactory, \Closure $dataCopier)
+    {
+        $pluginData = $enrollment->getPluginData()->get(self::PLUGIN_NAME);
         $pluginDataKey = $this->buildPluginDataKey($event);
         if(!$pluginData || !isset($pluginData[$pluginDataKey]))
             return;
@@ -159,46 +204,10 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
         if(!$form)
             throw new NotFoundHttpException('Form with id '.$formId.' does not exist.');
         /* @var $form Form */
-        // Create a new child event with the form substituted and dispatch it.
-        $childEvent = new EnrollmentTemplateEvent($form, $event->getEnrollment(), $event->isEditDisabled());
-        $eventDispatcher->dispatch($eventName, $childEvent);
-        // Copy data from the child event to the original event
-        $templates = $childEvent->getTemplates();
-        foreach ($templates as $template)
-            $event->addTemplate($template, $templates->getInfo());
-        $event->setSubmittedForm($childEvent->getSubmittedForm());
-        // Prevent original event from going through to other handlers, we got all our data already from the child event
+        $newEvent = $eventFactory($form);
+        $eventDispatcher->dispatch($eventName, $newEvent);
+        $dataCopier($newEvent, $event);
         $event->stopPropagation();
-    }
-
-    public function onFormSubmit(SubmitFormEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
-    {
-        $pluginDataKey = $this->buildPluginDataKey($event);
-        if($event->getType() === $event::TYPE_CREATE) {
-            $this->doSwitchForm($event, $eventName, $eventDispatcher, function (Form $form) use ($event, $pluginDataKey) {
-                // Store this new form we are using in the plugin data of the enrollment
-                $event->getEnrollment()->getPluginData()->add(self::PLUGIN_NAME, [$pluginDataKey => $form->getId()]);
-                return new SubmitFormEvent($form, $event->getSubmittedForm(), $event->getEnrollment());
-            }, function (SubmitFormEvent $childEvent, SubmitFormEvent $parentEvent) {
-            });
-        } elseif($event->getType() === $event::TYPE_EDIT) {
-            // TODO: Refactor this to a function with onUISuccess
-            $pluginData = $event->getEnrollment()->getPluginData()->get(self::PLUGIN_NAME);
-            if(!$pluginData || !isset($pluginData[$pluginDataKey]))
-                return;
-            $formId = $pluginData[$pluginDataKey];
-            $form = $this->em->find('AppBundle:Form', $formId);
-            if(!$form)
-                throw new NotFoundHttpException('Form with id '.$formId.' does not exist.');
-            /* @var $form Form */
-            // Create a new child event with the form substituted and dispatch it.
-            $childEvent = new SubmitFormEvent($form, $event->getSubmittedForm(), $event->getEnrollment(), $event->getType());
-            $eventDispatcher->dispatch($eventName, $childEvent);
-            // Prevent original event from going through to other handlers, we got all our data already from the child event
-            $event->stopPropagation();
-        } else {
-            throw new \LogicException('Unexpected form event type');
-        }
     }
 
     /**
@@ -206,7 +215,7 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
      *
      * Replaces the current event with an event with the form substituted by the target form of the first matching rule
      * @param AbstractFormEvent $event Current event
-     * @param $eventName Name of current event
+     * @param string $eventName Name of current event
      * @param EventDispatcherInterface $eventDispatcher Event dispatcher
      * @param \Closure $eventFactory Callback to create a new child event. Takes the new form as argument.
      * @param \Closure $dataCopier copies data from the child event to the parent event, after it has been dispatched
@@ -214,7 +223,7 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \Doctrine\ORM\TransactionRequiredException
      */
-    private function doSwitchForm(AbstractFormEvent $event, $eventName, EventDispatcherInterface $eventDispatcher, \Closure $eventFactory, \Closure $dataCopier)
+    private function doRoleDifferentiation(AbstractFormEvent $event, $eventName, EventDispatcherInterface $eventDispatcher, \Closure $eventFactory, \Closure $dataCopier)
     {
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
