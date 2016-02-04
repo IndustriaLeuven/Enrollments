@@ -32,10 +32,13 @@ class FormController extends BaseController implements ClassResourceInterface
 
     public function newAction()
     {
-        return $this->buildPluginForm()
+        return [
+            'data' => $this->buildPluginForm()
             ->setMethod('POST')
             ->setAction($this->generateUrl('admin_post_form'))
-            ->getForm();
+            ->getForm()
+            ->createView()
+        ];
     }
 
     /**
@@ -60,7 +63,7 @@ class FormController extends BaseController implements ClassResourceInterface
 
             return $this->redirectToRoute('admin_get_form', ['form' => $form->getId()]);
         }
-        return $submittedForm;
+        return ['data' => $submittedForm->createView()];
     }
 
     public function editAction(Form $form)
