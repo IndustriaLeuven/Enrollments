@@ -15,6 +15,7 @@ use AppBundle\Event\UI\FormTemplateEvent;
 use AppBundle\Event\UI\SubmittedFormTemplateEvent;
 use AppBundle\Event\UI\EnrollmentTemplateEvent;
 use AppBundle\Event\UIEvents;
+use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
 use Doctrine\ORM\EntityManager;
 use PluginBundle\Form\RoleDifferentiationPluginConfigType;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
@@ -99,7 +100,7 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
     public function onPluginBuildForm(PluginBuildFormEvent $event)
     {
         $this->buildPluginForm($event, self::PLUGIN_NAME)
-            ->add('rules', 'bootstrap_collection', [
+            ->add('rules', BootstrapCollectionType::class, [
                 'allow_add' => true,
                 'allow_delete' => true,
                 'type' => RoleDifferentiationPluginConfigType::class,

@@ -4,7 +4,9 @@ namespace AppBundle\EventListener;
 
 use AppBundle\Event\Form\BuildFormEvent;
 use AppBundle\Event\FormEvents;
+use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class SubmitButtonListener implements EventSubscriberInterface
 {
@@ -17,12 +19,14 @@ class SubmitButtonListener implements EventSubscriberInterface
 
     public function onFormBuild(BuildFormEvent $event)
     {
+        if($event->getFormBuilder()->getDisabled())
+            return;
         if(!$event->getFormBuilder()->has('actions')) {
-            $event->getFormBuilder()->add('actions', 'form_actions');
+            $event->getFormBuilder()->add('actions', FormActionsType::class);
         }
         $event->getFormBuilder()
             ->get('actions')
-            ->add('submit', 'submit');
+            ->add('submit', SubmitType::class);
     }
 
 }

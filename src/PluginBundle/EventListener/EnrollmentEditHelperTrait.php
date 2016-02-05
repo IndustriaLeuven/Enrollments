@@ -2,8 +2,10 @@
 
 namespace PluginBundle\EventListener;
 
+use AdamQuaile\Bundle\FieldsetBundle\Form\FieldsetType;
 use AppBundle\Event\Admin\EnrollmentEditEvent;
 use AppBundle\Event\Admin\EnrollmentEditSubmitEvent;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 trait EnrollmentEditHelperTrait
 {
@@ -16,12 +18,12 @@ trait EnrollmentEditHelperTrait
     private function buildEnrollmentEditForm(EnrollmentEditEvent $event, $name)
     {
         return $event->getFormBuilder()
-            ->add($name, 'fieldset', [
+            ->add($name, FieldsetType::class, [
                 'legend' => ucfirst(trim(strtolower(preg_replace(array('/([A-Z])/', '/[_\s]+/'), array('_$1', ' '), $name)))),
                 'label' => false,
             ])
             ->get($name)
-            ->add('form', 'form', [
+            ->add('form', FormType::class, [
                 'label' => false,
                 'data' => $event->getEnrollment()->getPluginData()->get($name),
                 'attr' => [

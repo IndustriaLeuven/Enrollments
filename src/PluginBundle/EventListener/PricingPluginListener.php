@@ -21,6 +21,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -80,7 +81,7 @@ class PricingPluginListener implements EventSubscriberInterface
     public function onPluginBuildForm(PluginBuildFormEvent $event)
     {
         $this->buildPluginForm($event, self::PLUGIN_NAME)
-            ->add('formula', 'textarea', [
+            ->add('formula', TextareaType::class, [
                 'attr' => [
                     'help_text' => "Available functions: if(condition, ifTrue, ifFalse); concat(strings...)\n".
                         "Available variables: formData, _locale",
@@ -99,7 +100,7 @@ class PricingPluginListener implements EventSubscriberInterface
                         , $this))
                 ]
             ])
-            ->add('payment_expression', 'textarea', [
+            ->add('payment_expression', TextareaType::class, [
                 'attr' => [
                     'help_text' => "Available functions: if(condition, ifTrue, ifFalse); concat(strings...)\n".
                         "Available variables: formData, totalPrice, _locale",

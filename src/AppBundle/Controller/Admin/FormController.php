@@ -11,6 +11,8 @@ use AppBundle\Event\PluginEvents;
 use AppBundle\Event\UI\SubmittedFormTemplateEvent;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\View;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -108,7 +110,7 @@ class FormController extends BaseController implements ClassResourceInterface
     public function removeAction(Form $form)
     {
         return $this->createFormBuilder()
-            ->add('delete', 'submit', [
+            ->add('delete', SubmitType::class, [
                 'button_class' => 'danger'
             ])
             ->setMethod('DELETE')
@@ -123,7 +125,7 @@ class FormController extends BaseController implements ClassResourceInterface
     public function deleteAction(Request $request, Form $form)
     {
         $submittedForm = $this->createFormBuilder()
-            ->add('delete', 'submit', [
+            ->add('delete', SubmitType::class, [
                 'button_class' => 'danger'
             ])
             ->setMethod('DELETE')
@@ -150,12 +152,12 @@ class FormController extends BaseController implements ClassResourceInterface
     private function buildPluginForm(Form $form = null)
     {
         $formBuilder = $this->createFormBuilder();
-        $formBuilder->add('name', 'text', ['data' => $form?$form->getName():'']);
+        $formBuilder->add('name', TextType::class, ['data' => $form?$form->getName():'']);
 
         $buildConfigEvent = $this->getEventDispatcher()->dispatch(PluginEvents::BUILD_FORM, new PluginBuildFormEvent($formBuilder, $form));
         /* @var $buildConfigEvent PluginBuildFormEvent */
         return $buildConfigEvent->getFormBuilder()
-            ->add('submit', 'submit');
+            ->add('submit', SubmitType::class);
     }
 
 }

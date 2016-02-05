@@ -2,8 +2,11 @@
 
 namespace PluginBundle\EventListener;
 
+use AdamQuaile\Bundle\FieldsetBundle\Form\FieldsetType;
 use AppBundle\Event\Plugin\PluginBuildFormEvent;
 use AppBundle\Event\Plugin\PluginSubmitFormEvent;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
 
 trait PluginConfigurationHelperTrait
@@ -18,7 +21,7 @@ trait PluginConfigurationHelperTrait
     private function buildPluginForm(PluginBuildFormEvent $event, $name, $isConfigurable = true)
     {
         $builder = $event->getFormBuilder()
-            ->add($name, 'fieldset', [
+            ->add($name, FieldsetType::class, [
                 'legend' => ucfirst(trim(strtolower(preg_replace(array('/([A-Z])/', '/[_\s]+/'), array('_$1', ' '), $name)))),
                 'label' => false,
                 'validation_groups' => function(FormInterface $form) {
@@ -26,7 +29,7 @@ trait PluginConfigurationHelperTrait
                 }
             ])
             ->get($name)
-            ->add('enable', 'checkbox', [
+            ->add('enable', CheckboxType::class, [
                 'label' => 'Enable',
                 'required' => false,
                 'data' => !$event->isNew()&&$event->getForm()->getPluginData()->has($name),
@@ -34,7 +37,7 @@ trait PluginConfigurationHelperTrait
         if(!$isConfigurable)
             return null;
         return $builder
-            ->add('data', 'form', [
+            ->add('data', FormType::class, [
                 'label' => false,
                 'data' => $event->isNew()?null:$event->getForm()->getPluginData()->get($name),
             ])

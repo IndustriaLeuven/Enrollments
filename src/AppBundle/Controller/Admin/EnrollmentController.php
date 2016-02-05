@@ -26,11 +26,11 @@ use League\Csv\Modifier\MapIterator;
 use League\Csv\Writer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * @View
@@ -198,7 +198,7 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
     public function removeAction(Form $form, Enrollment $enrollment)
     {
         return $this->createFormBuilder()
-            ->add('delete', 'submit', [
+            ->add('delete', SubmitType::class, [
                 'button_class' => 'danger'
             ])
             ->setMethod('DELETE')
@@ -213,7 +213,7 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
     public function deleteAction(Request $request, Form $form, Enrollment $enrollment)
     {
         $deleteForm = $this->createFormBuilder()
-            ->add('delete', 'submit', [
+            ->add('delete', SubmitType::class, [
                 'button_class' => 'danger'
             ])
             ->setMethod('DELETE')

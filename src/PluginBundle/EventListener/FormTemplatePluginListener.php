@@ -12,11 +12,13 @@ use AppBundle\Event\Plugin\PluginSubmitFormEvent;
 use AppBundle\Event\PluginEvents;
 use AppBundle\Event\UI\SubmittedFormTemplateEvent;
 use AppBundle\Form\FinderChoiceLoader;
+use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
 use PluginBundle\Form\FormDefinitionInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class FormTemplatePluginListener implements EventSubscriberInterface
 {
@@ -55,10 +57,10 @@ class FormTemplatePluginListener implements EventSubscriberInterface
     public function onPluginBuildForm(PluginBuildFormEvent $event)
     {
         $this->buildPluginForm($event, self::PLUGIN_NAME)
-            ->add('formType', 'choice', [
+            ->add('formType', ChoiceType::class, [
                 'choice_loader' => new FinderChoiceLoader(Finder::create()->files()->in($this->searchDir), '.php'),
             ])
-            ->add('admin_enrollment_list_fields', 'bootstrap_collection', [
+            ->add('admin_enrollment_list_fields', BootstrapCollectionType::class, [
                 'allow_add' => true,
                 'allow_delete' => true,
                 'type' => 'text',
