@@ -197,7 +197,40 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
 
     public function removeAction(Form $form, Enrollment $enrollment)
     {
-        throw new HttpException(501, 'Enrollment deletion not implemented.');
+        return $this->createFormBuilder()
+            ->add('delete', 'submit', [
+                'button_class' => 'danger'
+            ])
+            ->setMethod('DELETE')
+            ->setAction($this->generateUrl('admin_delete_form_enrollment', ['form' => $form->getId(), 'enrollment' => $enrollment->getId()]))
+            ->getForm()
+            ->createView();
+    }
+
+    /**
+     * @View("AppBundle:Admin/Enrollment:remove.html.twig")
+     */
+    public function deleteAction(Request $request, Form $form, Enrollment $enrollment)
+    {
+        $deleteForm = $this->createFormBuilder()
+            ->add('delete', 'submit', [
+                'button_class' => 'danger'
+            ])
+            ->setMethod('DELETE')
+            ->setAction($this->generateUrl('admin_delete_form_enrollment', ['form' => $form->getId(), 'enrollment' => $enrollment->getId()]))
+            ->getForm();
+        /* @var $deleteForm \Symfony\Component\Form\Form */
+        $deleteForm->handleRequest($request);
+        if($deleteForm->isValid()) {
+            $this->getEventDispatcher()->dispatch(AdminEvents::ENROLLMENT_DELETE, new EnrollmentEvent($form, $enrollment));
+            $this->getEntityManager()->flush();
+            return $this->redirectToRoute('admin_get_form_enrollments', [
+                'form' => $form->getId()
+            ]);
+        }
+
+        return $deleteForm->createView();
+
     }
 
     /**

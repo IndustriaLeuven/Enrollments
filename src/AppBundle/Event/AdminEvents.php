@@ -33,4 +33,9 @@ final class AdminEvents
      * Emits {@link Admin\EnrollmentEditSubmitEvent}
      */
     const ENROLLMENT_EDIT_SUBMIT = 'app.admin.enrollment.edit_submit';
+
+    /**
+     * Emits {@link Admin\EnrollmentEvent}
+     */
+    const ENROLLMENT_DELETE = 'app.admin.enrollment.delete';
 }

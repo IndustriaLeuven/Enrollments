@@ -7,13 +7,8 @@ use AppBundle\Entity\Form;
 use AppBundle\Event\AbstractFormEvent;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class EnrollmentEditSubmitEvent extends AbstractFormEvent
+class EnrollmentEditSubmitEvent extends EnrollmentEvent
 {
-    /**
-     * @var Enrollment
-     */
-    private $enrollment;
-
     /**
      * @var \Symfony\Component\Form\Form
      */
@@ -27,18 +22,9 @@ class EnrollmentEditSubmitEvent extends AbstractFormEvent
      */
     public function __construct(Form $form, Enrollment $enrollment, \Symfony\Component\Form\Form $submittedForm)
     {
-        parent::__construct($form);
-        $this->enrollment = $enrollment;
+        parent::__construct($form, $enrollment);
         $this->submittedForm = $submittedForm;
 
-    }
-
-    /**
-     * @return Enrollment
-     */
-    public function getEnrollment()
-    {
-        return $this->enrollment;
     }
 
     /**

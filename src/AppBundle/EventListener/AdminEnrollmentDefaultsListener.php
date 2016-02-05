@@ -3,12 +3,14 @@
 namespace AppBundle\EventListener;
 
 use AppBundle\Event\Admin\EnrollmentEditEvent;
+use AppBundle\Event\Admin\EnrollmentEvent;
 use AppBundle\Event\Admin\EnrollmentListEvent;
 use AppBundle\Event\Admin\EnrollmentSidebarEvent;
 use AppBundle\Event\AdminEvents;
 use AppBundle\Event\UI\EnrollmentTemplateEvent;
 use AppBundle\Event\UIEvents;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormStaticControlType;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -23,12 +25,19 @@ class AdminEnrollmentDefaultsListener implements EventSubscriberInterface
     private $requestStack;
 
     /**
+     * @var EntityManager
+     */
+    private $em;
+
+    /**
      * AdminEnrollmentDefaultsListener constructor.
      * @param RequestStack $requestStack
+     * @param EntityManager $em
      */
-    public function __construct(RequestStack $requestStack)
+    public function __construct(RequestStack $requestStack, EntityManager $em)
     {
         $this->requestStack = $requestStack;
+        $this->em = $em;
     }
 
     public static function getSubscribedEvents()
@@ -38,6 +47,7 @@ class AdminEnrollmentDefaultsListener implements EventSubscriberInterface
             AdminEvents::ENROLLMENT_LIST => 'onAdminEnrollmentList',
             AdminEvents::ENROLLMENT_GET => 'onAdminEnrollmentGet',
             AdminEvents::ENROLLMENT_EDIT => ['onAdminEnrollmentEdit', -255],
+            AdminEvents::ENROLLMENT_DELETE => 'onAdminEnrollmentDelete',
         ];
     }
 
@@ -70,6 +80,11 @@ class AdminEnrollmentDefaultsListener implements EventSubscriberInterface
                 'data' => 'There are no plugin settings to edit',
             ]);
         }
+    }
+
+    public function onAdminEnrollmentDelete(EnrollmentEvent $event)
+    {
+        $this->em->remove($event->getEnrollment());
     }
 
 }
