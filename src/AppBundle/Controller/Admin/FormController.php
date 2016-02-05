@@ -21,7 +21,12 @@ class FormController extends BaseController implements ClassResourceInterface
 {
     public function cgetAction(Request $request)
     {
-        return $this->paginate($this->getEntityManager()->getRepository('AppBundle:Form')->createQueryBuilder('f'), $request);
+        $queryBuilder = $this->getEntityManager()
+            ->getRepository('AppBundle:Form')
+            ->createQueryBuilder('f')
+            ->orderBy('f.createdAt', 'DESC')
+        ;
+        return $this->paginate($queryBuilder, $request);
     }
 
     public function getAction(Form $form)
