@@ -13,8 +13,8 @@ use AppBundle\Event\UI\EnrollmentTemplateEvent;
 use AppBundle\Event\UIEvents;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\View;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * @View("AppBundle:Enrollment:simpleTemplate.html.twig")
@@ -53,6 +53,10 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
         return $formTemplateEvent;
     }
 
+    /**
+     * @ParamConverter("form", options={"mapping":{"form":"id"}})
+     * @ParamConverter("enrollment", options={"mapping":{"form": "form", "enrollment": "id"}})
+     */
     public function getSubmissionAction(Form $form, Enrollment $enrollment)
     {
         return $this->getEventDispatcher()->dispatch(UIEvents::SUCCESS, new EnrollmentTemplateEvent($form, $enrollment));

@@ -7,6 +7,7 @@ use AppBundle\Entity\Enrollment;
 use AppBundle\Entity\Form;
 use AppBundle\Event\Admin\EnrollmentEditEvent;
 use AppBundle\Event\Admin\EnrollmentEditSubmitEvent;
+use AppBundle\Event\Admin\EnrollmentEvent;
 use AppBundle\Event\Admin\EnrollmentListEvent;
 use AppBundle\Event\Admin\EnrollmentSidebarEvent;
 use AppBundle\Event\AdminEvents;
@@ -23,6 +24,7 @@ use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use League\Csv\Modifier\MapIterator;
 use League\Csv\Writer;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,6 +34,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * @View
+ * @ParamConverter("form", options={"mapping":{"form":"id"}})
+ * @ParamConverter("enrollment", options={"mapping":{"form": "form", "enrollment": "id"}})
  */
 class EnrollmentController extends BaseController implements ClassResourceInterface
 {
