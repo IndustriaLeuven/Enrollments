@@ -11,7 +11,7 @@
             <thead>
                 <tr>
                     {% for columnDef in event.getFields('html') %}
-                        <th>{{ columnDef.friendlyName }}</th>
+                        <th>{{ columnDef.columnHeader }}</th>
                     {% endfor %}
                     <th>Actions</th>
                 </tr>
@@ -21,7 +21,7 @@
                     <tr>
                         {% for columnDef in event.getFields('html') %}
                             <td>
-                                {% include columnDef.template with columnDef.extraData|merge({data: obj}) %}
+                                {{ columnDef.renderColumnData({data: obj})|raw }}
                             </td>
                         {% endfor %}
                         <td>

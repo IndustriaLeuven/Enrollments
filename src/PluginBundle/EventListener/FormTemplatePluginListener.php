@@ -2,6 +2,7 @@
 
 namespace PluginBundle\EventListener;
 
+use AppBundle\Entity\Enrollment;
 use AppBundle\Event\Admin\EnrollmentListEvent;
 use AppBundle\Event\AdminEvents;
 use AppBundle\Event\Form\BuildFormEvent;
@@ -12,6 +13,7 @@ use AppBundle\Event\Plugin\PluginSubmitFormEvent;
 use AppBundle\Event\PluginEvents;
 use AppBundle\Event\UI\SubmittedFormTemplateEvent;
 use AppBundle\Form\FinderChoiceLoader;
+use AppBundle\Plugin\Table\CallbackTableColumnDefinition;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
 use PluginBundle\Form\FormDefinitionInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
@@ -91,9 +93,16 @@ class FormTemplatePluginListener implements EventSubscriberInterface
         if(!isset($pluginData['admin_enrollment_list_fields']))
             return;
         foreach($pluginData['admin_enrollment_list_fields'] as $field) {
-            $event->setField(EnrollmentListEvent::ALL_TYPES, 'data.'.$field, $field, new TemplateReference('AppBundle', 'Admin/Enrollment', 'list/flattenedDataField', 'html', 'twig'), [
+            $event->setField(EnrollmentListEvent::ALL_TYPES, 'data.'.$field, new CallbackTableColumnDefinition($field, function(array $data) {
+                $enrollment = $data['data'];
+                /* @var $enrollment Enrollment */
+                $flattenedData = $enrollment->getFlattenedData();
+                if(isset($flattenedData[$data['fieldName']]))
+                    return $flattenedData[$data['fieldName']];
+                return '';
+            }, [
                 'fieldName' => $field,
-            ]);
+            ]));
         }
     }
 

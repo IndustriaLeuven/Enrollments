@@ -2,6 +2,7 @@
 
 namespace PluginBundle\EventListener;
 
+use AppBundle\Entity\Enrollment;
 use AppBundle\Event\Admin\EnrollmentEditEvent;
 use AppBundle\Event\Admin\EnrollmentEditSubmitEvent;
 use AppBundle\Event\Admin\EnrollmentListEvent;
@@ -14,6 +15,7 @@ use AppBundle\Event\PluginEvents;
 use AppBundle\Event\UI\SubmittedFormTemplateEvent;
 use AppBundle\Event\UI\EnrollmentTemplateEvent;
 use AppBundle\Event\UIEvents;
+use AppBundle\Plugin\Table\CallbackTableColumnDefinition;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormStaticControlType;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\MoneyType;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
@@ -141,8 +143,27 @@ class PricingPluginListener implements EventSubscriberInterface
     {
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
-        $event->setField(EnrollmentListEvent::ALL_TYPES, 'pricing.totalPrice', 'Price', new TemplateReference('PluginBundle', 'PricingPlugin', 'Admin/list/price', 'html', 'twig'));
-        $event->setField(['csv'], 'pricing.paidAmount', 'Paid amount', new TemplateReference('PluginBundle', 'PricingPlugin', 'Admin/list/paidAmount', 'csv', 'twig'));
+        $event->setTemplatingField(['html'], 'pricing.totalPrice', 'Price', new TemplateReference('PluginBundle', 'PricingPlugin', 'Admin/list/price', 'html', 'twig'));
+        $event->setField(['csv'], 'pricing.totalPrice', new CallbackTableColumnDefinition('Price', function(array $data) {
+            $enrollment = $data['data'];
+            /* @var $enrollment Enrollment */
+            if($enrollment->getPluginData()->has(self::PLUGIN_NAME)) {
+                $pluginData = $enrollment->getPluginData()->get(self::PLUGIN_NAME);
+                if(isset($pluginData['totalPrice']))
+                    return $pluginData['totalPrice'];
+            }
+            return '0';
+        }));
+        $event->setField(['csv'], 'pricing.paidAmount', new CallbackTableColumnDefinition('Paid amount', function(array $data) {
+            $enrollment = $data['data'];
+            /* @var $enrollment Enrollment */
+            if($enrollment->getPluginData()->has(self::PLUGIN_NAME)) {
+                $pluginData = $enrollment->getPluginData()->get(self::PLUGIN_NAME);
+                if(isset($pluginData['paidAmount']))
+                    return $pluginData['paidAmount'];
+            }
+            return '0';
+        }));
     }
 
     public function onAdminEnrollmentGet(EnrollmentTemplateEvent $event)

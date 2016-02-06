@@ -4,7 +4,8 @@ namespace AppBundle\Event\Admin;
 
 use AppBundle\Entity\Form;
 use AppBundle\Event\AbstractFormEvent;
-use AppBundle\Plugin\TableColumnDefinition;
+use AppBundle\Plugin\Table\TableColumnDefinitionInterface;
+use AppBundle\Plugin\Table\TwigTableColumnDefinition;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -24,7 +25,7 @@ class EnrollmentListEvent extends AbstractFormEvent
     private $queryString;
 
     /**
-     * @var TableColumnDefinition[][]
+     * @var TableColumnDefinitionInterface[][]
      */
     private $fields = [];
 
@@ -33,11 +34,17 @@ class EnrollmentListEvent extends AbstractFormEvent
      */
     private $criteria;
 
-    public function __construct(Form $form, ParameterBag $queryString)
+    /**
+     * @var \Twig_Environment
+     */
+    private $twig;
+
+    public function __construct(Form $form, ParameterBag $queryString, \Twig_Environment $twig)
     {
         parent::__construct($form);
         $this->queryString = $queryString;
         $this->criteria = new Criteria();
+        $this->twig = $twig;
     }
 
     /**
@@ -56,14 +63,26 @@ class EnrollmentListEvent extends AbstractFormEvent
      * @param array $extraData
      * @return $this
      */
-    public function setField(array $documentTypes = self::ALL_TYPES, $name, $friendlyName, TemplateReference $templateReference, array $extraData = [])
+    public function setTemplatingField(array $documentTypes = self::ALL_TYPES, $name, $friendlyName, TemplateReference $templateReference, array $extraData = [])
+    {
+        $colDef = new TwigTableColumnDefinition($friendlyName, $templateReference, $this->twig, $extraData);
+        $this->setField($documentTypes, $name, $colDef);
+        return $this;
+    }
+
+    /**
+     * @param array $documentTypes
+     * @param $name
+     * @param TableColumnDefinitionInterface $tableColumnDefinition
+     * @return $this
+     */
+    public function setField(array $documentTypes = self::ALL_TYPES, $name, TableColumnDefinitionInterface $tableColumnDefinition)
     {
         if($documentTypes === self::ALL_TYPES) {
             $documentTypes = self::$all_types;
         }
-        $colDef = new TableColumnDefinition($friendlyName, $templateReference, $extraData);
         foreach($documentTypes as $docType) {
-            $this->fields[$docType][$name] = $colDef;
+            $this->fields[$docType][$name] = $tableColumnDefinition;
         }
         return $this;
     }
@@ -87,7 +106,7 @@ class EnrollmentListEvent extends AbstractFormEvent
     /**
      * @param string $documentType
      * @param string $name
-     * @return TableColumnDefinition|null
+     * @return TableColumnDefinitionInterface|null
      */
     public function getField($documentType, $name)
     {
@@ -99,7 +118,7 @@ class EnrollmentListEvent extends AbstractFormEvent
 
     /**
      * @param string $documentType
-     * @return \AppBundle\Plugin\TableColumnDefinition[]
+     * @return TableColumnDefinitionInterface[]
      */
     public function getFields($documentType)
     {

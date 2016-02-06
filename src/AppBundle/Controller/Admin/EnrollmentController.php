@@ -15,7 +15,8 @@ use AppBundle\Event\Form\SubmitFormEvent;
 use AppBundle\Event\FormEvents;
 use AppBundle\Event\UI\EnrollmentTemplateEvent;
 use AppBundle\Event\UIEvents;
-use AppBundle\Plugin\TableColumnDefinition;
+use AppBundle\Plugin\Table\CallbackTableColumnDefinition;
+use AppBundle\Plugin\Table\TableColumnDefinitionInterface;
 use Doctrine\Common\Collections\Collection;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\Get;
@@ -25,7 +26,6 @@ use FOS\RestBundle\Routing\ClassResourceInterface;
 use League\Csv\Modifier\MapIterator;
 use League\Csv\Writer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -68,38 +68,31 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
             /* @var $enrollment Enrollment */
             foreach(array_keys($enrollment->getFlattenedData()) as $data_key) {
                 if(!isset($headings['data.'.$data_key]))
-                    $headings['data.'.$data_key] = new TableColumnDefinition($data_key, new TemplateReference('AppBundle', 'Admin/Enrollment/list', 'flattenedDataField', 'csv', 'twig'), [
-                        'fieldName' => $data_key,
-                    ]);
+                    $headings['data.'.$data_key] = new CallbackTableColumnDefinition($data_key, function(array $data) {
+                        $enrollment = $data['data'];
+                        /* @var $enrollment Enrollment */
+                        $flattenedData = $enrollment->getFlattenedData();
+                        if(isset($flattenedData[$data['fieldName']]))
+                            return $flattenedData[$data['fieldName']];
+                        return '';
+                    }, ['fieldName' => $data_key]);
             }
         }
 
-        $twig = $this->get('twig');
-        /* @var $twig \Twig_Environment */
-
         // Create csv writer and insert headings
         $csvWriter = Writer::createFromFileObject(new \SplTempFileObject());
-        $csvWriter->insertOne(array_map(function(TableColumnDefinition $columnDefinition) {
-            return $columnDefinition->getFriendlyName();
+        $csvWriter->insertOne(array_map(function(TableColumnDefinitionInterface $columnDefinition) {
+            return $columnDefinition->getColumnHeader();
         }, $headings));
 
         // Create data rows
-        $renderedRows = new MapIterator(new \IteratorIterator($filteredData->getIterator()), function(Enrollment $enrollment) use($headings, $twig) {
+        $renderedRows = new MapIterator(new \IteratorIterator($filteredData->getIterator()), function(Enrollment $enrollment) use($headings) {
             $rowData = [];
             $data = ['data' => $enrollment];
             // Add data for each heading
             foreach($headings as $columnDefinition) {
-                /* @var $columnDefinition TableColumnDefinition */
-                // First try a .csv.twig template before falling back to the .html version
-                try {
-                    $csvTemplate = clone $columnDefinition->getTemplate();
-                    $csvTemplate->set('format', 'csv');
-                    $renderedData = $twig->render($csvTemplate, $columnDefinition->getExtraData() + $data);
-                } catch(\Twig_Error_Loader $_) {
-                    $renderedData = $twig->render($columnDefinition->getTemplate(), $columnDefinition->getExtraData() + $data);
-                }
-                // Decode html and strip leading and tailing whitespace
-                $rowData[] = trim(html_entity_decode($renderedData));
+                /* @var $columnDefinition TableColumnDefinitionInterface */
+                $rowData[] = html_entity_decode($columnDefinition->renderColumnData($data));
             }
             return $rowData;
         });
@@ -118,7 +111,7 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
 
     public function cgetAction(Request $request, Form $form)
     {
-        $event = new EnrollmentListEvent($form, $request->query);
+        $event = new EnrollmentListEvent($form, $request->query, $this->get('twig'));
         $this->getEventDispatcher()->dispatch(AdminEvents::ENROLLMENT_LIST, $event);
 
         $filteredData = $event->getForm()->getEnrollments()->matching($event->getCriteria());
