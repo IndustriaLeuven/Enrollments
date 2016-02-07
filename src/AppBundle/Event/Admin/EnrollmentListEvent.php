@@ -4,6 +4,9 @@ namespace AppBundle\Event\Admin;
 
 use AppBundle\Entity\Form;
 use AppBundle\Event\AbstractFormEvent;
+use AppBundle\Plugin\Facet\FacetDefinition;
+use AppBundle\Plugin\Facet\FacetDefinitionInterface;
+use AppBundle\Plugin\Facet\FacetOption;
 use AppBundle\Plugin\Table\TableColumnDefinitionInterface;
 use AppBundle\Plugin\Table\TwigTableColumnDefinition;
 use Doctrine\Common\Collections\Criteria;
@@ -43,6 +46,11 @@ class EnrollmentListEvent extends AbstractFormEvent
      * @var \Closure[]
      */
     private $filters = [];
+
+    /**
+     * @var FacetDefinitionInterface[]
+     */
+    private $facets = [];
 
     public function __construct(Form $form, ParameterBag $queryString, \Twig_Environment $twig)
     {
@@ -136,6 +144,29 @@ class EnrollmentListEvent extends AbstractFormEvent
     public function getCriteria()
     {
         return $this->criteria;
+    }
+
+    public function setFacet($name, FacetDefinitionInterface $facetDef)
+    {
+        $this->facets[$name] = $facetDef;
+        return $this;
+    }
+
+    public function setSimpleFacet($facetName, $icon, array $options)
+    {
+        $opts = [];
+        foreach($options as $name => $queryStringParameters) {
+            $opts[] = new FacetOption($name, $queryStringParameters);
+        }
+        return $this->setFacet($facetName, new FacetDefinition($facetName, $icon, $opts));
+    }
+
+    /**
+     * @return FacetDefinitionInterface[]
+     */
+    public function getFacets()
+    {
+        return $this->facets;
     }
 
     public function addFilter(callable $filter)

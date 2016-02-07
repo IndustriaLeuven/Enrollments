@@ -144,6 +144,12 @@ class PricingPluginListener implements EventSubscriberInterface
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
 
+        $event->setSimpleFacet('pricing', 'money', [
+            'Paid only' => ['pricing' => ['status' => 'paid']],
+            'Unpaid only' => ['pricing' => ['status' => 'unpaid']],
+            'All' => ['pricing' => ['status' => null]],
+        ]);
+
         $queryData = $event->getQueryString()->get('pricing', []);
 
         switch(isset($queryData['status'])?$queryData['status']:null) {
