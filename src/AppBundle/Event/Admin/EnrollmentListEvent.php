@@ -39,6 +39,11 @@ class EnrollmentListEvent extends AbstractFormEvent
      */
     private $twig;
 
+    /**
+     * @var \Closure[]
+     */
+    private $filters = [];
+
     public function __construct(Form $form, ParameterBag $queryString, \Twig_Environment $twig)
     {
         parent::__construct($form);
@@ -131,5 +136,24 @@ class EnrollmentListEvent extends AbstractFormEvent
     public function getCriteria()
     {
         return $this->criteria;
+    }
+
+    public function addFilter(callable $filter)
+    {
+        $this->filters[] = $filter;
+    }
+
+    /**
+     * @return \Closure
+     */
+    public function getFilter()
+    {
+        return \Closure::bind(function($element) {
+            foreach($this->filters as $filter) {
+                if(!$filter($element))
+                    return false;
+            }
+            return true;
+        }, $this);
     }
 }

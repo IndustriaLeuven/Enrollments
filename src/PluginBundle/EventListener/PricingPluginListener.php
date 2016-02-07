@@ -143,6 +143,27 @@ class PricingPluginListener implements EventSubscriberInterface
     {
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
+
+        $queryData = $event->getQueryString()->get('pricing', []);
+
+        switch(isset($queryData['status'])?$queryData['status']:null) {
+            case 'paid':
+                $event->addFilter(function(Enrollment $enrollment) {
+                    $pluginData = $enrollment->getPluginData()->get(self::PLUGIN_NAME);
+                    if(!$pluginData || !isset($pluginData['totalPrice']) || !isset($pluginData['paidAmount']))
+                        return false;
+                    return $pluginData['paidAmount'] >= $pluginData['totalPrice'];
+                });
+                break;
+            case 'unpaid':
+                $event->addFilter(function(Enrollment $enrollment) {
+                    $pluginData = $enrollment->getPluginData()->get(self::PLUGIN_NAME);
+                    if(!$pluginData || !isset($pluginData['totalPrice']))
+                        return false;
+                    return !isset($pluginData['paidAmount']) || $pluginData['paidAmount'] < $pluginData['totalPrice'];
+                });
+        }
+
         $event->setTemplatingField(['html'], 'pricing.totalPrice', 'Price', new TemplateReference('PluginBundle', 'PricingPlugin', 'Admin/list/price', 'html', 'twig'));
         $event->setField(['csv'], 'pricing.totalPrice', new CallbackTableColumnDefinition('Price', function(array $data) {
             $enrollment = $data['data'];

@@ -114,7 +114,10 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
         $event = new EnrollmentListEvent($form, $request->query, $this->get('twig'));
         $this->getEventDispatcher()->dispatch(AdminEvents::ENROLLMENT_LIST, $event);
 
-        $filteredData = $event->getForm()->getEnrollments()->matching($event->getCriteria());
+        $filteredData = $event->getForm()->getEnrollments()
+            ->matching($event->getCriteria())
+            ->filter($event->getFilter());
+
 
         if($request->attributes->get('_format') === 'csv') {
             return $this->renderCgetCsv($event, $filteredData, $form);
