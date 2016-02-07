@@ -1,6 +1,7 @@
 {% extends 'AppBundle:Admin/Form:skeleton.html.twig' %}
 {% block content %}
-    <div class="panel-heading">
+    <div class="panel-heading clearfix">
+        {% include 'AppBundle:Admin:per_page_button.html.twig' %}
         <h3 class="panel-title">{{ icon('list-alt') }} Forms</h3>
     </div>
     <div class="table-responsive">

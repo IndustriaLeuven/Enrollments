@@ -1,10 +1,8 @@
 {% extends 'AppBundle:Admin/Enrollment:skeleton.html.twig' %}
 {% block content %}
-    <div class="panel-heading text-right">
-        <h3 class="panel-title pull-left">{{ icon('file-text-o') }} Enrollments for {{ form.name }}</h3>
-        <a class="btn btn-default btn-sm" href="{{ url('admin_get_form_enrollments', app.request.attributes.get('_route_params')|merge(app.request.query.all())|merge({'_format': 'csv'})) }}">
-            {{ icon('download') }} Download list
-        </a>
+    <div class="panel-heading clearfix">
+        {% include 'AppBundle:Admin/Enrollment:cget_header_buttons.html.twig' %}
+        <h3 class="panel-title">{{ icon('file-text-o') }} Enrollments for {{ form.name }}</h3>
     </div>
     <div class="table-responsive">
         <table class="table">
