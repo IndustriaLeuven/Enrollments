@@ -2,7 +2,7 @@
 {% block content %}
     <div class="panel-heading clearfix">
         {% include 'AppBundle:Admin/Enrollment:cget_header_buttons.html.twig' %}
-        <h3 class="panel-title">{{ icon('file-text-o') }} Enrollments for {{ form.name }}</h3>
+        <h3 class="panel-title">{{ icon('file-text-o') }} Enrollments for {{ form.name }} {{ label(data.totalItemCount~' results') }}</h3>
     </div>
     <div class="table-responsive">
         <table class="table">
