@@ -187,4 +187,9 @@ class EnrollmentListEvent extends AbstractFormEvent
             return true;
         }, $this);
     }
+
+    public function hasFilters()
+    {
+        return count($this->filters) > 0;
+    }
 }
