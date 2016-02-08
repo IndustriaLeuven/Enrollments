@@ -19,7 +19,7 @@ class MainMenu extends MenuItem
         parent::__construct('root', $factory);
 
         try {
-            if($authorizationChecker->isGranted('ROLE_ADMIN')) {
+            if($authorizationChecker->isGranted('ROLE_BACKEND_ACCESS')) {
                 $this->addChild('admin_form', [
                     'label' => '.icon-list-alt Forms',
                     'route' => 'admin_get_forms',

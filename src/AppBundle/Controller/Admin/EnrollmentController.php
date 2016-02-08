@@ -18,6 +18,7 @@ use AppBundle\Event\UIEvents;
 use AppBundle\Plugin\Table\CallbackTableColumnDefinition;
 use AppBundle\Plugin\Table\TableColumnDefinitionInterface;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityRepository;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\NoRoute;
@@ -26,6 +27,7 @@ use FOS\RestBundle\Routing\ClassResourceInterface;
 use League\Csv\Modifier\MapIterator;
 use League\Csv\Writer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,6 +38,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  * @View
  * @ParamConverter("form", options={"mapping":{"form":"id"}})
  * @ParamConverter("enrollment", options={"mapping":{"form": "form", "enrollment": "id"}})
+ * @Security("is_granted('LIST_ENROLLMENTS', form) or has_role('ROLE_ADMIN')")
  */
 class EnrollmentController extends BaseController implements ClassResourceInterface
 {
@@ -138,6 +141,7 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
     /**
      * @Get
      * @Post(name="post_edit_form_enrollment")
+     * @Security("is_granted('EDIT_ENROLLMENT', form) or has_role('ROLE_ADMIN')")
      */
     public function editAction(Request $request, Form $form, Enrollment $enrollment)
     {
@@ -168,6 +172,7 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
 
     /**
      * @View("AppBundle:Admin/Enrollment:edit.html.twig")
+     * @Security("is_granted('EDIT_ENROLLMENT', form) or has_role('ROLE_ADMIN')")
      */
     public function putAction(Request $request, Form $form, Enrollment $enrollment)
     {
@@ -191,6 +196,9 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
         ];
     }
 
+    /**
+     * @Security("is_granted('EDIT_ENROLLMENT', form) or has_role('ROLE_ADMIN')")
+     */
     public function removeAction(Form $form, Enrollment $enrollment)
     {
         return $this->createFormBuilder()
@@ -205,6 +213,7 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
 
     /**
      * @View("AppBundle:Admin/Enrollment:remove.html.twig")
+     * @Security("is_granted('EDIT_ENROLLMENT', form) or has_role('ROLE_ADMIN')")
      */
     public function deleteAction(Request $request, Form $form, Enrollment $enrollment)
     {

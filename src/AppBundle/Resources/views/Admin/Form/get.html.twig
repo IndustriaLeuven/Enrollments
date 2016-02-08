@@ -4,6 +4,14 @@
         <h3 class="panel-title">{{ icon('list-alt') }} Form {{ form.name }}</h3>
     </div>
     <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Edit form groups</dt><dd>{% for group in form.editFormGroups %}{{ group }}<br>{% endfor %}</dd>
+            <dt>List enrollments groups</dt><dd>{% for group in form.listEnrollmentsGroups %}{{ group }}<br>{% endfor %}</dd>
+            <dt>Edit enrollments groups</dt><dd>{% for group in form.editEnrollmentsGroups %}{{ group }}<br>{% endfor %}</dd>
+        </dl>
+
+    </div>
+    <div class="panel-body">
         {% for template in data.templates %}
             {% include template with data.templates[template] %}
         {% endfor %}

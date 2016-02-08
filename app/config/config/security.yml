@@ -4,6 +4,8 @@ security:
 
     role_hierarchy:
         ROLE_GROUP_ENROLLMENTS_ADMIN: ROLE_ADMIN
+        ROLE_GROUP_ENROLLMENTS_BACKEND: ROLE_BACKEND_ACCESS
+        ROLE_ADMIN: ROLE_BACKEND_ACCESS
 
     providers:
         main:
@@ -28,5 +30,6 @@ security:
                 target: %oauth_client_server%/usr/kill-session
             anonymous: ~
     access_control:
-        - { path: ^/admin, role: ROLE_ADMIN }
+        - { path: ^/login_check, role: IS_AUTHENTICATED_FULLY }
+        - { path: ^/admin, role: ROLE_BACKEND_ACCESS }
 

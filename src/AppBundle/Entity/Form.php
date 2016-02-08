@@ -41,6 +41,27 @@ class Form
     private $name;
 
     /**
+     * @var array
+     *
+     * @ORM\Column(name="auth_edit_form", type="simple_array")
+     */
+    private $editFormGroups = [];
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="auth_list_enrollments", type="simple_array")
+     */
+    private $listEnrollmentsGroups = [];
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="auth_edit_enrollments", type="simple_array")
+     */
+    private $editEnrollmentsGroups = [];
+
+    /**
      * @var Enrollment[]
      *
      * @ORM\OneToMany(targetEntity="Enrollment", mappedBy="form")
@@ -95,6 +116,60 @@ class Form
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEditFormGroups()
+    {
+        return $this->editFormGroups;
+    }
+
+    /**
+     * @param array $editFormGroups
+     * @return Form
+     */
+    public function setEditFormGroups($editFormGroups)
+    {
+        $this->editFormGroups = $editFormGroups;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getListEnrollmentsGroups()
+    {
+        return $this->listEnrollmentsGroups;
+    }
+
+    /**
+     * @param array $listEnrollmentsGroups
+     * @return Form
+     */
+    public function setListEnrollmentsGroups($listEnrollmentsGroups)
+    {
+        $this->listEnrollmentsGroups = $listEnrollmentsGroups;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEditEnrollmentsGroups()
+    {
+        return $this->editEnrollmentsGroups;
+    }
+
+    /**
+     * @param array $editEnrollmentsGroups
+     * @return Form
+     */
+    public function setEditEnrollmentsGroups($editEnrollmentsGroups)
+    {
+        $this->editEnrollmentsGroups = $editEnrollmentsGroups;
+        return $this;
     }
 
     /**

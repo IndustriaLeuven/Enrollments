@@ -3,21 +3,21 @@
         <h3 class="panel-title">Navigation</h3>
     </div>
     <div class="list-group">
-        {% macro render_link(_route, route, param, ico, name) %}
-            <a class="list-group-item {% if _route == route %} active{% endif%}" href="{{ url(route, param) }}">{{ icon(ico~' fa-fw') }} {{ name }}</a>
+        {% macro render_link(_route, route, param, ico, name, disabled) %}
+            <a class="list-group-item {% if _route == route %} active{% endif%}{% if disabled and not is_granted('ROLE_ADMIN') %} disabled{% endif %}" href="{{ url(route, param) }}">{{ icon(ico~' fa-fw') }} {{ name }}</a>
         {% endmacro %}
         {% import _self as self %}
         {% if enrollment %}
-            {{ self.render_link(_route, 'admin_get_form_enrollment', {form: form.id, enrollment: enrollment.id}, 'eye', 'View') }}
-            {{ self.render_link(_route, 'admin_edit_form_enrollment', {form: form.id, enrollment: enrollment.id}, 'pencil', 'Edit') }}
-            {{ self.render_link(_route, 'admin_remove_form_enrollment', {form: form.id, enrollment: enrollment.id}, 'trash', 'Delete') }}
+            {{ self.render_link(_route, 'admin_get_form_enrollment', {form: form.id, enrollment: enrollment.id}, 'eye', 'View', not is_granted('LIST_ENROLLMENTS', form)) }}
+            {{ self.render_link(_route, 'admin_edit_form_enrollment', {form: form.id, enrollment: enrollment.id}, 'pencil', 'Edit', not is_granted('EDIT_ENROLLMENT', form)) }}
+            {{ self.render_link(_route, 'admin_remove_form_enrollment', {form: form.id, enrollment: enrollment.id}, 'trash', 'Delete', not is_granted('EDIT_ENROLLMENT', form)) }}
         {% endif %}
-        {{ self.render_link(_route, 'admin_get_form_enrollments', {form: form.id}, 'list', 'List') }}
+        {{ self.render_link(_route, 'admin_get_form_enrollments', {form: form.id}, 'list', 'List', not is_granted('LIST_ENROLLMENTS', form)) }}
     </div>
 </div>
 <div class="panel panel-default">
     <div class="list-group">
-        {{ self.render_link(_route, 'admin_get_form', {form: form.id}, 'arrow-left', 'Back to form') }}
-        {{ self.render_link(_route, 'app_get_enrollment', {form: form.id}, 'globe', 'Enrollment form') }}
+        {{ self.render_link(_route, 'admin_get_form', {form: form.id}, 'arrow-left', 'Back to form', false) }}
+        {{ self.render_link(_route, 'app_get_enrollment', {form: form.id}, 'globe', 'Enrollment form', false) }}
     </div>
 </div>

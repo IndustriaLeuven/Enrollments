@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="authserver.client.guzzle" class="GuzzleHttp\Client">
+            <argument type="collection">
+                <argument key="base_uri">%authserver_base_uri%</argument>
+                <argument key="auth" type="collection">
+                    <argument>%authserver_api_username%</argument>
+                    <argument>%authserver_api_password%</argument>
+                </argument>
+                <argument key="headers" type="collection">
+                    <argument key="User-Agent">IndustriaEnrollments-%kernel.environment%/1.0</argument>
+                    <argument key="Accept">application/json</argument>
+                </argument>
+                <argument key="handler" type="service" id="guzzle.client.request_stack" />
+            </argument>
+        </service>
+        <service id="authserver.client" alias="authserver.client.guzzle" />
+        <service id="guzzle.client.request_stack" class="GuzzleHttp\HandlerStack" factory-class="GuzzleHttp\HandlerStack" factory-method="create" public="false">
+            <call method="push">
+                <argument type="service" id="guzzle.client.logger" />
+            </call>
+        </service>
+        <service id="guzzle.client.logger" class="Closure" factory-class="GuzzleHttp\Middleware" factory-method="log" public="false">
+            <argument type="service" id="logger" />
+            <argument type="service">
+                <service class="GuzzleHttp\MessageFormatter">
+                    <argument>guzzle.client res: [{ts}] "{method} {target} HTTP/{version}" {code} {error}</argument>
+                </service>
+            </argument>
+        </service>
+    </services>
+</container>

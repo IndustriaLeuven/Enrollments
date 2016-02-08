@@ -9,8 +9,13 @@ use AppBundle\Event\Plugin\PluginBuildFormEvent;
 use AppBundle\Event\Plugin\PluginSubmitFormEvent;
 use AppBundle\Event\PluginEvents;
 use AppBundle\Event\UI\SubmittedFormTemplateEvent;
+use AppBundle\Form\AuthserverGroupsChoiceLoader;
+use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\View;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilder;
@@ -37,6 +42,9 @@ class FormController extends BaseController implements ClassResourceInterface
             ->dispatch(AdminEvents::FORM_GET, new SubmittedFormTemplateEvent($form))];
     }
 
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function newAction()
     {
         return [
@@ -50,6 +58,7 @@ class FormController extends BaseController implements ClassResourceInterface
 
     /**
      * @View("AppBundle:Admin/Form:new.html.twig")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function postAction(Request $request)
     {
@@ -60,10 +69,8 @@ class FormController extends BaseController implements ClassResourceInterface
 
         $submittedForm->handleRequest($request);
         if($submittedForm->isValid()) {
-            $form = new Form();
-            $form->setName($submittedForm->get('name')->getData());
-
-            $this->getEventDispatcher()->dispatch(PluginEvents::SUBMIT_FORM, new PluginSubmitFormEvent($submittedForm, $form, PluginSubmitFormEvent::TYPE_NEW));
+            $form = $submittedForm->getData();
+            $this->getEventDispatcher()->dispatch(PluginEvents::SUBMIT_FORM, new PluginSubmitFormEvent($submittedForm->get('plugin_data'), $form, PluginSubmitFormEvent::TYPE_NEW));
 
             $this->getEntityManager()->persist($form);
             $this->getEntityManager()->flush();
@@ -73,6 +80,9 @@ class FormController extends BaseController implements ClassResourceInterface
         return ['data' => $submittedForm->createView()];
     }
 
+    /**
+     * @Security("is_granted('EDIT', form) or has_role('ROLE_ADMIN')")
+     */
     public function editAction(Form $form)
     {
         return $this->buildPluginForm($form)
@@ -84,6 +94,7 @@ class FormController extends BaseController implements ClassResourceInterface
 
     /**
      * @View("AppBundle:Admin/Form:edit.html.twig")
+     * @Security("is_granted('EDIT', form) or has_role('ROLE_ADMIN')")
      */
     public function putAction(Request $request, Form $form)
     {
@@ -95,9 +106,7 @@ class FormController extends BaseController implements ClassResourceInterface
         $submittedForm->handleRequest($request);
 
         if($submittedForm->isValid()) {
-            $form->setName($submittedForm->get('name')->getData());
-
-            $this->getEventDispatcher()->dispatch(PluginEvents::SUBMIT_FORM, new PluginSubmitFormEvent($submittedForm, $form, PluginSubmitFormEvent::TYPE_EDIT));
+            $this->getEventDispatcher()->dispatch(PluginEvents::SUBMIT_FORM, new PluginSubmitFormEvent($submittedForm->get('plugin_data'), $form, PluginSubmitFormEvent::TYPE_EDIT));
 
             $this->getEntityManager()->flush();
 
@@ -107,6 +116,9 @@ class FormController extends BaseController implements ClassResourceInterface
         return $submittedForm->createView();
     }
 
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function removeAction(Form $form)
     {
         return $this->createFormBuilder()
@@ -121,6 +133,7 @@ class FormController extends BaseController implements ClassResourceInterface
 
     /**
      * @View("AppBundle:Admin/Form:remove.html.twig")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function deleteAction(Request $request, Form $form)
     {
@@ -147,17 +160,33 @@ class FormController extends BaseController implements ClassResourceInterface
     }
 
     /**
+     * @param Form $form
      * @return FormBuilder
      */
     private function buildPluginForm(Form $form = null)
     {
-        $formBuilder = $this->createFormBuilder();
-        $formBuilder->add('name', TextType::class, ['data' => $form?$form->getName():'']);
+        $formBuilder = $this->createFormBuilder($form, ['data_class'=>Form::class]);
+        $formBuilder->add('name', TextType::class);
 
-        $buildConfigEvent = $this->getEventDispatcher()->dispatch(PluginEvents::BUILD_FORM, new PluginBuildFormEvent($formBuilder, $form));
+        $authserverGroupsLoader = new AuthserverGroupsChoiceLoader($this->get('authserver.client'), ['exportable' => '1']);
+
+        foreach(['editFormGroups', 'listEnrollmentsGroups', 'editEnrollmentsGroups'] as $field)
+            $formBuilder->add($field, BootstrapCollectionType::class, [
+                'type' => ChoiceType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'options' => [
+                    'choice_loader' => $authserverGroupsLoader,
+                ],
+            ]);
+        $formBuilder->add('plugin_data', FormType::class, [
+            'mapped' => false,
+            'label' => false,
+        ]);
+
+        $this->getEventDispatcher()->dispatch(PluginEvents::BUILD_FORM, new PluginBuildFormEvent($formBuilder->get('plugin_data'), $form));
         /* @var $buildConfigEvent PluginBuildFormEvent */
-        return $buildConfigEvent->getFormBuilder()
-            ->add('submit', SubmitType::class);
+        return $formBuilder->add('submit', SubmitType::class);
     }
 
 }

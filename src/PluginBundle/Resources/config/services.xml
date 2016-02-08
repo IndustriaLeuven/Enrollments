@@ -3,6 +3,9 @@
 <container xmlns="http://symfony.com/schema/dic/services"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <imports>
+        <import resource="services/authserver_client.xml"/>
+    </imports>
     <services>
         <service class="PluginBundle\EventListener\FormTemplatePluginListener">
             <argument>%kernel.root_dir%/Resources/forms</argument>

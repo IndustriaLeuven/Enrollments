@@ -21,16 +21,16 @@
                                     <a class="btn btn-default" href="{{ url('app_get_enrollment', {form: obj.id}) }}" title="Show form">
                                         {{ icon('list-alt') }}<span class="sr-only">Show form</span>
                                     </a>
-                                    <a class="btn btn-primary" href="{{ url('admin_get_form_enrollments', {form: obj.id}) }}" title="List enrollments">
+                                    <a class="btn btn-primary {% if not is_granted('LIST_ENROLLMENTS', obj) and not is_granted('ROLE_ADMIN') %}disabled{% endif %}" href="{{ url('admin_get_form_enrollments', {form: obj.id}) }}" title="List enrollments">
                                         {{ icon('file-text-o') }}<span class="sr-only">List enrollments</span>
                                     </a>
                                     <a class="btn btn-info" href="{{ url('admin_get_form', {form: obj.id}) }}" title="View">
                                         {{ icon('eye') }}<span class="sr-only">View</span>
                                     </a>
-                                    <a class="btn btn-default" href="{{ url('admin_edit_form', {form: obj.id}) }}" title="Edit">
+                                    <a class="btn btn-default {% if not is_granted('EDIT', obj) and not is_granted('ROLE_ADMIN') %}disabled{% endif %}" href="{{ url('admin_edit_form', {form: obj.id}) }}" title="Edit">
                                         {{ icon('edit') }}<span class="sr-only">Edit</span>
                                     </a>
-                                    <a class="btn btn-danger" href="{{ url('admin_remove_form', {form: obj.id}) }}" title="Delete">
+                                    <a class="btn btn-danger {% if not is_granted('ROLE_ADMIN') %}disabled{% endif %}" href="{{ url('admin_remove_form', {form: obj.id}) }}" title="Delete">
                                         {{ icon('trash-o') }}<span class="sr-only">Delete</span>
                                     </a>
                                 </div>

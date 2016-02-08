@@ -21,5 +21,8 @@
             <argument type="service" id="doctrine.orm.entity_manager" />
             <tag name="kernel.event_subscriber" />
         </service>
+        <service class="AppBundle\Security\FormAccessVoter">
+            <tag name="security.voter" />
+        </service>
     </services>
 </container>

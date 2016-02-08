@@ -1,5 +1,5 @@
-{% macro render_link(route, param, ico, name) %}
-    <a class="list-group-item {% if app.request.attributes.get('_route') == route %} active{% endif%}" href="{{ url(route, param) }}">{{ icon(ico~' fa-fw') }} {{ name }}</a>
+{% macro render_link(route, param, ico, name, disabled) %}
+    <a class="list-group-item {% if app.request.attributes.get('_route') == route %} active{% endif %}{% if disabled and not is_granted('ROLE_ADMIN')  %} disabled{% endif %}" href="{{ url(route, param) }}">{{ icon(ico~' fa-fw') }} {{ name }}</a>
 {% endmacro %}
 {% import _self as self %}
 <div class="panel panel-default">
@@ -8,19 +8,19 @@
     </div>
     <div class="list-group">
         {% if form is defined %}
-            {{ self.render_link('admin_get_form', {form: form.id}, 'eye', 'View') }}
-            {{ self.render_link('admin_edit_form', {form: form.id}, 'pencil', 'Edit') }}
-            {{ self.render_link('admin_remove_form', {form: form.id}, 'trash', 'Delete') }}
+            {{ self.render_link('admin_get_form', {form: form.id}, 'eye', 'View', false) }}
+            {{ self.render_link('admin_edit_form', {form: form.id}, 'pencil', 'Edit', not is_granted('EDIT', form)) }}
+            {{ self.render_link('admin_remove_form', {form: form.id}, 'trash', 'Delete', true) }}
         {% endif %}
-        {{ self.render_link('admin_get_forms', {}, 'list', 'List') }}
-        {{ self.render_link('admin_new_form', {}, 'plus', 'Create') }}
+        {{ self.render_link('admin_get_forms', {}, 'list', 'List', false) }}
+        {{ self.render_link('admin_new_form', {}, 'plus', 'Create', true) }}
     </div>
 </div>
 {% if form is defined %}
     <div class="panel panel-default">
         <div class="list-group">
-            {{ self.render_link('admin_get_form_enrollments', {form: form.id}, 'file-text-o', 'Enrollments') }}
-            {{ self.render_link('app_get_enrollment', {form: form.id}, 'globe', 'Enrollment form') }}
+            {{ self.render_link('admin_get_form_enrollments', {form: form.id}, 'file-text-o', 'Enrollments', not is_granted('LIST_ENROLLMENTS', form)) }}
+            {{ self.render_link('app_get_enrollment', {form: form.id}, 'globe', 'Enrollment form', false) }}
         </div>
     </div>
 {% endif %}
