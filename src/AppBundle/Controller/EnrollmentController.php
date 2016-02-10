@@ -31,9 +31,10 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
 
         $submittedForm = $formTemplateEvent->getSubmittedForm();
 
-        $submittedForm->handleRequest($request);
+        if($submittedForm)
+            $submittedForm->handleRequest($request);
 
-        if($submittedForm->isValid()) {
+        if($submittedForm&&$submittedForm->isValid()) {
             $enrollment = new Enrollment($form);
             $enrollment->setData($submittedForm->getData());
             $submitFormEvent = new SubmitFormEvent($form, $submittedForm, $enrollment);

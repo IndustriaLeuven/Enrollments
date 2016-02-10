@@ -22,5 +22,8 @@
             <argument type="service" id="security.token_storage" />
             <tag name="kernel.event_subscriber" />
         </service>
+        <service class="PluginBundle\EventListener\DatePluginListener">
+            <tag name="kernel.event_subscriber" />
+        </service>
    </services>
 </container>
