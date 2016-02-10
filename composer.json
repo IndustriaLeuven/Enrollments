@@ -29,7 +29,8 @@
         "adamquaile/symfony-fieldset-bundle": "^1.1",
         "league/csv": "^8.0",
         "stof/doctrine-extensions-bundle": "^1.2",
-        "guzzlehttp/guzzle": "^6.1"
+        "guzzlehttp/guzzle": "^6.1",
+        "rollbar/rollbar": "^0.15.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
