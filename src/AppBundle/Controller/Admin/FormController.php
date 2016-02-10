@@ -171,13 +171,10 @@ class FormController extends BaseController implements ClassResourceInterface
         $authserverGroupsLoader = new AuthserverGroupsChoiceLoader($this->get('authserver.client'), ['exportable' => '1']);
 
         foreach(['editFormGroups', 'listEnrollmentsGroups', 'editEnrollmentsGroups'] as $field)
-            $formBuilder->add($field, BootstrapCollectionType::class, [
-                'type' => ChoiceType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'options' => [
-                    'choice_loader' => $authserverGroupsLoader,
-                ],
+            $formBuilder->add($field, ChoiceType::class, [
+                'choice_loader' => $authserverGroupsLoader,
+                'multiple' => true,
+                'expanded' => true,
             ]);
         $formBuilder->add('plugin_data', FormType::class, [
             'mapped' => false,
