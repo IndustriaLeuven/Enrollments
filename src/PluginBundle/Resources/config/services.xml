@@ -18,8 +18,7 @@
         <service class="PluginBundle\EventListener\RoleDifferentiationPluginListener">
             <argument type="service" id="security.expression_language" />
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="security.access.decision_manager" />
-            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="security.authorization_checker" />
             <tag name="kernel.event_subscriber" />
         </service>
         <service class="PluginBundle\EventListener\DatePluginListener">

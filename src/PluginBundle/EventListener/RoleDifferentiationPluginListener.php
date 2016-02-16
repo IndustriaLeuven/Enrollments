@@ -23,8 +23,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authorization\ExpressionLanguage;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Constraints\Callback;
@@ -46,27 +45,22 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
     private $em;
 
     /**
-     * @var AccessDecisionManagerInterface
+     * @var AuthorizationCheckerInterface
      */
-    private $accessDecisionManager;
-
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
+    private $authorizationChecker;
 
     /**
      * RoleDifferentiationPluginListener constructor.
      * @param ExpressionLanguage $expressionLanguage
      * @param EntityManager $em
-     * @param AccessDecisionManagerInterface $accessDecisionManager
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @internal param AccessDecisionManagerInterface $accessDecisionManager
      */
-    public function __construct(ExpressionLanguage $expressionLanguage, EntityManager $em, AccessDecisionManagerInterface $accessDecisionManager, TokenStorageInterface $tokenStorage)
+    public function __construct(ExpressionLanguage $expressionLanguage, EntityManager $em, AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->expressionLanguage = $expressionLanguage;
         $this->em = $em;
-        $this->accessDecisionManager = $accessDecisionManager;
-        $this->tokenStorage = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -230,9 +224,7 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
             return;
         foreach($event->getForm()->getPluginData()->get(self::PLUGIN_NAME)['rules'] as $rule) {
             // Check if the ACL condition matches
-            if($this->accessDecisionManager->decide($this->tokenStorage->getToken(), [
-                $this->parseExpression($rule['condition'])
-            ])) {
+            if($this->authorizationChecker->isGranted($this->parseExpression($rule['condition']))) {
                 if(!$rule['target_form']) {
                     // If the target form is empty, this is an access denied condition
                     throw new AccessDeniedException('Form configuration denies access.');
