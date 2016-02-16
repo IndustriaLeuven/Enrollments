@@ -85,7 +85,10 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
             PluginEvents::BUILD_FORM => 'onPluginBuildForm',
             PluginEvents::SUBMIT_FORM => 'onPluginSubmitForm',
             AdminEvents::FORM_GET => 'onAdminShowForm',
-            UIEvents::FORM => ['onUIForm', 255],
+            UIEvents::FORM => [
+                ['onUIForm', 255],
+                ['onUIFormLoginWarning', 100],
+            ],
             UIEvents::SUCCESS => ['onUISuccess', 255],
             FormEvents::SUBMIT => ['onFormSubmit', 255],
         ];
@@ -142,6 +145,12 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
         });
     }
 
+    public function onUIFormLoginWarning(SubmittedFormTemplateEvent $event)
+    {
+        if($event->getForm()->getPluginData()->has(self::PLUGIN_NAME)&&!$this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $event->addTemplate(new TemplateReference('PluginBundle', 'RoleDifferentiationPlugin', 'UI/form_login_warning', 'html', 'twig'));
+        }
+    }
 
     public function onUISuccess(EnrollmentTemplateEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
     {

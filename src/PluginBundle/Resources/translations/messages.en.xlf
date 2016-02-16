@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="7c2d2baaeae9c48e0de07da80bfce241" resname="This enrollment is not open yet.">
+        <source>This enrollment is not open yet.</source>
+        <target>This enrollment is not open yet.</target>
+      </trans-unit>
+      <trans-unit id="26e7efee58ec179ba7e10ca478e06742" resname="This enrollment is not open anymore.">
+        <source>This enrollment is not open anymore.</source>
+        <target>This enrollment is not open anymore.</target>
+      </trans-unit>
+      <trans-unit id="acdbee1c2da19eabfb330ec942f47051" resname="&lt;p&gt;This form changes based on your user account, but you are not logged in.&lt;/p&gt;&#10;        &lt;p&gt;&lt;a href=&quot;%login_url%&quot; class=&quot;alert-link&quot;&gt;Do you want to log in?&lt;/a&gt;&lt;/p&gt;">
+        <source>&lt;p&gt;This form changes based on your user account, but you are not logged in.&lt;/p&gt;
+        &lt;p&gt;&lt;a href="%login_url%" class="alert-link"&gt;Do you want to log in?&lt;/a&gt;&lt;/p&gt;</source>
+        <target><![CDATA[<p>This form changes based on your user account, but you are not logged in.</p>
+        <p><a href="%login_url%" class="alert-link">Do you want to log in?</a></p>]]></target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
