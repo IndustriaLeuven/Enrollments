@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class EnrollmentListEvent extends AbstractFormEvent
 {
-    const ALL_TYPES = null;
+    const ALL_TYPES = true;
     private static $all_types = [
         'html',
         'csv',
@@ -76,7 +76,7 @@ class EnrollmentListEvent extends AbstractFormEvent
      * @param array $extraData
      * @return $this
      */
-    public function setTemplatingField(array $documentTypes = self::ALL_TYPES, $name, $friendlyName, TemplateReference $templateReference, array $extraData = [])
+    public function setTemplatingField($documentTypes = self::ALL_TYPES, $name, $friendlyName, TemplateReference $templateReference, array $extraData = [])
     {
         $colDef = new TwigTableColumnDefinition($friendlyName, $templateReference, $this->twig, $extraData);
         $this->setField($documentTypes, $name, $colDef);
@@ -89,7 +89,7 @@ class EnrollmentListEvent extends AbstractFormEvent
      * @param TableColumnDefinitionInterface $tableColumnDefinition
      * @return $this
      */
-    public function setField(array $documentTypes = self::ALL_TYPES, $name, TableColumnDefinitionInterface $tableColumnDefinition)
+    public function setField($documentTypes = self::ALL_TYPES, $name, TableColumnDefinitionInterface $tableColumnDefinition)
     {
         if($documentTypes === self::ALL_TYPES) {
             $documentTypes = self::$all_types;
@@ -105,7 +105,7 @@ class EnrollmentListEvent extends AbstractFormEvent
      * @param string $name
      * @return $this
      */
-    public function removeField(array $documentTypes = self::ALL_TYPES, $name)
+    public function removeField($documentTypes = self::ALL_TYPES, $name)
     {
         if($documentTypes === self::ALL_TYPES) {
             $documentTypes = self::$all_types;
