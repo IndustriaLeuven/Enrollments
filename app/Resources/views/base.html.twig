@@ -38,7 +38,7 @@
                         </ul>
                     </li>
                 {% else %}
-                    <li><a href="{{ url('login') }}">{{ icon('sign-in fa-fw') }} {{ "Sign in"|trans }}</a></li>
+                    <li><a href="{{ url('login', {'target': app.request.requestUri}) }}">{{ icon('sign-in fa-fw') }} {{ "Sign in"|trans }}</a></li>
                 {% endif %}
             </ul>
         </div>
