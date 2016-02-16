@@ -24,8 +24,13 @@
 
         $('[data-pricing-reload]').on('change', function () {
             var $_locale = '{{ app.request.attributes.get('_locale')|e('js') }}';
+            var serializedData = $('form').serializeArray();
+            $('form [disabled]').each(function(_, element) {
+                var $element = $(element);
+                serializedData.push({ name: $element.attr('name'), value: $element.attr('value') });
+            });
             var $formData = {};
-            $.each($('form').serializeArray(), function (_, element) {
+            $.each(serializedData, function (_, element) {
                 var keys = getCompositeKey(element.name);
                 var data = element.value;
                 for (var i = keys.length; i > 0; i--) {
@@ -41,5 +46,6 @@
             $('#pricing_payment_details').text(paymentDetails);
             {% endif %}
         });
+        $('[data-pricing-reload]:eq(0)').trigger('change');
     });
 </script>
