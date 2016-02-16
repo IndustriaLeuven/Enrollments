@@ -6,6 +6,7 @@ use AppBundle\Entity\User;
 use AppBundle\Event\AdminEvents;
 use AppBundle\Event\Form\BuildFormEvent;
 use AppBundle\Event\Form\SetDataEvent;
+use AppBundle\Event\Form\SubmitFormEvent;
 use AppBundle\Event\FormEvents;
 use AppBundle\Event\Plugin\PluginBuildFormEvent;
 use AppBundle\Event\Plugin\PluginSubmitFormEvent;
@@ -43,6 +44,7 @@ class PrefillUserDataPluginListener implements EventSubscriberInterface
             AdminEvents::FORM_GET => 'onAdminShowForm',
             FormEvents::BUILD => 'onFormBuild',
             FormEvents::SETDATA => 'onFormSetData',
+            FormEvents::SUBMIT => 'onFormSubmit',
         ];
     }
 
@@ -92,5 +94,19 @@ class PrefillUserDataPluginListener implements EventSubscriberInterface
             $event->getSubmittedForm()->get('name')->setData($user->getRealname());
         if(!$event->getSubmittedForm()->has('email')&&$user->getEmail())
             $event->getSubmittedForm()->get('email')->setData($user->getEmail());
+    }
+
+    public function onFormSubmit(SubmitFormEvent $event)
+    {
+        if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
+            return;
+        if(!($token = $this->tokenStorage->getToken()))
+            return;
+        /* @var $token TokenInterface */
+        if(!($user = $token->getUser()))
+            return;
+        /* @var $user User */
+        if($event->getSubmittedForm()->has('name'))
+            $event->getEnrollment()->setData($event->getEnrollment()->getData()+['name' => $user->getRealname()]);
     }
 }
