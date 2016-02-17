@@ -37,10 +37,10 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
         if($submittedForm&&$submittedForm->isValid()) {
             $enrollment = new Enrollment($form);
             $enrollment->setData($submittedForm->getData());
+            $this->getEntityManager()->persist($enrollment);
             $submitFormEvent = new SubmitFormEvent($form, $submittedForm, $enrollment);
             $this->getEventDispatcher()->dispatch(FormEvents::SUBMIT, $submitFormEvent);
             if(!$submittedForm->getErrors(true)->count()) {
-                $this->getEntityManager()->persist($enrollment);
                 $this->getEntityManager()->flush();
                 return $this->redirectToRoute('app_get_enrollment_submission', [
                     'form' => $form->getId(),

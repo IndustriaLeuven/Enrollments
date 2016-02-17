@@ -28,5 +28,14 @@
             <argument type="service" id="security.token_storage" />
             <tag name="kernel.event_subscriber" />
         </service>
+        <service class="PluginBundle\EventListener\CountEnrollmentsPluginListener">
+            <argument type="service">
+                <service class="PluginBundle\Entity\EnrollmentCountRepository">
+                    <factory service="doctrine.orm.entity_manager" method="getRepository" />
+                    <argument>PluginBundle:EnrollmentCount</argument>
+                </service>
+            </argument>
+            <tag name="kernel.event_subscriber" />
+        </service>
    </services>
 </container>
