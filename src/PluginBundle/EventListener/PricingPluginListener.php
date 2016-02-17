@@ -18,6 +18,7 @@ use AppBundle\Event\UIEvents;
 use AppBundle\Plugin\Table\CallbackTableColumnDefinition;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormStaticControlType;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\MoneyType;
+use PluginBundle\ExpressionLanguage\LogicExpressionProvider;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
@@ -50,17 +51,13 @@ class PricingPluginListener implements EventSubscriberInterface
     {
         $this->requestStack = $requestStack;
         $this->expressionLanguage = new ExpressionLanguage();
+        $this->expressionLanguage->registerProvider(new LogicExpressionProvider());
         $this->expressionLanguage->register('concat', function() {
             return '('.implode(')+(', func_get_args()).')';
         }, function() {
             $args = func_get_args();
             array_shift($args);
             return implode('', $args);
-        });
-        $this->expressionLanguage->register('if', function($condition, $trueExpr, $falseExpr) {
-            return "(($condition)?($trueExpr):($falseExpr))";
-        }, function($vars, $condition, $trueExpr, $falseExpr) {
-            return $condition?$trueExpr:$falseExpr;
         });
     }
 
@@ -91,15 +88,10 @@ class PricingPluginListener implements EventSubscriberInterface
                 'required' => false,
                 'constraints' => [
                     new NotBlank(),
-                    new Callback(\Closure::bind(
-                        function($formula, ExecutionContextInterface $executionContext) {
-                            try {
-                                $this->expressionLanguage->parse($formula, ['formData', '_locale']);
-                            } catch(SyntaxError $error) {
-                                $executionContext->addViolation($error->getMessage());
-                            }
-                        }
-                        , $this))
+                    new \PluginBundle\Constraints\ExpressionLanguage([
+                        'expressionLanguage' => $this->expressionLanguage,
+                        'variables' => ['formData', '_locale'],
+                    ]),
                 ]
             ])
             ->add('payment_expression', TextareaType::class, [
@@ -109,17 +101,10 @@ class PricingPluginListener implements EventSubscriberInterface
                 ],
                 'required' => false,
                 'constraints' => [
-                    new Callback(\Closure::bind(
-                        function($expression, ExecutionContextInterface $executionContext) {
-                            try {
-                                if($expression) {
-                                    $this->expressionLanguage->parse($expression, ['formData', 'totalPrice', '_locale']);
-                                }
-                            } catch(SyntaxError $error) {
-                                $executionContext->addViolation($error->getMessage());
-                            }
-                        }
-                        , $this))
+                    new \PluginBundle\Constraints\ExpressionLanguage([
+                        'expressionLanguage' => $this->expressionLanguage,
+                        'variables' => ['formData', 'totalPrice', '_locale'],
+                    ]),
                 ]
             ])
         ;

@@ -102,17 +102,7 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
                 'allow_delete' => true,
                 'type' => RoleDifferentiationPluginConfigType::class,
                 'options' => [
-                    'expression_language_validator' => new Callback(\Closure::bind(
-                        function($condition, ExecutionContextInterface $executionContext) {
-                            try {
-                                if($condition) {
-                                    $this->parseExpression($condition);
-                                }
-                            } catch(SyntaxError $error) {
-                                $executionContext->addViolation($error->getMessage());
-                            }
-                        }
-                        , $this)),
+                    'expression_language' =>  $this->expressionLanguage,
                     'em' => $this->em,
                 ]
             ])

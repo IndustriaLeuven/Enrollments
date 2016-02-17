@@ -4,6 +4,7 @@ namespace PluginBundle\Form;
 
 use Doctrine\ORM\EntityManager;
 use FOS\RestBundle\Form\Transformer\EntityToIdObjectTransformer;
+use PluginBundle\Constraints\ExpressionLanguage;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -27,7 +28,10 @@ class RoleDifferentiationPluginConfigType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new NotBlank(),
-                    $options['expression_language_validator'],
+                    new ExpressionLanguage([
+                        'expressionLanguage' => $options['expression_language'],
+                        'variables' => ['token', 'user', 'roles'],
+                    ]),
                 ],
             ])
             ->add('target_form', EntityType::class, [
@@ -51,8 +55,8 @@ class RoleDifferentiationPluginConfigType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired('expression_language_validator')
-            ->setAllowedTypes('expression_language_validator', Callback::class)
+        $resolver->setRequired('expression_language')
+            ->setAllowedTypes('expression_language', \Symfony\Component\ExpressionLanguage\ExpressionLanguage::class)
             ->setRequired('em')
             ->setAllowedTypes('em', EntityManager::class)
             ->setDefault('attr', ['style' => 'horizontal'])
