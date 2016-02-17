@@ -43,4 +43,35 @@ class EnrollmentCountRepository extends EntityRepository
         $enrollmentCount->setCount($count);
         $this->_em->persist($enrollmentCount);
     }
+
+    /**
+     * @param Form $form
+     * @param int $maxNumber
+     * @return Enrollment[]
+     */
+    public function findNotWaitlistedEnrollments(Form $form, $maxNumber)
+    {
+        $enrollmentCounts = $this->createQueryBuilder('ec')
+            ->join('ec.enrollment', 'en')
+            ->where('ec.count > 0')
+            ->andWhere('ec.form = :form')
+            ->orderBy('en.createdAt', 'ASC')
+            ->setMaxResults($maxNumber)
+            ->setParameter('form', $form)
+            ->getQuery()
+            ->getResult();
+
+        $cumulativeCount = 0;
+        $enrollments = [];
+
+        foreach($enrollmentCounts as $enrollmentCount) {
+            /* @var $enrollmentCount EnrollmentCount */
+            if($cumulativeCount < $maxNumber)
+                $enrollments[] = $enrollmentCount->getEnrollment();
+            else
+                break;
+            $cumulativeCount+=$enrollmentCount->getCount();
+        }
+        return $enrollments;
+    }
 }

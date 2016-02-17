@@ -2,7 +2,9 @@
 
 namespace PluginBundle\EventListener;
 
+use AppBundle\Entity\Enrollment;
 use AppBundle\Event\Admin\EnrollmentEvent;
+use AppBundle\Event\Admin\EnrollmentListEvent;
 use AppBundle\Event\AdminEvents;
 use AppBundle\Event\Form\SubmitFormEvent;
 use AppBundle\Event\FormEvents;
@@ -11,6 +13,7 @@ use AppBundle\Event\Plugin\PluginSubmitFormEvent;
 use AppBundle\Event\PluginEvents;
 use AppBundle\Event\UI\SubmittedFormTemplateEvent;
 use AppBundle\Event\UIEvents;
+use Doctrine\Common\Collections\Criteria;
 use PluginBundle\Entity\EnrollmentCountRepository;
 use PluginBundle\ExpressionLanguage\LogicExpressionProvider;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
@@ -56,6 +59,7 @@ class CountEnrollmentsPluginListener implements EventSubscriberInterface
             PluginEvents::BUILD_FORM => 'onPluginBuildForm',
             PluginEvents::SUBMIT_FORM => 'onPluginSubmitForm',
             AdminEvents::FORM_GET => 'onAdminFormGet',
+            AdminEvents::ENROLLMENT_LIST => 'onAdminEnrollmentList',
             AdminEvents::ENROLLMENT_DELETE => 'onAdminEnrollmentDelete',
             UIEvents::FORM => ['onUIForm', 256], // Has to be before RoleDifferentiationPluginListener, because enrollments are counted on the root form
             FormEvents::SUBMIT => 'onFormSubmit',
@@ -146,6 +150,32 @@ class CountEnrollmentsPluginListener implements EventSubscriberInterface
                 break;
             default:
                 $this->repo->setEnrollmentCount($event->getEnrollment(), $thisEnrollmentCount);
+        }
+    }
+
+    public function onAdminEnrollmentList(EnrollmentListEvent $event)
+    {
+        if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
+            return;
+        $pluginData = $event->getForm()->getPluginData()->get(self::PLUGIN_NAME);
+        $event->setSimpleFacet('waiting list', 'group', [
+            'Participants only' => ['enrolled' => 'participants'],
+            'Waiting list only' => ['enrolled' => 'waiting_list'],
+            'All' => ['enrolled' => null],
+        ]);
+
+        if($event->getQueryString()->has('enrolled')) {
+            $enrollments = $this->repo->findNotWaitlistedEnrollments($event->getForm(), $pluginData['maxEnrollments']);
+            $enrollmentIds = array_map(function (Enrollment $enrollment) {
+                return $enrollment->getId();
+            }, $enrollments);
+            switch ($event->getQueryString()->get('enrolled')) {
+                case 'participants':
+                    $event->getCriteria()->andWhere(Criteria::expr()->in('id', $enrollmentIds));
+                    break;
+                case 'waiting_list':
+                    $event->getCriteria()->andWhere(Criteria::expr()->notIn('id', $enrollmentIds));
+            }
         }
     }
 
