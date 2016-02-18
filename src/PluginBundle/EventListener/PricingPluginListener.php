@@ -3,6 +3,7 @@
 namespace PluginBundle\EventListener;
 
 use AppBundle\Entity\Enrollment;
+use AppBundle\Event\Admin\EnrollmentBatchEvent;
 use AppBundle\Event\Admin\EnrollmentEditEvent;
 use AppBundle\Event\Admin\EnrollmentEditSubmitEvent;
 use AppBundle\Event\Admin\EnrollmentListEvent;
@@ -68,6 +69,7 @@ class PricingPluginListener implements EventSubscriberInterface
             PluginEvents::SUBMIT_FORM => 'onPluginSubmitForm',
             AdminEvents::FORM_GET => 'onAdminShowForm',
             AdminEvents::ENROLLMENT_LIST => 'onAdminEnrollmentList',
+            AdminEvents::ENROLLMENT_BATCH => 'onAdminEnrollmentBatch',
             AdminEvents::ENROLLMENT_GET => 'onAdminEnrollmentGet',
             AdminEvents::ENROLLMENT_EDIT => 'onAdminEnrollmentEdit',
             AdminEvents::ENROLLMENT_EDIT_SUBMIT => 'onAdminEnrollmentEditSubmit',
@@ -176,6 +178,21 @@ class PricingPluginListener implements EventSubscriberInterface
             }
             return '0';
         }));
+    }
+
+    public function onAdminEnrollmentBatch(EnrollmentBatchEvent $event)
+    {
+        if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
+            return;
+        $plugin_name = self::PLUGIN_NAME;
+        $event->setAction(self::PLUGIN_NAME.'_mark_paid', 'Mark paid', function(Enrollment $enrollment) use($plugin_name) {
+            if(!$enrollment->getPluginData()->has($plugin_name))
+                return;
+            $pluginData = $enrollment->getPluginData()->get($plugin_name);
+            if(!isset($pluginData['paidAmount'])||$pluginData['paidAmount'] == 0)
+                $enrollment->getPluginData()->add($plugin_name, ['paidAmount' => $pluginData['totalPrice']]);
+        });
+
     }
 
     public function onAdminEnrollmentGet(EnrollmentTemplateEvent $event)

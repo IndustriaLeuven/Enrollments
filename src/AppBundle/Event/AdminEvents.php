@@ -20,6 +20,11 @@ final class AdminEvents
     const ENROLLMENT_LIST = 'app.admin.enrollment.list';
 
     /**
+     * Emits {@link Admin\EnrollmentBatchEvent}
+     */
+    const ENROLLMENT_BATCH = 'app.admin.enrollment.batch';
+
+    /**
      * Emits {@link UI\EnrollmentTemplateEvent}
      */
     const ENROLLMENT_GET = 'app.admin.enrollment.get';

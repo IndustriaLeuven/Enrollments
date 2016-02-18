@@ -4,6 +4,7 @@
         {% include 'AppBundle:Admin/Enrollment:cget_header_buttons.html.twig' %}
         <h3 class="panel-title">{{ icon('file-text-o') }} Enrollments for {{ form.name }} {{ label(data.totalItemCount~' results') }}</h3>
     </div>
+    {{ form_start(batch_form) }}
     <div class="table-responsive">
         <table class="table">
             <thead>
@@ -19,6 +20,9 @@
                     <tr>
                         {% for columnDef in event.getFields('html') %}
                             <td>
+                                {% if loop.first %}
+                                    <input type="checkbox" name="form[subjects][{{ obj.id }}]" value="1">
+                                {% endif %}
                                 {{ columnDef.renderColumnData({data: obj})|raw }}
                             </td>
                         {% endfor %}
@@ -43,6 +47,11 @@
         </table>
     </div>
     <div class="panel-body text-center">
+        <div class="pull-left">
+            {% do form_row(batch_form.subjects) %}
+            {{ form_row(batch_form.action) }} {{ form_row(batch_form.submit) }}
+        </div>
         {{ knp_pagination_render(data, "", {"media_type": null}) }}
     </div>
+    {{ form_end(batch_form) }}
 {% endblock %}
