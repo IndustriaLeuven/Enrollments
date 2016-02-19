@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Controller\BaseController;
 use AppBundle\Entity\Enrollment;
 use AppBundle\Entity\Form;
+use AppBundle\Event\Admin\EnrollmentBatchEvent;
 use AppBundle\Event\Admin\EnrollmentEditEvent;
 use AppBundle\Event\Admin\EnrollmentEditSubmitEvent;
 use AppBundle\Event\Admin\EnrollmentEvent;
@@ -18,6 +19,7 @@ use AppBundle\Event\UIEvents;
 use AppBundle\Plugin\Table\CallbackTableColumnDefinition;
 use AppBundle\Plugin\Table\TableColumnDefinitionInterface;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\Get;
@@ -28,6 +30,9 @@ use League\Csv\Modifier\MapIterator;
 use League\Csv\Writer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -135,10 +140,42 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
         }
 
         return [
+            'batch_form' => $this->createBatchForm($form)->createView(),
             'data' => $this->paginate($filteredData, $request),
             'event' => $event,
         ];
 
+    }
+
+    /**
+     * @Post
+     * @Security("is_granted('EDIT_ENROLLMENT', form) or has_role('ROLE_ADMIN')")
+     * @param Request $request
+     * @param Form $submittedForm
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function batchAction(Request $request, Form $form)
+    {
+        $event = new EnrollmentBatchEvent($form);
+        $submittedForm = $this->createBatchForm($form, $event);
+
+        $submittedForm->handleRequest($request);
+
+        if($submittedForm->isValid()) {
+            $checkedEnrollments = array_filter($submittedForm->get('subjects')->getData());
+            $em = $this->getDoctrine()->getManagerForClass('AppBundle:Enrollment');
+            /* @var $em EntityManager */
+            $enrollments = $em->getRepository('AppBundle:Enrollment')
+                ->createQueryBuilder('e')
+                ->where('e.id IN(:ids)')
+                ->setParameter('ids', array_keys($checkedEnrollments))
+                ->getQuery()
+                ->getResult();
+            $event->handleAction($submittedForm->get('action')->getData(), $enrollments);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('admin_get_form_enrollments', ['form' => $form->getId()]);
     }
 
     public function getAction(Form $form, Enrollment $enrollment)
@@ -281,5 +318,32 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
         $userFormEvent = new EnrollmentTemplateEvent($form, $enrollment, false);
         $this->getEventDispatcher()->dispatch(UIEvents::SUCCESS, $userFormEvent);
         return $userFormEvent;
+    }
+
+    /**
+     * @param Form $form
+     * @return \Symfony\Component\Form\Form
+     */
+    private function createBatchForm(Form $form, EnrollmentBatchEvent $event = null)
+    {
+        if(!$event)
+            $event = new EnrollmentBatchEvent($form);
+        $this->getEventDispatcher()->dispatch(AdminEvents::ENROLLMENT_BATCH, $event);
+        return $this->createFormBuilder()
+            ->add('subjects', CollectionType::class, [
+                'type' => CheckboxType::class,
+                'allow_add' => true,
+                'required' => false,
+            ])
+            ->add('action', ChoiceType::class, [
+                'choices_as_values' => true,
+                'choices' => $event->getChoices(),
+            ])
+            ->add('submit', 'submit')
+            ->setMethod('POST')
+            ->setAction($this->generateUrl('admin_batch_form_enrollment', ['form' => $form->getId()]))
+            ->getForm()
+            ;
+
     }
 }
