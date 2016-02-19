@@ -4,7 +4,10 @@
         {% include 'AppBundle:Admin/Enrollment:cget_header_buttons.html.twig' %}
         <h3 class="panel-title">{{ icon('file-text-o') }} Enrollments for {{ form.name }} {{ label(data.totalItemCount~' results') }}</h3>
     </div>
-    {{ form_start(batch_form) }}
+    {% set use_batch = batch_form.action.vars.choices|length > 0 %}
+    {% if use_batch %}
+        {{ form_start(batch_form, { style: 'inline' }) }}
+    {% endif %}
     <div class="table-responsive">
         <table class="table">
             <thead>
@@ -20,8 +23,8 @@
                     <tr>
                         {% for columnDef in event.getFields('html') %}
                             <td>
-                                {% if loop.first %}
-                                    <input type="checkbox" name="form[subjects][{{ obj.id }}]" value="1">
+                                {% if loop.first and use_batch %}
+                                    <input type="checkbox" name="form[subjects][{{ obj.id }}]" value="1" {% if not is_granted('EDIT_ENROLLMENT', form) and not is_granted('ROLE_ADMIN') %}disabled{% endif %}>
                                 {% endif %}
                                 {{ columnDef.renderColumnData({data: obj})|raw }}
                             </td>
@@ -47,11 +50,15 @@
         </table>
     </div>
     <div class="panel-body text-center">
-        <div class="pull-left">
-            {% do form_row(batch_form.subjects) %}
-            {{ form_row(batch_form.action) }} {{ form_row(batch_form.submit) }}
-        </div>
+        {% if use_batch %}
+            <div class="pull-left">
+                {% do form_row(batch_form.subjects) %}
+                {{ form_row(batch_form.action) }} {{ form_row(batch_form.submit) }}
+            </div>
+        {% endif %}
         {{ knp_pagination_render(data, "", {"media_type": null}) }}
     </div>
-    {{ form_end(batch_form) }}
+    {% if use_batch %}
+        {{ form_end(batch_form) }}
+    {% endif %}
 {% endblock %}
