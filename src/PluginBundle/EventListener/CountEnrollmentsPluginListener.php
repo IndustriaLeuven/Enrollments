@@ -159,21 +159,21 @@ class CountEnrollmentsPluginListener implements EventSubscriberInterface
             return;
         $pluginData = $event->getForm()->getPluginData()->get(self::PLUGIN_NAME);
         $event->setSimpleFacet('waiting list', 'group', [
-            'Participants only' => ['enrolled' => 'participants'],
-            'Waiting list only' => ['enrolled' => 'waiting_list'],
-            'All' => ['enrolled' => null],
+            'Participants only' => ['waiting_list' => 'no'],
+            'Waiting list only' => ['waiting_list' => 'yes'],
+            'All' => ['waiting_list' => null],
         ]);
 
-        if($event->getQueryString()->has('enrolled')) {
+        if($event->getQueryString()->has('waiting_list')) {
             $enrollments = $this->repo->findNotWaitlistedEnrollments($event->getForm(), $pluginData['maxEnrollments']);
             $enrollmentIds = array_map(function (Enrollment $enrollment) {
                 return $enrollment->getId();
             }, $enrollments);
-            switch ($event->getQueryString()->get('enrolled')) {
-                case 'participants':
+            switch ($event->getQueryString()->get('waiting_list')) {
+                case 'no':
                     $event->getCriteria()->andWhere(Criteria::expr()->in('id', $enrollmentIds));
                     break;
-                case 'waiting_list':
+                case 'yes':
                     $event->getCriteria()->andWhere(Criteria::expr()->notIn('id', $enrollmentIds));
             }
         }
