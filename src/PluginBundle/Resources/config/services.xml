@@ -26,6 +26,7 @@
         </service>
         <service class="PluginBundle\EventListener\PrefillUserDataPluginListener">
             <argument type="service" id="security.token_storage" />
+            <argument type="service" id="authserver.client" />
             <tag name="kernel.event_subscriber" />
         </service>
    </services>

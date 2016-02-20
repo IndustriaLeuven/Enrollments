@@ -12,6 +12,7 @@ use AppBundle\Event\Plugin\PluginBuildFormEvent;
 use AppBundle\Event\Plugin\PluginSubmitFormEvent;
 use AppBundle\Event\PluginEvents;
 use AppBundle\Event\UI\SubmittedFormTemplateEvent;
+use GuzzleHttp\Client;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -28,12 +29,19 @@ class PrefillUserDataPluginListener implements EventSubscriberInterface
     private $tokenStorage;
 
     /**
+     * @var Client
+     */
+    private $authserverClient;
+
+    /**
      * PrefillUserDataPluginListener constructor.
      * @param TokenStorageInterface $tokenStorage
+     * @param Client $authserverClient
      */
-    public function __construct(TokenStorageInterface $tokenStorage)
+    public function __construct(TokenStorageInterface $tokenStorage, Client $authserverClient)
     {
         $this->tokenStorage = $tokenStorage;
+        $this->authserverClient = $authserverClient;
     }
 
     public static function getSubscribedEvents()
@@ -70,12 +78,8 @@ class PrefillUserDataPluginListener implements EventSubscriberInterface
     {
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
-        if(!($token = $this->tokenStorage->getToken()))
+        if(!($user = $this->getUser()))
             return;
-        /* @var $token TokenInterface */
-        if(!($user = $token->getUser()))
-            return;
-        /* @var $user User */
         if($event->getFormBuilder()->has('name'))
             $event->getFormBuilder()->get('name')->setDisabled(true);
     }
@@ -84,29 +88,50 @@ class PrefillUserDataPluginListener implements EventSubscriberInterface
     {
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
-        if(!($token = $this->tokenStorage->getToken()))
+        if(!($user = $this->getUser()))
             return;
-        /* @var $token TokenInterface */
-        if(!($user = $token->getUser()))
-            return;
-        /* @var $user User */
         if($event->getSubmittedForm()->has('name'))
             $event->getSubmittedForm()->get('name')->setData($user->getRealname());
-        if(!$event->getSubmittedForm()->has('email')&&$user->getEmail())
-            $event->getSubmittedForm()->get('email')->setData($user->getEmail());
+        if($event->getSubmittedForm()->has('email')) {
+            $userData = $this->getAuthserverUserData();
+            if($userData && isset($userData['emails'])) {
+                $primaryEmail = array_filter($userData['emails'], function($email) {
+                    return $email['primary']&&$email['verified'];
+                });
+                if(isset($primaryEmail[0]))
+                    $event->getSubmittedForm()->get('email')->setData($primaryEmail[0]['addr']);
+            }
+        }
     }
 
     public function onFormSubmit(SubmitFormEvent $event)
     {
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
-        if(!($token = $this->tokenStorage->getToken()))
+        if(!($user = $this->getUser()))
             return;
-        /* @var $token TokenInterface */
-        if(!($user = $token->getUser()))
-            return;
-        /* @var $user User */
         if($event->getSubmittedForm()->has('name'))
             $event->getEnrollment()->setData($event->getEnrollment()->getData()+['name' => $user->getRealname()]);
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getUser()
+    {
+        if(!($token = $this->tokenStorage->getToken()))
+            return null;
+        /* @var $token TokenInterface */
+        return $token->getUser();
+    }
+
+    /**
+     * @return array|null
+     */
+    private function getAuthserverUserData()
+    {
+        if(($user = $this->getUser()))
+            return json_decode($this->authserverClient->get('admin/users/'.$user->getAuthId().'.json')->getBody(), true);
+        return null;
     }
 }
