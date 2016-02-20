@@ -19,6 +19,20 @@
         <target><![CDATA[<p>This form changes based on your user account, but you are not logged in.</p>
         <p><a href="%login_url%" class="alert-link">Do you want to log in?</a></p>]]></target>
       </trans-unit>
+      <trans-unit id="604dc74513116411f817a6624e2ee451" resname="&lt;strong&gt;This event is full&lt;/strong&gt;, you can no longer enroll for this event.">
+        <source>&lt;strong&gt;This event is full&lt;/strong&gt;, you can no longer enroll for this event.</source>
+        <target><![CDATA[<strong>This event is full</strong>, you can no longer enroll for this event.]]></target>
+      </trans-unit>
+      <trans-unit id="fcc1f0bd9d2f6c59ea544221eb2e5bb6" resname="&lt;strong&gt;This event is full&lt;/strong&gt;, but you can put yourself on the waiting list.&#10;            There are currently &lt;strong&gt;%waitingListCount%&lt;/strong&gt; people on the waiting list.">
+        <source>&lt;strong&gt;This event is full&lt;/strong&gt;, but you can put yourself on the waiting list.
+            There are currently &lt;strong&gt;%waitingListCount%&lt;/strong&gt; people on the waiting list.</source>
+        <target><![CDATA[<strong>This event is full</strong>, but you can put yourself on the waiting list.
+            There are currently <strong>%waitingListCount%</strong> people on the waiting list.]]></target>
+      </trans-unit>
+      <trans-unit id="2f1fd273bd9b54b19a27ee8548f9f45e" resname="There are still %availablePlacesCount% spots free.">
+        <source>There are still %availablePlacesCount% spots free.</source>
+        <target>There are still %availablePlacesCount% spots free.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
