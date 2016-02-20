@@ -1,4 +1,5 @@
 {% extends 'AppBundle:Admin/Enrollment:skeleton.html.twig' %}
+{% block title %}Remove | {{ parent() }}{% endblock %}
 {% block content %}
     <div class="panel-heading">
         <h3 class="panel-title">{{ icon('file-text-o') }} Delete enrollment for {{ form.name }}</h3>

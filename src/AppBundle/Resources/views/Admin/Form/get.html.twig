@@ -1,4 +1,5 @@
 {% extends 'AppBundle:Admin/Form:skeleton.html.twig' %}
+{% block title %}View {{ form.name }} | {{ parent() }}{% endblock %}
 {% block content %}
     <div class="panel-heading">
         <h3 class="panel-title">{{ icon('list-alt') }} Form {{ form.name }}</h3>
