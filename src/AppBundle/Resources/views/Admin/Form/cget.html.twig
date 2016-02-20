@@ -33,6 +33,9 @@
                                     <a class="btn btn-danger {% if not is_granted('ROLE_ADMIN') %}disabled{% endif %}" href="{{ url('admin_remove_form', {form: obj.id}) }}" title="Delete">
                                         {{ icon('trash-o') }}<span class="sr-only">Delete</span>
                                     </a>
+                                    <a class="btn btn-default {% if not is_granted('ROLE_ADMIN') %}disabled{% endif %}" href="{{ url('admin_new_form', {copy_from: obj.id}) }}" title="Copy">
+                                        {{ icon('clone') }}<span class="sr-only">Copy</span>
+                                    </a>
                                 </div>
                             {% endspaceless %}
                         </td>
