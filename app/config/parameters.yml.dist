@@ -21,6 +21,8 @@ parameters:
 
     rollbar_access_token: ~
 
+    homepage_redirect: ~
+
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
 

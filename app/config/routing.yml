@@ -1,7 +1,7 @@
 login:
     path: /login
     defaults:
-        _controller: AppBundle:Security:login
+        _controller: AppBundle:Index:login
 
 hwi_login:
     resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
@@ -27,3 +27,5 @@ admin:
 
 home:
     path: /
+    defaults:
+        _controller: AppBundle:Index:index
