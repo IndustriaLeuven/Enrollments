@@ -11,6 +11,7 @@
             {{ self.render_link('admin_get_form', {form: form.id}, 'eye', 'View', false) }}
             {{ self.render_link('admin_edit_form', {form: form.id}, 'pencil', 'Edit', not is_granted('EDIT', form)) }}
             {{ self.render_link('admin_remove_form', {form: form.id}, 'trash', 'Delete', true) }}
+            {{ self.render_link('admin_new_form', {copy_from: form.id}, 'clone', 'Copy', true) }}
         {% endif %}
         {{ self.render_link('admin_get_forms', {}, 'list', 'List', false) }}
         {{ self.render_link('admin_new_form', {}, 'plus', 'Create', true) }}

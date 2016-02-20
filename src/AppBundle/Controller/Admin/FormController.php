@@ -45,10 +45,14 @@ class FormController extends BaseController implements ClassResourceInterface
     /**
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
+        $form = null;
+        if($request->query->has('copy_from')) {
+            $form = $this->getEntityManager()->find('AppBundle:Form', $request->query->get('copy_from'));
+        }
         return [
-            'data' => $this->buildPluginForm()
+            'data' => $this->buildPluginForm($form)
             ->setMethod('POST')
             ->setAction($this->generateUrl('admin_post_form'))
             ->getForm()
