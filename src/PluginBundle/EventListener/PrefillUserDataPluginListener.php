@@ -51,7 +51,6 @@ class PrefillUserDataPluginListener implements EventSubscriberInterface
             PluginEvents::SUBMIT_FORM => 'onPluginSubmitForm',
             AdminEvents::FORM_GET => 'onAdminShowForm',
             FormEvents::BUILD => 'onFormBuild',
-            FormEvents::SETDATA => 'onFormSetData',
             FormEvents::SUBMIT => 'onFormSubmit',
         ];
     }
@@ -81,25 +80,17 @@ class PrefillUserDataPluginListener implements EventSubscriberInterface
         if(!($user = $this->getUser()))
             return;
         if($event->getFormBuilder()->has('name'))
-            $event->getFormBuilder()->get('name')->setDisabled(true);
-    }
-
-    public function onFormSetData(SetDataEvent $event)
-    {
-        if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
-            return;
-        if(!($user = $this->getUser()))
-            return;
-        if($event->getSubmittedForm()->has('name'))
-            $event->getSubmittedForm()->get('name')->setData($user->getRealname());
-        if($event->getSubmittedForm()->has('email')) {
+            $event->getFormBuilder()->get('name')
+                ->setDisabled(true)
+                ->setData($user->getRealname());
+        if($event->getFormBuilder()->has('email')) {
             $userData = $this->getAuthserverUserData();
             if($userData && isset($userData['emails'])) {
                 $primaryEmail = array_filter($userData['emails'], function($email) {
                     return $email['primary']&&$email['verified'];
                 });
                 if(isset($primaryEmail[0]))
-                    $event->getSubmittedForm()->get('email')->setData($primaryEmail[0]['addr']);
+                    $event->getFormBuilder()->get('email')->setEmptyData($primaryEmail[0]['addr']);
             }
         }
     }
@@ -122,7 +113,10 @@ class PrefillUserDataPluginListener implements EventSubscriberInterface
         if(!($token = $this->tokenStorage->getToken()))
             return null;
         /* @var $token TokenInterface */
-        return $token->getUser();
+        $user = $token->getUser();
+        if($user instanceof User)
+            return $user;
+        return null;
     }
 
     /**
