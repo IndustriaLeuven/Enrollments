@@ -29,6 +29,7 @@ return new FormDefinition(function(FormBuilderInterface $formBuilder)
         ])
         ->add('vegetarian', CheckboxType::class, [
             'label' => 'Vegetarisch',
+            'required' => false,
             'disabled' => true,
         ])
         ->add('plus_one', CheckBoxType::class, [
@@ -65,6 +66,7 @@ return new FormDefinition(function(FormBuilderInterface $formBuilder)
         ])
         ->add('vegetarian', CheckboxType::class, [
             'label' => 'Vegetarisch',
+            'required' => false,
             'disabled' => true,
         ])
     ;

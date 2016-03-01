@@ -27,6 +27,7 @@ return function(FormBuilderInterface $formBuilder)
         ])
         ->add('vegetarian', CheckboxType::class, [
             'label' => 'Vegetarisch',
+            'required' => false,
             'disabled' => true,
         ])
         ->add('events', FormType::class, [
