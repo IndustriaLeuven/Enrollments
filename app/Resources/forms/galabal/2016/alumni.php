@@ -91,7 +91,7 @@ return new FormDefinition(function(FormBuilderInterface $formBuilder)
                         $("#form_vegetarian, #form_plus_one_data_vegetarian").prop("disabled", false);
                     } else {
                         $("#form_events_reception").prop("disabled", $(this).prop("disabled"));
-                        $("#form_vegetarian, #form_plus_one_data_vegetarian").prop("disabled", false).prop("checked", false);
+                        $("#form_vegetarian, #form_plus_one_data_vegetarian").prop("disabled", true).prop("checked", false);
                     }',
             ],
         ])
