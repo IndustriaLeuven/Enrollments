@@ -88,7 +88,7 @@ return new FormDefinition(function(FormBuilderInterface $formBuilder)
                 'data-onload' => 'onchange',
                 'onchange' => 'if($(this).prop("checked")) {
                         $("#form_events_reception").prop("checked", true).prop("disabled", true);
-                        $("#form_vegetarian, #form_plus_one_data_vegetarian").prop("disabled, false);
+                        $("#form_vegetarian, #form_plus_one_data_vegetarian").prop("disabled", false);
                     } else {
                         $("#form_events_reception").prop("disabled", $(this).prop("disabled"));
                         $("#form_vegetarian, #form_plus_one_data_vegetarian").prop("disabled", false).prop("checked", false);
