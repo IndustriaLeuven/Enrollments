@@ -27,6 +27,10 @@ return new FormDefinition(function(FormBuilderInterface $formBuilder)
                 new Email(),
             ]
         ])
+        ->add('vegetarian', CheckboxType::class, [
+            'label' => 'Vegetarisch',
+            'disabled' => true,
+        ])
         ->add('plus_one', CheckBoxType::class, [
             'label' => '+1',
             'required' => false,
@@ -59,6 +63,10 @@ return new FormDefinition(function(FormBuilderInterface $formBuilder)
                 new Email(),
             ],
         ])
+        ->add('vegetarian', CheckboxType::class, [
+            'label' => 'Vegetarisch',
+            'disabled' => true,
+        ])
     ;
 
     $formBuilder->get('events')
@@ -76,7 +84,13 @@ return new FormDefinition(function(FormBuilderInterface $formBuilder)
             'attr' => [
                 'data-pricing-reload' => true,
                 'data-onload' => 'onchange',
-                'onchange' => '$(this).prop("checked")?$("#form_events_reception").prop("checked", true).prop("disabled", true):$("#form_events_reception").prop("disabled", $(this).prop("disabled"))',
+                'onchange' => 'if($(this).prop("checked")) {
+                        $("#form_events_reception").prop("checked", true).prop("disabled", true);
+                        $("#form_vegetarian, #form_plus_one_data_vegetarian").prop("disabled, false);
+                    } else {
+                        $("#form_events_reception").prop("disabled", $(this).prop("disabled"));
+                        $("#form_vegetarian, #form_plus_one_data_vegetarian").prop("disabled", false).prop("checked", false);
+                    }',
             ],
         ])
         ->add('reception', CheckboxType::class, [
