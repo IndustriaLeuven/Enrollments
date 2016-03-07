@@ -97,7 +97,8 @@ class PrefillUserDataPluginListener implements EventSubscriberInterface
                     return $email['primary']&&$email['verified'];
                 });
                 if(isset($primaryEmail[0]))
-                    $event->getFormBuilder()->get('email')->setEmptyData($primaryEmail[0]['addr']);
+                    $event->getFormBuilder()->get('email')
+                        ->setData($primaryEmail[0]['addr']);
             }
         }
     }
