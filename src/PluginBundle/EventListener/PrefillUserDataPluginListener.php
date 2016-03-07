@@ -82,6 +82,13 @@ class PrefillUserDataPluginListener implements EventSubscriberInterface
         if($event->getFormBuilder()->has('name'))
             $event->getFormBuilder()->get('name')
                 ->setDisabled(true)
+                /*
+                 * setData() will set the data for the form, but the data set on a parent form will override this data.
+                 * When a filled form is being shown/edited the data will always already have been set on the root form,
+                 * so the data set here will be disregarded.
+                 * When an admin views/edits this data the correct values that were set on the root form will be used,
+                 * and not the incorrect data that has been fetched from the admin account.
+                 */
                 ->setData($user->getRealname());
         if($event->getFormBuilder()->has('email')) {
             $userData = $this->getAuthserverUserData();
@@ -102,6 +109,13 @@ class PrefillUserDataPluginListener implements EventSubscriberInterface
         if(!($user = $this->getUser()))
             return;
         if($event->getSubmittedForm()->has('name'))
+            /*
+             * The construct array+array will merge two arrays together. Array keys that are present in both arrays
+             * will keep the data that was present in the first array, keys that only exist in the second array will
+             * be added on the end of the array
+             * When an already filled form is edited by an admin, the name field will already be present in the
+             * original enrollment data, so it will not be overwritten by the name of the admin.
+             */
             $event->getEnrollment()->setData($event->getEnrollment()->getData()+['name' => $user->getRealname()]);
     }
 
