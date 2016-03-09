@@ -91,7 +91,7 @@
       </trans-unit>
       <trans-unit id="40e19d46acd529674559bb37a873ce6c" resname="Deny enrollments">
         <source>Deny enrollments</source>
-        <target>Ontzeg verdere inschrijvingen</target>
+        <target>Blokkeer verdere inschrijvingen</target>
       </trans-unit>
       <trans-unit id="b8617ee9880148a82a54c5bfffde753b" resname="When the maximum number of enrollments is reached, no more submissions will be accepted.">
         <source>When the maximum number of enrollments is reached, no more submissions will be accepted.</source>
@@ -117,21 +117,23 @@
         <source>Configuration is applied from top to bottom.</source>
         <target>Instellingen worden van boven naar onder toegepast.</target>
       </trans-unit>
-      <trans-unit id="a054a6bc00c22afafaf29bb6122e5307" resname="If&lt;/th&gt;&#10;        &lt;th&gt;Use form">
-        <source>If&lt;/th&gt;
-        &lt;th&gt;Use form</source>
-        <target><![CDATA[Als</th>
-        <th>Gebruik formulier]]></target>
-      </trans-unit>
       <trans-unit id="2abe0fd44b7972ae8ebf9a85fb7625fa" resname="Deny access">
         <source>Deny access</source>
-        <target>Ontzeg toegang</target>
+        <target>Blokkeer toegang</target>
       </trans-unit>
       <trans-unit id="c6c7a90b35b90d5a0184d2983a251ab7" resname="&lt;p&gt;Pricing might change if you log in! You are currently not logged in.&lt;/p&gt;&#10;        &lt;p&gt;&lt;a href=&quot;%login_url%&quot; class=&quot;alert-link&quot;&gt;Do you want to log in?&lt;/a&gt;&lt;/p&gt;">
         <source>&lt;p&gt;Pricing might change if you log in! You are currently not logged in.&lt;/p&gt;
         &lt;p&gt;&lt;a href="%login_url%" class="alert-link"&gt;Do you want to log in?&lt;/a&gt;&lt;/p&gt;</source>
         <target><![CDATA[<p>De prijzen kunnen veranderen als je je inlogt! Je bent momenteel nog niet ingelogd.</p>
         <p><a href="%login_url%" class="alert-link">Wil je je inloggen?</a></p>]]></target>
+      </trans-unit>
+      <trans-unit id="786887572f6ef1c20f2d8177cb2f1639" resname="If">
+        <source>If</source>
+        <target>Als</target>
+      </trans-unit>
+      <trans-unit id="eb7c6ae84cce606b4e53d5c739514875" resname="Use form">
+        <source>Use form</source>
+        <target>Gebruik formulier</target>
       </trans-unit>
     </body>
   </file>
