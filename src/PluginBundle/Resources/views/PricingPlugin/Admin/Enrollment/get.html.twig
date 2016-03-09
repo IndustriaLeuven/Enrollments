@@ -1,7 +1,7 @@
-<h4>Pricing</h4>
+<h4>{% trans %}Pricing{% endtrans %}</h4>
 <dl class="dl-horizontal">
-    <dt>Total price</dt><dd>&euro;&nbsp;{{ pluginData.totalPrice|number_format(2) }}</dd>
-    <dt>Amount paid</dt><dd>
+    <dt>{% trans %}Total price{% endtrans %}</dt><dd>&euro;&nbsp;{{ pluginData.totalPrice|number_format(2) }}</dd>
+    <dt>{% trans %}Amount paid{% endtrans %}</dt><dd>
         &euro;&nbsp;{{ pluginData.paidAmount|default(0)|number_format(2) }}
         {% if pluginData.paidAmount|default(0) == pluginData.totalPrice %}
             {{ label_success('Paid') }}

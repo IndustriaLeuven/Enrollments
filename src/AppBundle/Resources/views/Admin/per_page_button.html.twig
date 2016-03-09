@@ -2,7 +2,7 @@
 {% set current_per_page = app.request.query.get('per_page', 10) %}
 <div class="btn-group btn-group-sm pull-right" title="Items per page">
     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        {{ icon('hashtag') }} <span class="sr-only">Items per page</span> <span class="caret"></span>
+        {{ icon('hashtag') }} <span class="sr-only">{% trans %}Items per page{% endtrans %}</span> <span class="caret"></span>
     </button>
     <ul class="dropdown-menu dropdown-menu-right">
         {% for per_page in [10,20,50,100] %}

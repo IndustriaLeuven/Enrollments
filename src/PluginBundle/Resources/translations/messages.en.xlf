@@ -33,6 +33,106 @@
         <source>There are still %availablePlacesCount% spots free.</source>
         <target>There are still %availablePlacesCount% spots free.</target>
       </trans-unit>
+      <trans-unit id="e22ac25b066b201473de7aa700ef5d92" resname="Pricing">
+        <source>Pricing</source>
+        <target>Pricing</target>
+      </trans-unit>
+      <trans-unit id="313a6a3d25aa041ee3dc3cbd65d4f22b" resname="Formula">
+        <source>Formula</source>
+        <target>Formula</target>
+      </trans-unit>
+      <trans-unit id="884505e9e7774313d202884a74bec83d" resname="Payment details expression">
+        <source>Payment details expression</source>
+        <target>Payment details expression</target>
+      </trans-unit>
+      <trans-unit id="0eede552438475bdfe820c13f24c9399" resname="Total price">
+        <source>Total price</source>
+        <target>Total price</target>
+      </trans-unit>
+      <trans-unit id="8ec41b16dc7d53ad2c4bfd4d6cc9b6d7" resname="Amount paid">
+        <source>Amount paid</source>
+        <target>Amount paid</target>
+      </trans-unit>
+      <trans-unit id="e3a09c53bb5f6ce8b54c9ce8ab0534c8" resname="Form template">
+        <source>Form template</source>
+        <target>Form template</target>
+      </trans-unit>
+      <trans-unit id="b9b89bc675d1075499cb35f7b4eaa1d3" resname="Form Type">
+        <source>Form Type</source>
+        <target>Form Type</target>
+      </trans-unit>
+      <trans-unit id="9616e3266260e7cc6d7057683026d055" resname="Admin enrollment list fields">
+        <source>Admin enrollment list fields</source>
+        <target>Admin enrollment list fields</target>
+      </trans-unit>
+      <trans-unit id="44749712dbec183e983dcd78a7736c41" resname="Date">
+        <source>Date</source>
+        <target>Date</target>
+      </trans-unit>
+      <trans-unit id="4d34f1097f6c8b9cee28bca8b78bbee9" resname="Start date">
+        <source>Start date</source>
+        <target>Start date</target>
+      </trans-unit>
+      <trans-unit id="b7de7e4247d4ab279ef031b7a44c201d" resname="End date">
+        <source>End date</source>
+        <target>End date</target>
+      </trans-unit>
+      <trans-unit id="f8762460f4735a774ba593d36db8074c" resname="(None)">
+        <source>(None)</source>
+        <target>(None)</target>
+      </trans-unit>
+      <trans-unit id="1016c9a00d6e8eba82d791f866623082" resname="Count Enrollments">
+        <source>Count Enrollments</source>
+        <target>Count Enrollments</target>
+      </trans-unit>
+      <trans-unit id="f804a6b86bfafdd45336bc4b4fe1679a" resname="Max enrollments">
+        <source>Max enrollments</source>
+        <target>Max enrollments</target>
+      </trans-unit>
+      <trans-unit id="40e19d46acd529674559bb37a873ce6c" resname="Deny enrollments">
+        <source>Deny enrollments</source>
+        <target>Deny enrollments</target>
+      </trans-unit>
+      <trans-unit id="b8617ee9880148a82a54c5bfffde753b" resname="When the maximum number of enrollments is reached, no more submissions will be accepted.">
+        <source>When the maximum number of enrollments is reached, no more submissions will be accepted.</source>
+        <target>When the maximum number of enrollments is reached, no more submissions will be accepted.</target>
+      </trans-unit>
+      <trans-unit id="4ce530865fb2ee8b2029afaa728e846e" resname="When the maximum number of enrollments is reached, users will be placed on a waiting list.">
+        <source>When the maximum number of enrollments is reached, users will be placed on a waiting list.</source>
+        <target>When the maximum number of enrollments is reached, users will be placed on a waiting list.</target>
+      </trans-unit>
+      <trans-unit id="3f72ede8eeafe567abd6e186e9155e4f" resname="Count expression">
+        <source>Count expression</source>
+        <target>Count expression</target>
+      </trans-unit>
+      <trans-unit id="9ddb382b1fb7c25d244314883d210956" resname="Prefill user data">
+        <source>Prefill user data</source>
+        <target>Prefill user data</target>
+      </trans-unit>
+      <trans-unit id="6ef20baffa1362a035da97d67a8b0aed" resname="Role differentiation">
+        <source>Role differentiation</source>
+        <target>Role differentiation</target>
+      </trans-unit>
+      <trans-unit id="bbbe3cb88c712cf0c79ea8d0567b7978" resname="Configuration is applied from top to bottom.">
+        <source>Configuration is applied from top to bottom.</source>
+        <target>Configuration is applied from top to bottom.</target>
+      </trans-unit>
+      <trans-unit id="a054a6bc00c22afafaf29bb6122e5307" resname="If&lt;/th&gt;&#10;        &lt;th&gt;Use form">
+        <source>If&lt;/th&gt;
+        &lt;th&gt;Use form</source>
+        <target><![CDATA[If</th>
+        <th>Use form]]></target>
+      </trans-unit>
+      <trans-unit id="2abe0fd44b7972ae8ebf9a85fb7625fa" resname="Deny access">
+        <source>Deny access</source>
+        <target>Deny access</target>
+      </trans-unit>
+      <trans-unit id="c6c7a90b35b90d5a0184d2983a251ab7" resname="&lt;p&gt;Pricing might change if you log in! You are currently not logged in.&lt;/p&gt;&#10;        &lt;p&gt;&lt;a href=&quot;%login_url%&quot; class=&quot;alert-link&quot;&gt;Do you want to log in?&lt;/a&gt;&lt;/p&gt;">
+        <source>&lt;p&gt;Pricing might change if you log in! You are currently not logged in.&lt;/p&gt;
+        &lt;p&gt;&lt;a href="%login_url%" class="alert-link"&gt;Do you want to log in?&lt;/a&gt;&lt;/p&gt;</source>
+        <target><![CDATA[<p>Pricing might change if you log in! You are currently not logged in.</p>
+        <p><a href="%login_url%" class="alert-link">Do you want to log in?</a></p>]]></target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

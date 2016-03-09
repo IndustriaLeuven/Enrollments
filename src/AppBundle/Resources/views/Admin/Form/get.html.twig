@@ -1,14 +1,14 @@
 {% extends 'AppBundle:Admin/Form:skeleton.html.twig' %}
-{% block title %}View {{ form.name }} | {{ parent() }}{% endblock %}
+{% block title %}{% trans %}View{% endtrans %} {{ form.name }} | {{ parent() }}{% endblock %}
 {% block content %}
     <div class="panel-heading">
-        <h3 class="panel-title">{{ icon('list-alt') }} Form {{ form.name }}</h3>
+        <h3 class="panel-title">{{ icon('list-alt') }} {% trans %}Form{% endtrans %} {{ form.name }}</h3>
     </div>
     <div class="panel-body">
         <dl class="dl-horizontal">
-            <dt>Edit form groups</dt><dd>{% for group in form.editFormGroups %}{{ group }}<br>{% endfor %}</dd>
-            <dt>List enrollments groups</dt><dd>{% for group in form.listEnrollmentsGroups %}{{ group }}<br>{% endfor %}</dd>
-            <dt>Edit enrollments groups</dt><dd>{% for group in form.editEnrollmentsGroups %}{{ group }}<br>{% endfor %}</dd>
+            <dt>{% trans %}Edit form groups{% endtrans %}</dt><dd>{% for group in form.editFormGroups %}{{ group }}<br>{% endfor %}</dd>
+            <dt>{% trans %}List enrollments groups{% endtrans %}</dt><dd>{% for group in form.listEnrollmentsGroups %}{{ group }}<br>{% endfor %}</dd>
+            <dt>{% trans %}Edit enrollments groups{% endtrans %}</dt><dd>{% for group in form.editEnrollmentsGroups %}{{ group }}<br>{% endfor %}</dd>
         </dl>
 
     </div>
