@@ -22,7 +22,7 @@ class RoleDifferentiationPluginConfigType extends AbstractType
         $builder
             ->add('condition', TextType::class, [
                 'attr' => [
-                    'help_text' => "Available functions: is_anonymous(), is_authenticated(), is_fully_authenticated(), has_role(role)\n".
+                    'help_text' => "Available functions: is_anonymous(), is_authenticated(), is_fully_authenticated(), has_role(role)<br>".
                         "Available variables: token, user, roles",
                 ],
                 'required' => false,
