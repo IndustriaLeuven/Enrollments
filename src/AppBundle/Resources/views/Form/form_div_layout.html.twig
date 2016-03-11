@@ -6,7 +6,7 @@
         {% endif %}
         {% set help_text = help_text|default('') %}
         {% if help_text is not empty %}
-            <span class="help-block">{{ help_text|trans({}, translation_domain)|nl2br }}</span>
+            <span class="help-block">{{ help_text|trans({}, translation_domain)|raw }}</span>
         {% endif %}
     {% endspaceless %}
 {% endblock form_help %}

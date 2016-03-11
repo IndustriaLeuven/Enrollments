@@ -84,7 +84,7 @@ class CountEnrollmentsPluginListener implements EventSubscriberInterface
             ->add('countExpression', TextareaType::class, [
                 'empty_data' => 1,
                 'attr' => [
-                    'help_text' => "Available functions: if(condition, ifTrue, ifFalse)\n".
+                    'help_text' => "Available functions: if(condition, ifTrue, ifFalse)<br>".
                         "Available variables: formData",
                 ],
                 'required' => false,

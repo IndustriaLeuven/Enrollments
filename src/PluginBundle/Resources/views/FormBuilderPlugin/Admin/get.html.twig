@@ -1,0 +1,39 @@
+<h4>Form Builder</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Options</th>
+            <th>Constraints</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for field in pluginData.fields %}
+        <tr>
+            <th>{{ field.name }}
+                {% if field.required %}
+                    {{ label_success('Required') }}
+                {% endif %}
+                {% if field.disabled %}
+                    {{ label('Disabled') }}
+                {% endif %}
+            </th>
+            <td>{{ field.type|split('\\')|last }}</td>
+            <td>{% if field.options != '{}' %}{{ field.options }}{% endif %}</td>
+            <td>
+                <ul>
+                    {% for constraint in field.constraints %}
+                        <li style="white-space: nowrap">
+                            {{ constraint.type|split('\\')|last }}
+                            {%- if constraint.options != 'null' -%}
+                                ({{ constraint.options }})
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
