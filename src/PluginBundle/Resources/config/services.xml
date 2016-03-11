@@ -11,6 +11,9 @@
             <argument>%kernel.root_dir%/Resources/forms</argument>
             <tag name="kernel.event_subscriber" />
         </service>
+        <service class="PluginBundle\EventListener\FormBuilderPluginListener">
+            <tag name="kernel.event_subscriber" />
+        </service>
         <service class="PluginBundle\EventListener\PricingPluginListener">
             <argument type="service" id="request_stack" />
             <tag name="kernel.event_subscriber" />
