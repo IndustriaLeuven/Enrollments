@@ -24,7 +24,6 @@ class DatePluginListener implements EventSubscriberInterface
             PluginEvents::SUBMIT_FORM => 'onPluginSubmitForm',
             AdminEvents::FORM_GET => ['onAdminShowForm', 10],
             UIEvents::FORM => ['onUIForm', 200],
-            UIEvents::SUCCESS => ['onUIForm', 200],
         ];
     }
 
