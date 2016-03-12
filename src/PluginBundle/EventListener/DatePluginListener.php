@@ -10,7 +10,7 @@ use AppBundle\Event\UI\SubmittedFormTemplateEvent;
 use AppBundle\Event\UIEvents;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 class DatePluginListener implements EventSubscriberInterface
@@ -23,21 +23,20 @@ class DatePluginListener implements EventSubscriberInterface
             PluginEvents::BUILD_FORM => 'onPluginBuildForm',
             PluginEvents::SUBMIT_FORM => 'onPluginSubmitForm',
             AdminEvents::FORM_GET => ['onAdminShowForm', 10],
-            UIEvents::FORM => ['onUIForm', 200],
-            UIEvents::SUCCESS => ['onUIForm', 200],
+            UIEvents::FORM => ['onUIForm', 257], // Has to be before CountEnrollmentsPlugin
         ];
     }
 
     public function onPluginBuildForm(PluginBuildFormEvent $event)
     {
         $this->buildPluginForm($event, self::PLUGIN_NAME)
-            ->add('startDate', DateType::class, [
+            ->add('startDate', DateTimeType::class, [
                 'required' => false,
                 'constraints' => [
                     new NotNull(),
                 ]
             ])
-            ->add('endDate', DateType::class, [
+            ->add('endDate', DateTimeType::class, [
                 'required' => false,
             ])
         ;
