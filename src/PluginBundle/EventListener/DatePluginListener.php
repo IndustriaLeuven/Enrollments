@@ -23,7 +23,7 @@ class DatePluginListener implements EventSubscriberInterface
             PluginEvents::BUILD_FORM => 'onPluginBuildForm',
             PluginEvents::SUBMIT_FORM => 'onPluginSubmitForm',
             AdminEvents::FORM_GET => ['onAdminShowForm', 10],
-            UIEvents::FORM => ['onUIForm', 200],
+            UIEvents::FORM => ['onUIForm', 257], // Has to be before CountEnrollmentsPlugin
         ];
     }
 
