@@ -10,7 +10,7 @@ use AppBundle\Event\UI\SubmittedFormTemplateEvent;
 use AppBundle\Event\UIEvents;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 class DatePluginListener implements EventSubscriberInterface
@@ -30,13 +30,13 @@ class DatePluginListener implements EventSubscriberInterface
     public function onPluginBuildForm(PluginBuildFormEvent $event)
     {
         $this->buildPluginForm($event, self::PLUGIN_NAME)
-            ->add('startDate', DateType::class, [
+            ->add('startDate', DateTimeType::class, [
                 'required' => false,
                 'constraints' => [
                     new NotNull(),
                 ]
             ])
-            ->add('endDate', DateType::class, [
+            ->add('endDate', DateTimeType::class, [
                 'required' => false,
             ])
         ;
