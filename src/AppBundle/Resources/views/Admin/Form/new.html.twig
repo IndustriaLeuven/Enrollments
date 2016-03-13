@@ -8,3 +8,7 @@
         {{ form(data) }}
     </div>
 {% endblock %}
+{% block javascript %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/app/js/form_plugins.js') }}"></script>
+{% endblock %}
