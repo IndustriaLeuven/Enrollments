@@ -27,7 +27,6 @@ class FormBuilderPluginConfigFormFieldType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'required' => false,
                 'constraints' => [
                     new Regex([
                         'pattern' => '/^[a-z0-9_]+$/',
@@ -48,7 +47,6 @@ class FormBuilderPluginConfigFormFieldType extends AbstractType
                     'Time' => TimeType::class
                 ],
                 'choices_as_values' => true,
-                'required' => false,
             ])
             ->add('show_in_enrollment_list', CheckboxType::class, [
                 'required' => false,
@@ -69,7 +67,6 @@ class FormBuilderPluginConfigFormFieldType extends AbstractType
                 ],
             ])
             ->add('options', TextAreaType::class, [
-                'required' => false,
                 'constraints' => [
                     new NotBlank(),
                     new ExpressionLanguage([
