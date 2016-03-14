@@ -1,6 +1,13 @@
 <h4>Date</h4>
 <dl class="dl-horizontal">
-   <dt>Start date</dt><dd>{{ pluginData.startDate|date }}</dd>
+   <dt>Start date</dt>
+    <dd>
+        {% if pluginData.startDate %}
+            {{ pluginData.startDate|date }}
+        {% else %}
+            <span class="text-muted">(None)</span>
+        {% endif %}
+    </dd>
    <dt>End date</dt>
    <dd>
        {% if pluginData.endDate %}

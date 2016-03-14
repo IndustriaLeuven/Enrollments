@@ -32,9 +32,6 @@ class DatePluginListener implements EventSubscriberInterface
         $this->buildPluginForm($event, self::PLUGIN_NAME)
             ->add('startDate', DateTimeType::class, [
                 'required' => false,
-                'constraints' => [
-                    new NotNull(),
-                ]
             ])
             ->add('endDate', DateTimeType::class, [
                 'required' => false,
@@ -52,11 +49,11 @@ class DatePluginListener implements EventSubscriberInterface
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
         $pluginData = $event->getForm()->getPluginData()->get(self::PLUGIN_NAME);
-        if($pluginData['startDate'] > new \DateTime())
+        if($pluginData['startDate'] !== null && $pluginData['startDate'] > new \DateTime())
             $event->addTemplate(new TemplateReference('PluginBundle', 'DatePlugin', 'UI/form', 'html', 'twig'), [
                 'toSoon' => true,
             ])->stopPropagation();
-        if($pluginData['endDate'] !== null&&$pluginData['endDate'] < new \DateTime())
+        if($pluginData['endDate'] !== null && $pluginData['endDate'] < new \DateTime())
             $event->addTemplate(new TemplateReference('PluginBundle', 'DatePlugin', 'UI/form', 'html', 'twig'), [
                 'toSoon' => false,
             ])->stopPropagation();
