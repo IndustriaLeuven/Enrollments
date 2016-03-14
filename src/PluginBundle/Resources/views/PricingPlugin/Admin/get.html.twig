@@ -1,7 +1,7 @@
-<h4>Pricing</h4>
+<h4>{% trans %}Pricing{% endtrans %}</h4>
 <dl class="dl-horizontal">
-   <dt>Formula</dt><dd><pre>{{ pluginData.formula }}</pre></dd>
-   <dt>Payment details expression</dt>
+   <dt>{% trans %}Formula{% endtrans %}</dt><dd><pre>{{ pluginData.formula }}</pre></dd>
+   <dt>{% trans %}Payment details expression{% endtrans %}</dt>
    <dd>
        {% if pluginData.payment_expression %}
            <pre>{{ pluginData.payment_expression }}</pre>

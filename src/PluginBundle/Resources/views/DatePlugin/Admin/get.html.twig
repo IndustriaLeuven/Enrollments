@@ -1,12 +1,12 @@
-<h4>Date</h4>
+<h4>{% trans %}Date{% endtrans %}</h4>
 <dl class="dl-horizontal">
-   <dt>Start date</dt><dd>{{ pluginData.startDate|date }}</dd>
-   <dt>End date</dt>
+   <dt>{% trans %}Start date{% endtrans %}</dt><dd>{{ pluginData.startDate|date }}</dd>
+   <dt>{% trans %}End date{% endtrans %}</dt>
    <dd>
        {% if pluginData.endDate %}
            {{ pluginData.endDate|date }}
        {% else %}
-           <span class="text-muted">(None)</span>
+           <span class="text-muted">{% trans %}(None){% endtrans %}</span>
        {% endif %}
    </dd>
 </dl>

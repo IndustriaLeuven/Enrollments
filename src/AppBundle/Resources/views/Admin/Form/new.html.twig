@@ -1,8 +1,8 @@
 {% extends 'AppBundle:Admin/Form:skeleton.html.twig' %}
-{% block title %}Create form | {{ parent() }}{% endblock %}
+{% block title %}{% trans %}Create form{% endtrans %} | {{ parent() }}{% endblock %}
 {% block content %}
     <div class="panel-heading">
-        <h3 class="panel-title">{{ icon('list-alt') }} Create form</h3>
+        <h3 class="panel-title">{{ icon('list-alt') }} {% trans %}Create form{% endtrans %}</h3>
     </div>
     <div class="panel-body">
         {{ form(data) }}

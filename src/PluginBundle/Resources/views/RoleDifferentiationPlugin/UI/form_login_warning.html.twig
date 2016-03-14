@@ -1,6 +1,6 @@
 <div class="alert alert-warning">
     {% trans with {"%login_url%": url('login', {'target': app.request.requestUri})}%}
-        <p>This form changes based on your user account, but you are not logged in.</p>
+        <p>Pricing might change if you log in! You are currently not logged in.</p>
         <p><a href="%login_url%" class="alert-link">Do you want to log in?</a></p>
     {% endtrans %}
 </div>

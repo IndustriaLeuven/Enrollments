@@ -1,5 +1,5 @@
 {% extends 'AppBundle:Admin:skeleton.html.twig' %}
-{% block title %}Enrollments | {{ app.request.attributes.get('form').name }} | {{ parent() }}{% endblock %}
+{% block title %}{% trans %}Enrollments{% endtrans %} | {{ app.request.attributes.get('form').name }} | {{ parent() }}{% endblock %}
 {% block sidebar %}
     {{ render(controller('AppBundle:Admin/Enrollment:sidebar', {
         form: app.request.attributes.get('form'),

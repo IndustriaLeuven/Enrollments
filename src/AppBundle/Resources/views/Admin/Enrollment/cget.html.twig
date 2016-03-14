@@ -2,7 +2,7 @@
 {% block content %}
     <div class="panel-heading clearfix">
         {% include 'AppBundle:Admin/Enrollment:cget_header_buttons.html.twig' %}
-        <h3 class="panel-title">{{ icon('file-text-o') }} Enrollments for {{ form.name }} {{ label(data.totalItemCount~' results') }}</h3>
+        <h3 class="panel-title">{{ icon('file-text-o') }} {% trans %}Enrollments for{% endtrans %} {{ form.name }} {{ label(data.totalItemCount~' results') }}</h3>
     </div>
     {% set use_batch = batch_form.action.vars.choices|length > 0 %}
     {% if use_batch %}
@@ -33,13 +33,13 @@
                             {% spaceless %}
                                 <div class="btn-group btn-group-sm">
                                     <a class="btn btn-info" href="{{ url('admin_get_form_enrollment', {form: form.id, enrollment: obj.id}) }}" title="View">
-                                        {{ icon('eye') }}<span class="sr-only">View</span>
+                                        {{ icon('eye') }}<span class="sr-only">{% trans %}View{% endtrans %}</span>
                                     </a>
                                     <a class="btn btn-default {% if not is_granted('EDIT_ENROLLMENT', form) and not is_granted('ROLE_ADMIN') %}disabled{% endif %}" href="{{ url('admin_edit_form_enrollment', {form: form.id, enrollment: obj.id}) }}" title="Edit">
-                                        {{ icon('edit') }}<span class="sr-only">Edit</span>
+                                        {{ icon('edit') }}<span class="sr-only">{% trans %}Edit{% endtrans %}</span>
                                     </a>
                                     <a class="btn btn-danger {% if not is_granted('EDIT_ENROLLMENT', form) and not is_granted('ROLE_ADMIN') %}disabled{% endif %}" href="{{ url('admin_remove_form_enrollment', {form: form.id, enrollment: obj.id}) }}" title="Delete">
-                                        {{ icon('trash-o') }}<span class="sr-only">Delete</span>
+                                        {{ icon('trash-o') }}<span class="sr-only">{% trans %}Delete{% endtrans %}</span>
                                     </a>
                                 </div>
                             {% endspaceless %}
