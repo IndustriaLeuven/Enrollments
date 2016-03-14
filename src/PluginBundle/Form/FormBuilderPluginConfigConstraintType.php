@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Blank;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints\GreaterThan;
@@ -35,6 +36,7 @@ class FormBuilderPluginConfigConstraintType extends AbstractType
                     'Length' => Length::class,
                     'Url' => Url::class,
                     'Regex' => Regex::class,
+                    'Choice' => Choice::class,
                     'Range' => Range::class,
                     'EqualTo' => EqualTo::class,
                     'NotEqualTo' => NotEqualTo::class,
@@ -44,10 +46,8 @@ class FormBuilderPluginConfigConstraintType extends AbstractType
                     'GreaterThanOrEqual' => GreaterThanOrEqual::class,
                 ],
                 'choices_as_values' => true,
-                'required' => false,
             ])
             ->add('options', TextType::class, [
-                'required' => false,
                 'constraints' => [
                     new NotBlank(),
                     new ExpressionLanguage([
