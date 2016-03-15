@@ -1,0 +1,5 @@
+{% extends 'AppBundle:Admin/Documentation:skeleton.html.twig' %}
+{% block title %}{{ doc }} | {{ parent() }}{% endblock %}
+{% block content %}
+    {{ data|markdown }}
+{% endblock %}

@@ -2,6 +2,8 @@
 
 Plugins are symfony event subscribers. The events they listen to and their position in the event chain are hard-coded.
 
+Every plugin should also have a manual in [`documentation/plugins/`](../plugins), named after their storage key.
+
 ## Events
 
 ### `PluginEvents`

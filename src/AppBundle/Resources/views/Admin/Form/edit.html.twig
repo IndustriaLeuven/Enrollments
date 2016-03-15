@@ -5,6 +5,7 @@
         <h3 class="panel-title">{{ icon('list-alt') }} {% trans %}Edit{% endtrans %} {{ form.name }}</h3>
     </div>
     <div class="panel-body">
+        {% form_theme data "AppBundle:Form:form_label_doc.html.twig" %}
         {{ form(data) }}
     </div>
 {% endblock %}

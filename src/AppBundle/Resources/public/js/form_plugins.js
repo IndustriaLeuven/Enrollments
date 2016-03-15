@@ -23,4 +23,7 @@
         })
         .on('click', update)
         .each(update);
+    $('.plugin-doc-page').on('click', function(ev) {
+        ev.stopPropagation();
+    });
 })();

@@ -7,3 +7,12 @@ admin_enrollment:
     type: rest
     name_prefix: admin_
     parent: admin_form
+
+admin_docs:
+    resource: AppBundle:Admin/Documentation
+    type: rest
+    name_prefix: admin_
+    requirements:
+        doc: '.+'
+    defaults:
+        _format: null

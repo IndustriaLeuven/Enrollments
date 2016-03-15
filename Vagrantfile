@@ -13,6 +13,7 @@ Vagrant.configure(2) do |config|
     config.vm.box = "debian/jessie64"
     config.vm.network "private_network", ip: "192.168.80.6"
     config.vm.synced_folder "src", "/var/www/src", create: true
+    config.vm.synced_folder "documentation", "/var/www/documentation", create: true
 
     config.vm.provider "virtualbox" do |vb|
         vb.gui = false
