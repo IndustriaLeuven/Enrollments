@@ -1,0 +1,14 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Documentation</h3>
+    </div>
+    <div class="list-group">
+        {% for item in data %}
+            <a class="list-group-item
+                {% if app.request.attributes.get('doc') == item.relativePathname %} active{% endif %}
+                " href="{{ url('admin_get_documentation', {doc: item.relativePathname}) }}">
+                {{ icon('file-text-o fa-fw') }} {{ item.relativePathname }}
+            </a>
+        {% endfor %}
+    </div>
+</div>

@@ -24,6 +24,10 @@ class MainMenu extends MenuItem
                     'label' => '.icon-list-alt Forms',
                     'route' => 'admin_get_forms',
                 ]);
+                $this->addChild('admin_documentation', [
+                    'label' => '.icon-book Documentation',
+                    'route' => 'admin_get_documentations',
+                ]);
             }
         } catch(AuthenticationCredentialsNotFoundException $ex) {
             // Thrown when there is no token (on error pages)

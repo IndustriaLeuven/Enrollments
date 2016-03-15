@@ -1,0 +1,22 @@
+{% extends 'AppBundle:Admin/Documentation:skeleton.html.twig' %}
+{% block content %}
+    <h1>Documentation</h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>File</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in data %}
+            <tr>
+                <td><a href="{{ url('admin_get_documentation', {doc: item.relativePathname}) }}">
+                        {{ icon('file-text-o fa-fw') }} {{ item.relativePathname }}
+                    </a></td>
+                <td>{{ item.contents|split("\n", 2)|first|trim('#') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

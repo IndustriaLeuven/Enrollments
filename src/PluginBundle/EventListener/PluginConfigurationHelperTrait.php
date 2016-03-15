@@ -23,6 +23,9 @@ trait PluginConfigurationHelperTrait
         $builder = $event->getFormBuilder()
             ->add($name, FieldsetType::class, [
                 'legend' => ucfirst(trim(strtolower(preg_replace(array('/([A-Z])/', '/[_\s]+/'), array('_$1', ' '), $name)))),
+                'attr' => [
+                    'doc_page' => $name.'.md',
+                ],
                 'label' => false,
                 'validation_groups' => function(FormInterface $form) {
                     return $form->get('enable')->getData()?['Default']:false;

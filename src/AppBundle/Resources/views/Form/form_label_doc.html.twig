@@ -1,0 +1,16 @@
+{% extends 'AppBundle:Form:form_div_layout.html.twig' %}
+{% block fieldset_widget %}
+    <fieldset {{ block('widget_container_attributes') }}>
+
+        {% if legend is defined and legend is not empty %}
+            <legend>
+                {{ legend }}
+                {% if attr is defined and attr.doc_page is defined %}
+                    <a class="pull-right plugin-doc-page" href="{{ url('admin_get_documentation', {'doc': attr.doc_page}) }}" target="_blank">{{ icon('question-circle') }}</a>
+                {% endif %}
+            </legend>
+        {% endif %}
+        {{ form_widget(form) }}
+
+    </fieldset>
+{% endblock %}

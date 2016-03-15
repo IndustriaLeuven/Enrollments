@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             new AdamQuaile\Bundle\FieldsetBundle\AdamQuaileFieldsetBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
