@@ -17,6 +17,34 @@
         <source>Sign in</source>
         <target>Log in</target>
       </trans-unit>
+      <trans-unit id="09f36cbcb6a7055eb5d864f6d89c2690" resname="Vegetarian">
+        <source>Vegetarian</source>
+        <target>Vegetarian</target>
+      </trans-unit>
+      <trans-unit id="dc8f892ac022daf96eff045f02d07555" resname="Party - €17">
+        <source>Party - €17</source>
+        <target><![CDATA[Feest&emsp;&mdash;&emsp;&euro;17]]></target>
+      </trans-unit>
+      <trans-unit id="b633f962739040a5a51e2966ce3eaaea" resname="Diner - €38">
+        <source>Diner - €38</source>
+        <target><![CDATA[Diner&emsp;&mdash;&emsp;&euro;38]]></target>
+      </trans-unit>
+      <trans-unit id="7a2a5deb382304cee297556599c8556a" resname="Party - €15">
+        <source>Party - €15</source>
+        <target><![CDATA[Feest&emsp;&mdash;&emsp;&euro;15]]></target>
+      </trans-unit>
+      <trans-unit id="7c95aca7de678c3524c98bd738309967" resname="Diner - €35">
+        <source>Diner - €35</source>
+        <target><![CDATA[Diner&emsp;&mdash;&emsp;&euro;35]]></target>
+      </trans-unit>
+      <trans-unit id="9d73a396af54dd9654431a698321e45e" resname="Reception - Free">
+        <source>Reception - Free</source>
+        <target><![CDATA[Receptie&emsp;&mdash;&emsp;Free]]></target>
+      </trans-unit>
+      <trans-unit id="048fb300229a85d24ab6e824f6d4c963" resname="Party - Free">
+        <source>Party - Free</source>
+        <target><![CDATA[Feest&emsp;&mdash;&emsp;Gratis]]></target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
