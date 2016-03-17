@@ -75,7 +75,7 @@ return new FormDefinition(function(FormBuilderInterface $formBuilder)
         ->add('party', CheckboxType::class, [
             'data' => true,
             'disabled' => true,
-            'label' => 'Party&emsp;&mdash;&emsp;&euro;Free',
+            'label' => 'Party&emsp;&mdash;&emsp;Free',
             'attr' => [
                 'data-pricing-reload' => true,
             ],
