@@ -41,5 +41,14 @@
             </argument>
             <tag name="kernel.event_subscriber" />
         </service>
+        <service class="PluginBundle\EventListener\UniqueFieldsPluginListener">
+            <argument type="service">
+                <service class="PluginBundle\Entity\UniqueFieldDataRepository">
+                    <factory service="doctrine.orm.entity_manager" method="getRepository" />
+                    <argument>PluginBundle:UniqueFieldData</argument>
+                </service>
+            </argument>
+            <tag name="kernel.event_subscriber" />
+        </service>
    </services>
 </container>
