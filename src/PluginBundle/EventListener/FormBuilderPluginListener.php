@@ -95,7 +95,7 @@ class FormBuilderPluginListener implements EventSubscriberInterface
                         'required' => isset($field['required'])&&$field['required'],
                         'disabled' => isset($field['disabled'])&&$field['disabled'],
                     ];
-                if($data['fields']['type'] === ChoiceType::class)
+                if($field['type'] === ChoiceType::class)
                     $field['options_compiled']['choices_as_values'] = true;
                 foreach($field['constraints'] as &$constraint) {
                     $field['options_compiled']['constraints'][] = new $constraint['type']($this->constraintsExpressionLanguage->evaluate($field['options']));
@@ -124,7 +124,7 @@ class FormBuilderPluginListener implements EventSubscriberInterface
             return isset($field['show_in_enrollment_list']) && $field['show_in_enrollment_list'];
         });
         foreach($listFields as $field) {
-            $event->setField(EnrollmentListEvent::ALL_TYPES, 'data.'.$field, new CallbackTableColumnDefinition($field, function(array $data) {
+            $event->setField(EnrollmentListEvent::ALL_TYPES, 'data.'.$field['name'], new CallbackTableColumnDefinition($field['name'], function(array $data) {
                 $enrollment = $data['data'];
                 /* @var $enrollment Enrollment */
                 $flattenedData = $enrollment->getFlattenedData();
@@ -132,7 +132,7 @@ class FormBuilderPluginListener implements EventSubscriberInterface
                     return $flattenedData[$data['fieldName']];
                 return '';
             }, [
-                'fieldName' => $field,
+                'fieldName' => $field['name'],
             ]));
         }
     }
