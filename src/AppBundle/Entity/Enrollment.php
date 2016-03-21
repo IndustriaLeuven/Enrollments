@@ -5,7 +5,6 @@ namespace AppBundle\Entity;
 use AppBundle\Plugin\PluginDataBag;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
