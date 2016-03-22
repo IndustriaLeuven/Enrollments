@@ -1,0 +1,15 @@
+<div class="alert alert-danger">
+    {% trans with {'%enrollment_url%': url('app_get_enrollment_submission', {
+        'form': form.id,
+        'enrollment': enrollments.first.id
+    })} %}
+    You already submitted an enrollment.
+    <a href="%enrollment_url%" class="alert-link">Show my enrollment</a>
+    {% endtrans %}
+</div>
+<script>
+    document.location.href = "{{ url('app_get_enrollment_submission', {
+        'form': form.id,
+        'enrollment': enrollments.first.id
+    }) }}"
+</script>
