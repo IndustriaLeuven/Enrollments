@@ -98,7 +98,7 @@ class FormBuilderPluginListener implements EventSubscriberInterface
                 if($field['type'] === ChoiceType::class)
                     $field['options_compiled']['choices_as_values'] = true;
                 foreach($field['constraints'] as &$constraint) {
-                    $field['options_compiled']['constraints'][] = new $constraint['type']($this->constraintsExpressionLanguage->evaluate($field['options']));
+                    $field['options_compiled']['constraints'][] = new $constraint['type']($this->constraintsExpressionLanguage->evaluate($constraint['options']));
                 }
             }
             $pluginDataBag->set(self::PLUGIN_NAME, $data);
