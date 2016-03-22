@@ -2,11 +2,15 @@
 
 namespace AppBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 class IndexController extends Controller
 {
+    /**
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     */
     public function indexAction()
     {
         if($this->isGranted('ROLE_BACKEND_ACCESS'))
