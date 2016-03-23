@@ -1,19 +1,19 @@
-<h4>{% trans %}Date{% endtrans %}</h4>
+<h4>{{ 'plugin.date.title'|trans }}</h4>
 <dl class="dl-horizontal">
-    <dt>{% trans %}Start date{% endtrans %}</dt>
+    <dt>{{ 'plugin.date.conf.start_date'|trans }}</dt>
     <dd>
         {% if pluginData.startDate %}
             {{ pluginData.startDate|date }}
         {% else %}
-            <span class="text-muted">{% trans %}(None){% endtrans %}</span>
+            <span class="text-muted">{{ 'admin.none_placeholder'|trans }}</span>
         {% endif %}
     </dd>
-   <dt>{% trans %}End date{% endtrans %}</dt>
+   <dt>{{ 'plugin.date.conf.end_date'|trans }}</dt>
    <dd>
        {% if pluginData.endDate %}
            {{ pluginData.endDate|date }}
        {% else %}
-           <span class="text-muted">{% trans %}(None){% endtrans %}</span>
+           <span class="text-muted">{{ 'admin.none_placeholder'|trans }}</span>
        {% endif %}
    </dd>
 </dl>

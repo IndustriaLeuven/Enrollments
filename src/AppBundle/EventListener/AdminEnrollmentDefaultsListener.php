@@ -74,10 +74,13 @@ class AdminEnrollmentDefaultsListener implements EventSubscriberInterface
     {
         $formBuilder = $event->getFormBuilder();
         if($formBuilder->count()) {
-            $formBuilder->add('submit', SubmitType::class);
+            $formBuilder->add('submit', SubmitType::class, [
+                'label' => 'form.submit',
+            ]);
         } else {
             $formBuilder->add('no_settings', FormStaticControlType::class, [
-                'data' => 'There are no plugin settings to edit',
+                'label' => false,
+                'data' => 'admin.enrollment.no_settings',
             ]);
         }
     }

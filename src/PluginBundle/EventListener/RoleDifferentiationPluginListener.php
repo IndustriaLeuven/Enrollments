@@ -98,8 +98,11 @@ class RoleDifferentiationPluginListener implements EventSubscriberInterface
     {
         $this->buildPluginForm($event, self::PLUGIN_NAME)
             ->add('rules', BootstrapCollectionType::class, [
+                'label' => 'plugin.role_differentiation.conf.rules',
                 'allow_add' => true,
+                'add_button_text' => 'plugin.role_differentiation.conf.rules.add_button',
                 'allow_delete' => true,
+                'delete_button_text' => 'plugin.role_differentiation.conf.rules.delete_button',
                 'type' => RoleDifferentiationPluginConfigType::class,
                 'options' => [
                     'expression_language' =>  $this->expressionLanguage,

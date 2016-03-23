@@ -1,12 +1,12 @@
-<h4>{% trans %}Pricing{% endtrans %}</h4>
+<h4>{{ 'plugin.pricing.title'|trans }}</h4>
 <dl class="dl-horizontal">
-   <dt>{% trans %}Formula{% endtrans %}</dt><dd><pre>{{ pluginData.formula }}</pre></dd>
-   <dt>{% trans %}Payment details expression{% endtrans %}</dt>
+   <dt>{{ 'plugin.pricing.conf.formula'|trans }}</dt><dd><pre>{{ pluginData.formula }}</pre></dd>
+   <dt>{{ 'plugin.pricing.conf.payment_expression'|trans }}</dt>
    <dd>
        {% if pluginData.payment_expression %}
            <pre>{{ pluginData.payment_expression }}</pre>
        {% else %}
-           {{ label('Disabled') }}
+           {{ label('plugin.label.disabled'|trans) }}
        {% endif %}
    </dd>
 </dl>

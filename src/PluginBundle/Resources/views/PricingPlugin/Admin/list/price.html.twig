@@ -2,9 +2,9 @@
     {% set pricingData = data.pluginData.get('pricing') %}
     &euro;&nbsp;{{ pricingData.totalPrice|default(0)|number_format(2) }}
     {% if pricingData.paidAmount|default(0) == pricingData.totalPrice %}
-        {{ label_success('Paid') }}
+        {{ label_success('plugin.pricing.enrollment.paid'|trans) }}
     {% elseif pricingData.paidAmount|default(0) > 0 %}
-        {{ label_warning('&euro;&nbsp;'~pricingData.paidAmount|default(0)|number_format(2)~' paid') }}
+        {{ label_warning('plugin.pricing.enrollment.paid_partially.amount'|trans({'%amount%':pricingData.paidAmount|default(0)|number_format(2)})) }}
     {% endif %}
 {% else %}
     &mdash;

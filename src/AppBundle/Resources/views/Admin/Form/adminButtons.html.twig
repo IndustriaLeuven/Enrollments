@@ -1,10 +1,10 @@
 {% if is_granted('ROLE_ADMIN') %}
     <div class="btn-group pull-right">
         <a class="btn btn-default" href="{{ url('admin_get_form', {form: form.id}) }}" title="Form admin">
-            {{ icon('cog') }} {% trans %}Form admin{% endtrans %}
+            {{ icon('cog') }} {{ 'admin.navigation.form_admin'|trans }}
         </a>
         <a class="btn btn-default" href="{{ url('admin_get_form_enrollments', {form: form.id}) }}" title="List enrollments">
-            {{ icon('file-text-o') }} {% trans %}Enrollments{% endtrans %}
+            {{ icon('file-text-o') }} {{ 'admin.navigation.enrollments'|trans }}
         </a>
     </div>
 {% endif %}

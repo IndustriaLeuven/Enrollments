@@ -4,24 +4,24 @@
 {% import _self as self %}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">{% trans %}Navigation{% endtrans %}</h3>
+        <h3 class="panel-title">{{ 'admin.navigation.title'|trans }}</h3>
     </div>
     <div class="list-group">
         {% if form is defined %}
-            {{ self.render_link('admin_get_form', {form: form.id}, 'eye', 'View', false) }}
-            {{ self.render_link('admin_edit_form', {form: form.id}, 'pencil', 'Edit', not is_granted('EDIT', form)) }}
-            {{ self.render_link('admin_remove_form', {form: form.id}, 'trash', 'Delete', true) }}
-            {{ self.render_link('admin_new_form', {copy_from: form.id}, 'clone', 'Copy', true) }}
+            {{ self.render_link('admin_get_form', {form: form.id}, 'eye', 'admin.navigation.view'|trans, false) }}
+            {{ self.render_link('admin_edit_form', {form: form.id}, 'pencil', 'admin.navigation.edit'|trans, not is_granted('EDIT', form)) }}
+            {{ self.render_link('admin_remove_form', {form: form.id}, 'trash', 'admin.navigation.delete'|trans, true) }}
+            {{ self.render_link('admin_new_form', {copy_from: form.id}, 'clone', 'admin.navigation.copy'|trans, true) }}
         {% endif %}
-        {{ self.render_link('admin_get_forms', {}, 'list', 'List', false) }}
-        {{ self.render_link('admin_new_form', {}, 'plus', 'Create', true) }}
+        {{ self.render_link('admin_get_forms', {}, 'list', 'admin.navigation.list'|trans, false) }}
+        {{ self.render_link('admin_new_form', {}, 'plus', 'admin.navigation.new'|trans, true) }}
     </div>
 </div>
 {% if form is defined %}
     <div class="panel panel-default">
         <div class="list-group">
-            {{ self.render_link('admin_get_form_enrollments', {form: form.id}, 'file-text-o', 'Enrollments', not is_granted('LIST_ENROLLMENTS', form)) }}
-            {{ self.render_link('app_get_enrollment', {form: form.id}, 'globe', 'Enrollment form', false) }}
+            {{ self.render_link('admin_get_form_enrollments', {form: form.id}, 'file-text-o', 'admin.navigation.enrollments'|trans, not is_granted('LIST_ENROLLMENTS', form)) }}
+            {{ self.render_link('app_get_enrollment', {form: form.id}, 'globe', 'admin.navigation.form'|trans, false) }}
         </div>
     </div>
 {% endif %}

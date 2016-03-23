@@ -70,22 +70,24 @@ class CountEnrollmentsPluginListener implements EventSubscriberInterface
     {
         $this->buildPluginForm($event, self::PLUGIN_NAME)
             ->add('maxEnrollments', NumberType::class, [
+                'label' => 'plugin.count_enrollments.conf.maxEnrollments',
                 'required' => false,
                 'constraints' => [
                     new GreaterThan(0),
                 ],
             ])
             ->add('denyEnrollments', CheckboxType::class, [
+                'label' => 'plugin.count_enrollments.conf.denyEnrollments',
                 'attr' => [
-                    'help_text' => 'Deny further enrollments when the maximum number is reached',
+                    'help_text' => 'plugin.count_enrollments.conf.denyEnrollments.help',
                 ],
                 'required' => false,
             ])
             ->add('countExpression', TextareaType::class, [
+                'label' => 'plugin.count_enrollments.conf.countExpression',
                 'empty_data' => 1,
                 'attr' => [
-                    'help_text' => "Available functions: if(condition, ifTrue, ifFalse)<br>".
-                        "Available variables: formData",
+                    'help_text' => 'plugin.count_enrollments.conf.countExpression.help',
                 ],
                 'required' => false,
                 'constraints' => [
@@ -141,9 +143,9 @@ class CountEnrollmentsPluginListener implements EventSubscriberInterface
                 $enrollmentCount = $this->repo->getEnrollmentCount($form);
                 if($pluginData['denyEnrollments']) {
                     if($enrollmentCount >= $pluginData['maxEnrollments']) {
-                        $event->getSubmittedForm()->addError(new FormError('This event is full.'));
+                        $event->getSubmittedForm()->addError(new FormError('plugin.count_enrollments.error.event_full'));
                     } elseif(($enrollmentCount + $thisEnrollmentCount) > $pluginData['maxEnrollments']) {
-                        $event->getSubmittedForm()->addError(new FormError('There are not enough spots left to add this enrollment.'));
+                        $event->getSubmittedForm()->addError(new FormError('plugin.count_enrollments.error.not_enough_spots'));
                     }
                 }
                 $this->repo->addEnrollmentCount($event->getEnrollment(), $thisEnrollmentCount);
@@ -158,10 +160,10 @@ class CountEnrollmentsPluginListener implements EventSubscriberInterface
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
         $pluginData = $event->getForm()->getPluginData()->get(self::PLUGIN_NAME);
-        $event->setSimpleFacet('waiting list', 'group', [
-            'Participants only' => ['waiting_list' => 'no'],
-            'Waiting list only' => ['waiting_list' => 'yes'],
-            'All' => ['waiting_list' => null],
+        $event->setSimpleFacet('plugin.count_enrollments.facet.waiting_list', 'group', [
+            'plugin.count_enrollments.facet.participants' => ['waiting_list' => 'no'],
+            'plugin.count_enrollments.facet.waiting_list' => ['waiting_list' => 'yes'],
+            'plugin.facet.all' => ['waiting_list' => null],
         ]);
 
         if($event->getQueryString()->has('waiting_list')) {

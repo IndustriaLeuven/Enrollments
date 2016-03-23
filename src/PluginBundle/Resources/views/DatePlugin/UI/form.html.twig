@@ -1,9 +1,9 @@
-{% if toSoon %}
+{% if tooSoon %}
     <div class="alert alert-warning">
-        {% trans %}This enrollment is not open yet.{% endtrans %}
+        {{ 'plugin.date.ui.too_soon'|trans }}
     </div>
 {% else %}
     <div class="alert alert-warning">
-        {% trans %}This enrollment is not open anymore.{% endtrans %}
+        {{ 'plugin.date.ui.too_late'|trans }}
     </div>
 {% endif %}

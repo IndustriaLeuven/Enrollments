@@ -4,7 +4,7 @@
 
         {% if legend is defined and legend is not empty %}
             <legend>
-                {{ legend }}
+                {{ legend|trans }}
                 {% if attr is defined and attr.doc_page is defined %}
                     <a class="pull-right plugin-doc-page" href="{{ url('admin_get_documentation', {'doc': attr.doc_page}) }}" target="_blank">{{ icon('question-circle') }}</a>
                 {% endif %}

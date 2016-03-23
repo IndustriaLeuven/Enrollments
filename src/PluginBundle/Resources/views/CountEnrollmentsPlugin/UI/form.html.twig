@@ -1,26 +1,15 @@
 {% if enrollmentCount >= pluginData.maxEnrollments %}
     {% if pluginData.denyEnrollments %}
         <div class="alert alert-danger">
-            {% trans %}
-            <strong>This event is full</strong>, you can no longer enroll for this event.
-            {% endtrans %}
+            {{ 'plugin.enrollment_count.ui.event_full_closed'|trans }}
         </div>
     {% else %}
         <div class="alert alert-warning">
-            {% trans with {
-            '%waitingListCount%': enrollmentCount-pluginData.maxEnrollments
-            } %}
-            <strong>This event is full</strong>, but you can put yourself on the waiting list.
-            There are currently <strong>%waitingListCount%</strong> people on the waiting list.
-            {% endtrans %}
+            {{ 'plugin.enrollment_count.event_full'|transchoice(enrollmentCount-pluginData.maxEnrollments, {'%count%': enrollmentCount-pluginData.maxEnrollments}) }}
         </div>
     {% endif %}
 {% else %}
     <div class="alert alert-info">
-        {% trans with {
-            '%availablePlacesCount%': pluginData.maxEnrollments-enrollmentCount
-        } %}
-        There are still %availablePlacesCount% spots free.
-        {% endtrans %}
+        {{ 'plugin.enrollment_count.event_open'|transchoice(pluginData.maxEnrollments-enrollmentCount, {'%count%': pluginData.maxEnrollments-enrollmentCount}) }}
     </div>
 {% endif %}

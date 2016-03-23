@@ -1,15 +1,15 @@
 <div class="btn-toolbar pull-right">
     <div class="btn-group btn-group-sm">
         {% for facet in event.getFacets() %}
-            <div class="btn-group btn-group-sm" title="{{ facet.text }}">
+            <div class="btn-group btn-group-sm" title="{{ facet.text|trans }}">
                 <button type="button" class="btn btn-default dropdown-toggle {% if facet.isActive(app.request.query) %}active{% endif %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{ icon(facet.icon) }} <span class="sr-only">{{ facet.text }}</span> <span class="caret"></span>
+                    {{ icon(facet.icon) }} <span class="sr-only">{{ facet.text|trans }}</span> <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
                     {% for option in facet.options %}
                         <li class="{% if option.isActive(app.request.query) %}active{% endif %}">
                             <a href="{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all())|merge(option.queryParams)) }}">
-                                {% if option.icon %}{{ icon(option.icon) }}{% endif %}{{ option.text }}
+                                {% if option.icon %}{{ icon(option.icon) }}{% endif %}{{ option.text|trans }}
                             </a>
                         </li>
                     {% endfor %}
@@ -19,7 +19,7 @@
     </div>
     <div class="btn-group btn-group-sm">
         <a class="btn btn-default" href="{{ url('admin_get_form_enrollments', app.request.attributes.get('_route_params')|merge(app.request.query.all())|merge({'_format': 'csv'})) }}">
-            {{ icon('download') }} {% trans %}Download list{% endtrans %}
+            {{ icon('download') }} {{ 'admin.enrollment.download'|trans }}
         </a>
         {% include 'AppBundle:Admin:per_page_button.html.twig' %}
     </div>

@@ -1,17 +1,21 @@
-<h4>{% trans %}Count Enrollments{% endtrans %}</h4>
+<h4>{{ 'plugin.count_enrollments.title'|trans }}</h4>
 <dl class="dl-horizontal">
-    <dt>{% trans %}Max enrollments{% endtrans %}</dt><dd>{{ pluginData.maxEnrollments }}</dd>
-    <dt>{% trans %}Deny enrollments{% endtrans %}</dt>
+    <dt>{{ 'plugin.count_enrollments.conf.maxEnrollments'|trans }}</dt><dd>{{ pluginData.maxEnrollments }}</dd>
+    <dt>{{ 'plugin.count_enrollments.conf.denyEnrollments'|trans }}</dt>
     <dd>
         {% if pluginData.denyEnrollments %}
-            {{ label_success('Enabled') }}
-            <p class="text-muted">{% trans %}When the maximum number of enrollments is reached, no more submissions will be accepted.{% endtrans %}</p>
+            {{ label_success('plugin.label.enabled'|trans) }}
+            <p class="text-muted">
+                {{ 'plugin.count_enrollments.conf.denyEnrollments.enabled.help'|trans }}
+            </p>
         {% else %}
-            {{ label('Disabled') }}
-            <p class="text-muted">{% trans %}When the maximum number of enrollments is reached, users will be placed on a waiting list.{% endtrans %}</p>
+            {{ label('plugin.label.disabled'|trans) }}
+            <p class="text-muted">
+                {{ 'plugin.count_enrollments.conf.denyEnrollments.disabled.help'|trans }}
+            </p>
         {% endif %}
     </dd>
-    <dt>{% trans %}Count expression{% endtrans %}</dt>
+    <dt>{{ 'plugin.count_enrollments.conf.countExpression'|trans }}</dt>
     <dd>
         <pre>{{ pluginData.countExpression }}</pre>
     </dd>

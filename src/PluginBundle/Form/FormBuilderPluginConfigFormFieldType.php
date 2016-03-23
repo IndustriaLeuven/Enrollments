@@ -27,46 +27,52 @@ class FormBuilderPluginConfigFormFieldType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
+                'label' => 'plugin.form_builder.conf.fields.name',
                 'constraints' => [
                     new Regex([
                         'pattern' => '/^[a-z0-9_]+$/',
-                        'message' => 'This value may only contain lowercase characters, numbers and underscores.',
+                        'message' => 'plugin.form_builder.conf.fields.name.constraints.characters',
                     ]),
                 ],
             ])
             ->add('type', ChoiceType::class, [
+                'label' => 'plugin.form_builder.conf.fields.type',
                 'choices' => [
-                    'Text' => TextType::class,
-                    'Email' => EmailType::class,
-                    'Integer' => IntegerType::class,
-                    'Url' => UrlType::class,
-                    'Checkbox' => CheckboxType::class,
-                    'Choice' => ChoiceType::class,
-                    'Date' => DateType::class,
-                    'DateTime' => DateTimeType::class,
-                    'Time' => TimeType::class
+                    'plugin.form_builder.conf.fields.type.choice.TextType' => TextType::class,
+                    'plugin.form_builder.conf.fields.type.choice.EmailType' => EmailType::class,
+                    'plugin.form_builder.conf.fields.type.choice.IntegerType' => IntegerType::class,
+                    'plugin.form_builder.conf.fields.type.choice.UrlType' => UrlType::class,
+                    'plugin.form_builder.conf.fields.type.choice.CheckboxType' => CheckboxType::class,
+                    'plugin.form_builder.conf.fields.type.choice.ChoiceType' => ChoiceType::class,
+                    'plugin.form_builder.conf.fields.type.choice.DateType' => DateType::class,
+                    'plugin.form_builder.conf.fields.type.choice.DateTimeType' => DateTimeType::class,
+                    'plugin.form_builder.conf.fields.type.choice.TimeType' => TimeType::class
                 ],
                 'choices_as_values' => true,
             ])
             ->add('show_in_enrollment_list', CheckboxType::class, [
+                'label' => 'plugin.form_builder.conf.fields.show_in_enrollment_list',
                 'required' => false,
                 'attr' => [
                     'align_with_widget' => true,
                 ],
             ])
             ->add('required', CheckboxType::class, [
+                'label' => 'plugin.form_builder.conf.fields.required',
                 'required' => false,
                 'attr' => [
                     'align_with_widget' => true,
                 ],
             ])
             ->add('disabled', CheckboxType::class, [
+                'label' => 'plugin.form_builder.conf.fields.disabled',
                 'required' => false,
                 'attr' => [
                     'align_with_widget' => true,
                 ],
             ])
             ->add('options', TextAreaType::class, [
+                'label' => 'plugin.form_builder.conf.fields.options',
                 'constraints' => [
                     new NotBlank(),
                     new ExpressionLanguage([
@@ -76,15 +82,15 @@ class FormBuilderPluginConfigFormFieldType extends AbstractType
                 ],
                 'data' => '{}',
                 'attr' => [
-                    'help_text' => 'Expression for the options for the field.<br>'.
-                        'For applicable options for each field, see <a href="http://symfony.com/doc/2.8/reference/forms/types.html">form types reference</a>',
+                    'help_text' => 'plugin.form_builder.conf.fields.options.help',
                 ],
             ])
             ->add('constraints', BootstrapCollectionType::class, [
+                'label' => 'plugin.form_builder.conf.fields.constraints',
                 'allow_add' => true,
-                'add_button_text' => 'Add constraint',
+                'add_button_text' => 'plugin.form_builder.conf.fields.constraints.add_button',
                 'allow_delete' => true,
-                'delete_button_text' => 'Remove constraint',
+                'delete_button_text' => 'plugin.form_builder.conf.fields.constraints.delete_button',
                 'required' => false,
                 'prototype_name' => '__constraints_proto__',
                 'type' => FormBuilderPluginConfigConstraintType::class,

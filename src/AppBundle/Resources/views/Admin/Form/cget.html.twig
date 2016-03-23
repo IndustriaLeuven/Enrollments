@@ -2,13 +2,13 @@
 {% block content %}
     <div class="panel-heading clearfix">
         {% include 'AppBundle:Admin:per_page_button.html.twig' %}
-        <h3 class="panel-title">{{ icon('list-alt') }} {% trans %}Forms{% endtrans %}</h3>
+        <h3 class="panel-title">{{ icon('list-alt') }} {{ 'admin.form.list.title'|trans }}</h3>
     </div>
     <div class="table-responsive">
         <table class="table">
             <thead>
                 <tr>
-                    <th>{% trans %}Name{% endtrans %}</th><th>{% trans %}Actions{% endtrans %}</th>
+                    <th>{{ 'label.name'|trans }}</th><th>{{ 'admin.actions'|trans }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -18,23 +18,23 @@
                         <td>
                             {% spaceless %}
                                 <div class="btn-group btn-group-sm">
-                                    <a class="btn btn-default" href="{{ url('app_get_enrollment', {form: obj.id}) }}" title="Show form">
-                                        {{ icon('list-alt') }}<span class="sr-only">{% trans %}Show form{% endtrans %}</span>
+                                    <a class="btn btn-default" href="{{ url('app_get_enrollment', {form: obj.id}) }}" title="{{ 'admin.navigation.form'|trans }}">
+                                        {{ icon('list-alt') }}<span class="sr-only">{{ 'admin.navigation.form'|trans }}</span>
                                     </a>
-                                    <a class="btn btn-primary {% if not is_granted('LIST_ENROLLMENTS', obj) and not is_granted('ROLE_ADMIN') %}disabled{% endif %}" href="{{ url('admin_get_form_enrollments', {form: obj.id}) }}" title="List enrollments">
-                                        {{ icon('file-text-o') }}<span class="sr-only">{% trans %}List enrollments{% endtrans %}</span>
+                                    <a class="btn btn-primary {% if not is_granted('LIST_ENROLLMENTS', obj) and not is_granted('ROLE_ADMIN') %}disabled{% endif %}" href="{{ url('admin_get_form_enrollments', {form: obj.id}) }}" title="{{ 'admin.navigation.enrollments'|trans }}">
+                                        {{ icon('file-text-o') }}<span class="sr-only">{{ 'admin.navigation.enrollments'|trans }}</span>
                                     </a>
-                                    <a class="btn btn-info" href="{{ url('admin_get_form', {form: obj.id}) }}" title="View">
-                                        {{ icon('eye') }}<span class="sr-only">{% trans %}View{% endtrans %}</span>
+                                    <a class="btn btn-info" href="{{ url('admin_get_form', {form: obj.id}) }}" title="{{ 'admin.navigation.view'|trans }}">
+                                        {{ icon('eye') }}<span class="sr-only">{{ 'admin.navigation.view'|trans }}</span>
                                     </a>
-                                    <a class="btn btn-default {% if not is_granted('EDIT', obj) and not is_granted('ROLE_ADMIN') %}disabled{% endif %}" href="{{ url('admin_edit_form', {form: obj.id}) }}" title="Edit">
-                                        {{ icon('edit') }}<span class="sr-only">{% trans %}Edit{% endtrans %}</span>
+                                    <a class="btn btn-default {% if not is_granted('EDIT', obj) and not is_granted('ROLE_ADMIN') %}disabled{% endif %}" href="{{ url('admin_edit_form', {form: obj.id}) }}" title="{{ 'admin.navigation.edit'|trans }}">
+                                        {{ icon('edit') }}<span class="sr-only">{{ 'admin.navigation.edit'|trans }}</span>
                                     </a>
-                                    <a class="btn btn-danger {% if not is_granted('ROLE_ADMIN') %}disabled{% endif %}" href="{{ url('admin_remove_form', {form: obj.id}) }}" title="Delete">
-                                        {{ icon('trash-o') }}<span class="sr-only">{% trans %}Delete{% endtrans %}</span>
+                                    <a class="btn btn-danger {% if not is_granted('ROLE_ADMIN') %}disabled{% endif %}" href="{{ url('admin_remove_form', {form: obj.id}) }}" title="{{ 'admin.navigation.delete'|trans }}">
+                                        {{ icon('trash-o') }}<span class="sr-only">{{ 'admin.navigation.delete'|trans }}</span>
                                     </a>
-                                    <a class="btn btn-default {% if not is_granted('ROLE_ADMIN') %}disabled{% endif %}" href="{{ url('admin_new_form', {copy_from: obj.id}) }}" title="Copy">
-                                        {{ icon('clone') }}<span class="sr-only">{% trans %}Copy{% endtrans %}</span>
+                                    <a class="btn btn-default {% if not is_granted('ROLE_ADMIN') %}disabled{% endif %}" href="{{ url('admin_new_form', {copy_from: obj.id}) }}" title="{{ 'admin.navigation.copy'|trans }}">
+                                        {{ icon('clone') }}<span class="sr-only">{{ 'admin.navigation.copy'|trans }}</span>
                                     </a>
                                 </div>
                             {% endspaceless %}

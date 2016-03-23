@@ -21,11 +21,11 @@ class MainMenu extends MenuItem
         try {
             if($authorizationChecker->isGranted('ROLE_BACKEND_ACCESS')) {
                 $this->addChild('admin_form', [
-                    'label' => '.icon-list-alt Forms',
+                    'label' => 'app.menu.forms',
                     'route' => 'admin_get_forms',
                 ]);
                 $this->addChild('admin_documentation', [
-                    'label' => '.icon-book Documentation',
+                    'label' => 'app.menu.documentation',
                     'route' => 'admin_get_documentations',
                 ]);
             }

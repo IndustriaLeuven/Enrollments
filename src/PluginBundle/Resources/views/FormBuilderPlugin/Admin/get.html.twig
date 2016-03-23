@@ -1,11 +1,11 @@
-<h4>Form Builder</h4>
+<h4>{{ 'plugin.form_builder.title'|trans }}</h4>
 <table class="table">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Options</th>
-            <th>Constraints</th>
+            <th>{{ 'plugin.form_builder.conf.fields.name'|trans }}</th>
+            <th>{{ 'plugin.form_builder.conf.fields.type'|trans }}</th>
+            <th>{{ 'plugin.form_builder.conf.fields.options'|trans }}</th>
+            <th>{{ 'plugin.form_builder.conf.fields.constraints'|trans }}></th>
         </tr>
     </thead>
     <tbody>
@@ -13,19 +13,19 @@
         <tr>
             <th>{{ field.name }}
                 {% if field.required %}
-                    {{ label_success('Required') }}
+                    {{ label_success('plugin.label.required'|trans) }}
                 {% endif %}
                 {% if field.disabled %}
-                    {{ label('Disabled') }}
+                    {{ label('plugin.label.disabled'|trans) }}
                 {% endif %}
             </th>
-            <td>{{ field.type|split('\\')|last }}</td>
+            <td>{{ ('plugin.form_builder.conf.fields.type.choice.'~field.type|split('\\')|last)|trans }}</td>
             <td>{% if field.options != '{}' %}{{ field.options }}{% endif %}</td>
             <td>
                 <ul>
                     {% for constraint in field.constraints %}
                         <li style="white-space: nowrap">
-                            {{ constraint.type|split('\\')|last }}
+                            {{ ('plugin.form_builder.conf.fields.constraints.type.choice.'~constraint.type|split('\\')|last)|trans }}
                             {%- if constraint.options != 'null' -%}
                                 ({{ constraint.options }})
                             {% endif %}

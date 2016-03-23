@@ -1,0 +1,47 @@
+label.name: Name
+form.submit: Submit
+admin.actions: Actions
+admin.items_per_page: 'Items per page'
+app.enrollment_registered: Your enrollment has been registered. You can find a copy of it below.
+app.menu.forms: '.icon-list-alt Forms'
+app.menu.documentation: '.icon-book Documentation'
+
+# Forms
+admin.form.name: Name
+admin.form.editFormGroups: 'Groups allowed to edit form configuration'
+admin.form.listEnrollmentsGroups: 'Groups allowed to view submissions for this form'
+admin.form.editEnrollmentsGroups: 'Groups allowed to edit submissions for this form'
+admin.form.delete: Delete
+admin.form.list.title: Forms
+admin.form.edit.title: 'Edit form %name%'
+admin.form.view.title: 'Form %name%'
+admin.form.new.title: 'Create form'
+admin.form.delete.title: 'Delete form %name%'
+admin.form.title: Forms
+
+# Documentation
+admin.documentation.title: Documentation
+admin.documentation.file: File
+admin.documentation.description: Description
+
+# Enrollments
+admin.enrollment.view.title: 'Enrollment for %name%'
+admin.enrollment.edit.title: 'Edit enrollment for %name%'
+admin.enrollment.title: Enrollments
+admin.enrollment.delete.title: 'Delete enrollment for %name%'
+admin.enrollment.list.title: 'Enrollments for %name%'
+admin.enrollment.list.num_results: '{0} No results|%count% result|%count% results'
+admin.enrollment.download: 'Download list'
+admin.enrollment.no_settings: 'There are no plugin settings to edit'
+
+# Navigation
+admin.navigation.title: Navigation
+admin.navigation.view: View
+admin.navigation.edit: Edit
+admin.navigation.delete: Delete
+admin.navigation.copy: Copy
+admin.navigation.list: List
+admin.navigation.new: Create
+admin.navigation.enrollments: Enrollments
+admin.navigation.form_admin: 'Form admin'
+admin.navigation.form: 'Enrollment form'

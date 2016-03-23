@@ -12,7 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\ReversedTransformer;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class RoleDifferentiationPluginConfigType extends AbstractType
@@ -21,9 +20,9 @@ class RoleDifferentiationPluginConfigType extends AbstractType
     {
         $builder
             ->add('condition', TextType::class, [
+                'label' => 'plugin.role_differentation.conf.rules.condition',
                 'attr' => [
-                    'help_text' => "Available functions: is_anonymous(), is_authenticated(), is_fully_authenticated(), has_role(role)<br>".
-                        "Available variables: token, user, roles",
+                    'help_text' => 'plugin.role_differentation.conf.rules.condition.help',
                 ],
                 'required' => false,
                 'constraints' => [
@@ -35,10 +34,11 @@ class RoleDifferentiationPluginConfigType extends AbstractType
                 ],
             ])
             ->add('target_form', EntityType::class, [
+                'label' => 'plugin.role_differentation.conf.rules.target_form',
                 'class' => 'AppBundle:Form',
                 'choice_label' => 'name',
                 'required' => false,
-                'placeholder' => 'Deny access',
+                'placeholder' => 'plugin.role_differentation.conf.rules.target_form.deny_access',
             ])
             ->get('target_form')
             ->addModelTransformer(new ReversedTransformer(new EntityToIdObjectTransformer($options['em'], 'AppBundle:Form')))

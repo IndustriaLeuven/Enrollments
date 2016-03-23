@@ -1,0 +1,123 @@
+admin.none_placeholder: '(None)'
+plugin.label.enabled: Enabled
+plugin.label.disabled: Disabled
+plugin.label.required: Required
+plugin.facet.all: All
+
+# Count enrollments plugin
+plugin.count_enrollments.title: 'Count enrollments'
+plugin.count_enrollments.conf.maxEnrollments: 'Maximum number of enrollments'
+plugin.count_enrollments.conf.denyEnrollments: 'Deny enrollments'
+plugin.count_enrollments.conf.denyEnrollments.help: 'Deny further enrollments when the maximum number is reached'
+plugin.count_enrollments.conf.countExpression: 'Count expression'
+plugin.count_enrollments.conf.countExpression.help: 'Available functions: if(condition, ifTrue, ifFalse)<br>Available variables: formData'
+plugin.count_enrollments.error.event_full: 'This event is full.'
+plugin.count_enrollments.error.not_enough_spots: 'There are not enough spots left to add this enrollment.'
+plugin.count_enrollments.facet.waiting_list: 'Waiting list'
+plugin.count_enrollments.facet.waiting_list.participants: 'Participants only'
+plugin.count_enrollments.facet.waiting_list.waiting_list: 'Waiting list only'
+plugin.count_enrollments.conf.denyEnrollments.enabled.help: When the maximum number of enrollments is reached, no more submissions will be accepted.
+plugin.count_enrollments.conf.denyEnrollments.disabled.help: When the maximum number of enrollments is reached, submissions will be placed on a waiting list.
+plugin.enrollment_count.ui.event_full_closed: '<strong>This event is full</strong>, you can no longer enroll for this event.'
+plugin.enrollment_count.event_full: '<strong>This event is full</strong>, but you can put yourself on the waiting list. There are currently <strong>%count%</strong> people on the waiting list.'
+plugin.enrollment_count.event_open: 'There is one spot left.|There are %count% spots left.'
+
+# Date plugin
+plugin.date.title: 'Date'
+plugin.date.conf.start_date: 'Start date'
+plugin.date.conf.end_date: 'End date'
+plugin.date.ui.too_soon: 'This form is not open yet.'
+plugin.date.ui.too_late: 'This form is not open anymore.'
+
+# Form builder plugin
+plugin.form_builder.title: 'Form builder'
+plugin.form_builder.conf.fields: Fields
+plugin.form_builder.conf.fields.add_button: Add field
+plugin.form_builder.conf.fields.delete_button: Remove field
+plugin.form_builder.conf.fields.name: Field name
+plugin.form_builder.conf.fields.name.constraints.characters: This value may only contain lowercase characters, numbers and underscores.
+plugin.form_builder.conf.fields.type: Field type
+plugin.form_builder.conf.fields.type.choice.TextType: Text field
+plugin.form_builder.conf.fields.type.choice.EmailType: Email field
+plugin.form_builder.conf.fields.type.choice.IntegerType: Integer field
+plugin.form_builder.conf.fields.type.choice.UrlType: URL field
+plugin.form_builder.conf.fields.type.choice.CheckboxType: Checkbox
+plugin.form_builder.conf.fields.type.choice.ChoiceType: Multiple choice
+plugin.form_builder.conf.fields.type.choice.DateType: Date
+plugin.form_builder.conf.fields.type.choice.DateTimeType: Date and time
+plugin.form_builder.conf.fields.type.choice.TimeType: Time
+plugin.form_builder.conf.fields.show_in_enrollment_list: Show this field in the enrollments list
+plugin.form_builder.conf.fields.required: This field is required (client-side hint only, has to be validated with a constraint)
+plugin.form_builder.conf.fields.disabled: This field is disabled
+plugin.form_builder.conf.fields.options: Other field options
+plugin.form_builder.conf.fields.options.help: 'Expression for the options for the field.<br>For applicable options for each field, see <a href="http://symfony.com/doc/2.8/reference/forms/types.html">form types reference</a>'
+plugin.form_builder.conf.fields.constraints: Constraints
+plugin.form_builder.conf.fields.constraints.add_button: Add constraint
+plugin.form_builder.conf.fields.constraints.delete_button: Remove constraint
+plugin.form_builder.conf.fields.constraints.type: Constraint type
+plugin.form_builder.conf.fields.constraints.type.choice.NotBlank: Cannot be empty (NotBlank)
+plugin.form_builder.conf.fields.constraints.type.choice.Blank: Must be empty (Blank)
+plugin.form_builder.conf.fields.constraints.type.choice.Email: Must be a valid email address (Email)
+plugin.form_builder.conf.fields.constraints.type.choice.Length: Must have a minimum/maximum length (Length)
+plugin.form_builder.conf.fields.constraints.type.choice.Url: Must be a valid URL (Url)
+plugin.form_builder.conf.fields.constraints.type.choice.Regex: Must match a regex (Regex)
+plugin.form_builder.conf.fields.constraints.type.choice.Choice: Must be one of these options (Choice)
+plugin.form_builder.conf.fields.constraints.type.choice.Range: Must be within this range (Range)
+plugin.form_builder.conf.fields.constraints.type.choice.EqualTo: Must be equal (EqualTo)
+plugin.form_builder.conf.fields.constraints.type.choice.NotEqualTo: Must not be equal (NotEqualTo)
+plugin.form_builder.conf.fields.constraints.type.choice.LessThan: Must be less than (LessThan)
+plugin.form_builder.conf.fields.constraints.type.choice.LessThanOrEqual: Must be less than or equal (LessThanOrEqual)
+plugin.form_builder.conf.fields.constraints.type.choice.GreaterThan: Must be greater than (GreaterThan)
+plugin.form_builder.conf.fields.constraints.type.choice.GreaterThanOrEqual: Must be greater than or equal (GreaterThanOrEqual)
+plugin.form_builder.conf.fields.constraints.options: Constraint options
+plugin.form_builder.conf.fields.constraints.options.help: 'Expression for the options for the validator.<br>For applicable options for each constraint, see <a href="https://symfony.com/doc/2.8/reference/constraints.html">validation constraint reference</a>'
+
+# Form template plugin
+plugin.form_template.title: 'Form template'
+plugin.form_template.conf.formType: Form type (configuration file)
+plugin.form_template.conf.admin_enrollment_list_fields: Fields to show in the enrollments list
+plugin.form_template.conf.admin_enrollment_list_field.add_button: Add field
+plugin.form_template.conf.admin_enrollment_list_field.delete_button: Remove field
+
+# Prefill user data plugin
+plugin.prefill_user_data.title: 'Prefill user data'
+
+# Pricing plugin
+plugin.pricing.title: 'Pricing'
+plugin.pricing.conf.formula: 'Price calculation'
+plugin.pricing.conf.formula.help: 'Available functions: if(condition, ifTrue, ifFalse); concat(strings...)<br>Available variables: formData, _locale'
+plugin.pricing.conf.payment_expression: 'Payment details template'
+plugin.pricing.conf.payment_expression.help: 'Available functions: if(condition, ifTrue, ifFalse); concat(strings...)<br>Available variables: formData, totalPrice, _locale'
+plugin.pricing.facet.payment: Payment
+plugin.pricing.facet.payment.paid_only: Paid only
+plugin.pricing.facet.payment.unpaid_only: Unpaid only
+plugin.pricing.batch.mark_paid: Mark paid
+plugin.pricing.enrollment.totalPrice: Total price
+plugin.pricing.enrollment.paidAmount: Amount paid
+plugin.pricing.enrollment.paid: Paid
+plugin.pricing.enrollment.paid_partially: Partially paid
+plugin.pricing.enrollment.paid_partially.amount: '&euro;&nbsp;%amount% paid'
+
+# Role differentiation plugin
+plugin.role_differentiation.title: 'Role differentiation'
+plugin.role_differentiation.conf.help: Configuration is applied from top to bottom
+plugin.role_differentiation.conf.rules: Rules
+plugin.role_differentiation.conf.rules.add_button: Add rule
+plugin.role_differentiation.conf.rules.delete_button: Remove rule
+plugin.role_differentation.conf.rules.condition: If
+plugin.role_differentation.conf.rules.condition.help: 'Available functions: is_anonymous(), is_authenticated(), is_fully_authenticated(), has_role(role)<br>Available variables: token, user, roles'
+plugin.role_differentation.conf.rules.target_form: Go to form
+plugin.role_differentation.conf.rules.target_form.deny_access: Deny access
+plugin.role_differentiation.ui.logged_out_warning: '<p>Pricing might change if you log in! You are currently not logged in.</p><p><a href="%login_url%" class="alert-link">Do you want to log in?</a></p>'
+
+# Unique fields plugin
+plugin.unique_fields.title: 'Unique fields'
+plugin.unique_fields.conf.fields: Fields
+plugin.unique_fields.conf.fields.add_button: Add field
+plugin.unique_fields.conf.fields.delete_button: Remove field
+plugin.unique_fields.error.duplicate_value: 'This value is not allowed to be present in multiple enrollments.'
+
+# Unique user plugin
+plugin.unique_user.title: 'One submission per user'
+plugin.unique_user.error.duplicate_submission: 'This form can only be submitted once per user.'
+plugin.unique_user.ui.duplicate_submission: 'You already submitted an enrollment. <a href="%enrollment_url%" class="alert-link">Show my enrollment</a>'

@@ -26,7 +26,9 @@ class SubmitButtonListener implements EventSubscriberInterface
         }
         $event->getFormBuilder()
             ->get('actions')
-            ->add('submit', SubmitType::class);
+            ->add('submit', SubmitType::class, [
+                'label' => 'form.submit',
+            ]);
     }
 
 }

@@ -1,12 +1,12 @@
-<h4>{% trans %}Pricing{% endtrans %}</h4>
+<h4>{{ 'plugin.pricing.title'|trans }}</h4>
 <dl class="dl-horizontal">
-    <dt>{% trans %}Total price{% endtrans %}</dt><dd>&euro;&nbsp;{{ pluginData.totalPrice|number_format(2) }}</dd>
-    <dt>{% trans %}Amount paid{% endtrans %}</dt><dd>
+    <dt>{{ 'plugin.pricing.enrollment.totalPrice'|trans }}</dt><dd>&euro;&nbsp;{{ pluginData.totalPrice|number_format(2) }}</dd>
+    <dt>{{ 'plugin.pricing.enrollment.paidAmount'|trans }}</dt><dd>
         &euro;&nbsp;{{ pluginData.paidAmount|default(0)|number_format(2) }}
         {% if pluginData.paidAmount|default(0) == pluginData.totalPrice %}
-            {{ label_success('Paid') }}
+            {{ label_success('plugin.pricing.enrollment.paid'|trans) }}
         {% elseif pluginData.paidAmount|default(0) > 0 %}
-            {{ label_warning('Partially paid') }}
+            {{ label_warning('plugin.pricing.enrollment.paid_partially'|trans) }}
         {% endif %}
     </dd>
 </dl>
