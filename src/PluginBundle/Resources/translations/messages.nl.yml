@@ -1,0 +1,123 @@
+admin.none_placeholder: '(Geen)'
+plugin.label.enabled: Actief
+plugin.label.disabled: Inactief
+plugin.label.required: Vereist
+plugin.facet.all: Alle
+
+# Count enrollments plugin
+plugin.count_enrollments.title: 'Tel inschrijvingen'
+plugin.count_enrollments.conf.maxEnrollments: 'Maximum aantal inschrijvingen'
+plugin.count_enrollments.conf.denyEnrollments: 'Blokkeer verdere inschrijvingen'
+plugin.count_enrollments.conf.denyEnrollments.help: 'Wanneer het maximum aantal inschrijvingen is bereikt, zullen geen verdere toegelaten worden.'
+plugin.count_enrollments.conf.countExpression: 'Tel-uitdrukking'
+plugin.count_enrollments.conf.countExpression.help: 'Beschikbare functies : if(condition, ifTrue, ifFalse)<br>Bechikbare variabelen: formData'
+plugin.count_enrollments.error.event_full: 'Dit evenenment is vol.'
+plugin.count_enrollments.error.not_enough_spots: 'Er zijn niet voldoende plaatsen meer beschikbaar om deze inschrijving te verwerken.'
+plugin.count_enrollments.facet.waiting_list: 'Wachtlijst'
+plugin.count_enrollments.facet.waiting_list.participants: 'Enkel deelnemers'
+plugin.count_enrollments.facet.waiting_list.waiting_list: 'Enkel wachtlijst'
+plugin.count_enrollments.conf.denyEnrollments.enabled.help: 'Wanneer het maximum aantal inschrijvingen is bereikt, zullen geen verdere toegelaten worden.'
+plugin.count_enrollments.conf.denyEnrollments.disabled.help: 'Wanneer het maximum aantal inschrijvingen is bereikt, zullen gebruikers op een wachtlijst geplaatst worden.'
+plugin.enrollment_count.ui.event_full_closed: '<strong>Dit evenement is vol</strong>, je kan je niet meer inschrijven.'
+plugin.enrollment_count.event_full: '<strong>Dit evenement is vol</strong>, maar je kan jezelf op de wachtlijst zetten. Op dit moment staan er <strong>%count</strong> mensen op de wachtlijst.'
+plugin.enrollment_count.event_open: 'Er is nog één plaats beschikbaar.|Er zijn nog %count% plaatsen beschikbaar.'
+
+# Date plugin
+plugin.date.title: 'Datum'
+plugin.date.conf.start_date: 'Start datum'
+plugin.date.conf.end_date: 'Eind datum'
+plugin.date.ui.too_soon: 'Dit formulier is nog niet open.'
+plugin.date.ui.too_late: 'Dit formulier is niet meer open.'
+
+# Form builder plugin
+plugin.form_builder.title: 'Formulier bouwer'
+plugin.form_builder.conf.fields: Velden
+plugin.form_builder.conf.fields.add_button: Veld toevoegen
+plugin.form_builder.conf.fields.delete_button: Veld verwijderen
+plugin.form_builder.conf.fields.name: Veld naam
+plugin.form_builder.conf.fields.name.constraints.characters: Deze waarde mag enkel kleine letters, getallen en underscores bevatten.
+plugin.form_builder.conf.fields.type: Veld type
+plugin.form_builder.conf.fields.type.choice.TextType: Text veld
+plugin.form_builder.conf.fields.type.choice.EmailType: Email veld
+plugin.form_builder.conf.fields.type.choice.IntegerType: Integer veld
+plugin.form_builder.conf.fields.type.choice.UrlType: URL veld
+plugin.form_builder.conf.fields.type.choice.CheckboxType: Selectievakje
+plugin.form_builder.conf.fields.type.choice.ChoiceType: Meerkeuze
+plugin.form_builder.conf.fields.type.choice.DateType: Datum
+plugin.form_builder.conf.fields.type.choice.DateTimeType: Datum en tijd
+plugin.form_builder.conf.fields.type.choice.TimeType: Tijd
+plugin.form_builder.conf.fields.show_in_enrollment_list: Laat dit veld zien in de inschrijvingslijst
+plugin.form_builder.conf.fields.required: Dit veld is vereist  (client-side hint only, en moet gevalideerd worden met een beperking)
+plugin.form_builder.conf.fields.disabled: Dit veld is uitgeschakeld
+plugin.form_builder.conf.fields.options: Andere veld opties
+plugin.form_builder.conf.fields.options.help: 'Uitdrukking voor de opties van het veld.<br>Gebruik de <a href="http://symfony.com/doc/2.8/reference/forms/types.html">form types reference</a> om de opties voor elk veldtype te bekijken.'
+plugin.form_builder.conf.fields.constraints: Beperkingen
+plugin.form_builder.conf.fields.constraints.add_button: Beperking toevoegen
+plugin.form_builder.conf.fields.constraints.delete_button: Beperking verwijderen
+plugin.form_builder.conf.fields.constraints.type: Beperkings type
+plugin.form_builder.conf.fields.constraints.type.choice.NotBlank: Mag niet leeg zijn (NotBlank)
+plugin.form_builder.conf.fields.constraints.type.choice.Blank: Moet leeg zijn (Blank)
+plugin.form_builder.conf.fields.constraints.type.choice.Email: Moet een geldig mailadres zijn (Email)
+plugin.form_builder.conf.fields.constraints.type.choice.Length: Moet een minimum/maximale lengte hebben (Length)
+plugin.form_builder.conf.fields.constraints.type.choice.Url: Moet een geldige URL zijn (Url)
+plugin.form_builder.conf.fields.constraints.type.choice.Regex: Moet een regex matchen (Regex)
+plugin.form_builder.conf.fields.constraints.type.choice.Choice: Moet één van deze opties zijn (Choice)
+plugin.form_builder.conf.fields.constraints.type.choice.Range: Moet binnen dit bereik liggen (Range)
+plugin.form_builder.conf.fields.constraints.type.choice.EqualTo: Moet gelijk zijn aan (EqualTo)
+plugin.form_builder.conf.fields.constraints.type.choice.NotEqualTo: Mag niet gelijk zijn aan (NotEqualTo)
+plugin.form_builder.conf.fields.constraints.type.choice.LessThan: Moet minder zijn dan (LessThan)
+plugin.form_builder.conf.fields.constraints.type.choice.LessThanOrEqual: Moet minder dan of gelijk zijn aan (LessThanOrEqual)
+plugin.form_builder.conf.fields.constraints.type.choice.GreaterThan: Moet meer zijn dan (GreaterThan)
+plugin.form_builder.conf.fields.constraints.type.choice.GreaterThanOrEqual: Moet meer dan of gelijk zijn aan (GreaterThanOrEqual)
+plugin.form_builder.conf.fields.constraints.options: Beperkingsopties
+plugin.form_builder.conf.fields.constraints.options.help: 'Uitdrukking voor de opties van de beperking.<br>Gebruik de <a href="https://symfony.com/doc/2.8/reference/constraints.html">validation constraint reference</a> om de opties voor elke beperking te bekijken'
+
+# Form template plugin
+plugin.form_template.title: 'Formulier template'
+plugin.form_template.conf.formType: Formulier type (configuratie bestand)
+plugin.form_template.conf.admin_enrollment_list_fields: Velden om te laten zien in de inschrijvingslijst
+plugin.form_template.conf.admin_enrollment_list_field.add_button: Veld toevoegen
+plugin.form_template.conf.admin_enrollment_list_field.delete_button: Veld verwijderen
+
+# Prefill user data plugin
+plugin.prefill_user_data.title: 'Vul gebruikersgegevens op voorhand in'
+
+# Pricing plugin
+plugin.pricing.title: 'Prijzen'
+plugin.pricing.conf.formula: 'Prijs berekening'
+plugin.pricing.conf.formula.help: 'Beschikbare functies: if(condition, ifTrue, ifFalse); concat(strings...)<br>Beschikbare variabelen: formData, _locale'
+plugin.pricing.conf.payment_expression: 'Betalingsinformatie template'
+plugin.pricing.conf.payment_expression.help: 'Beschikbare functies: if(condition, ifTrue, ifFalse); concat(strings...)<br>Beschikbare variabelen: formData, totalPrice, _locale'
+plugin.pricing.facet.payment: Betaling
+plugin.pricing.facet.payment.paid_only: Enkel betaalde
+plugin.pricing.facet.payment.unpaid_only: Enkel onbetaalde
+plugin.pricing.batch.mark_paid: Markeren als betaald
+plugin.pricing.enrollment.totalPrice: Totale prijs
+plugin.pricing.enrollment.paidAmount: Betaalde hoeveelheid
+plugin.pricing.enrollment.paid: Betaald
+plugin.pricing.enrollment.paid_partially: Gedeeltelijk betaald
+plugin.pricing.enrollment.paid_partially.amount: '&euro;&nbsp;%amount% betaald'
+
+# Role differentiation plugin
+plugin.role_differentiation.title: 'Onderscheid tussen groepen'
+plugin.role_differentiation.conf.help: Instellingen worden van boven naar onder toegepast.
+plugin.role_differentiation.conf.rules: Instellingen
+plugin.role_differentiation.conf.rules.add_button: Instelling toevoegen
+plugin.role_differentiation.conf.rules.delete_button: Instelling verwijderen
+plugin.role_differentation.conf.rules.condition: Als
+plugin.role_differentation.conf.rules.condition.help: 'Beschikbare functies: is_anonymous(), is_authenticated(), is_fully_authenticated(), has_role(role)<br>Beschikbare variabelen: token, user, roles'
+plugin.role_differentation.conf.rules.target_form: Ga naar formulier
+plugin.role_differentation.conf.rules.target_form.deny_access: Weiger toegang
+plugin.role_differentiation.ui.logged_out_warning: '<p>Prijzen kunnen veranderen als je inlogt! Op dit moment ben je niet ingelogd.</p><p><a href="%login_url%" class="alert-link">Wil je je inloggen?</a></p>'
+
+# Unique fields plugin
+plugin.unique_fields.title: 'Unieke velden'
+plugin.unique_fields.conf.fields: Velden
+plugin.unique_fields.conf.fields.add_button: Veld toevoegen
+plugin.unique_fields.conf.fields.delete_button: Veld verwijderen
+plugin.unique_fields.error.duplicate_value: 'Deze waarde mag geen tweemaal gebruikt worden voor dit formulier.'
+
+# Unique user plugin
+plugin.unique_user.title: 'Één inschrijving per gebruiker'
+plugin.unique_user.error.duplicate_submission: 'Dit formulier kan slechts éénmaal per gebruiker ingezonden worden.'
+plugin.unique_user.ui.duplicate_submission: 'Je hebt al een inschrijving verzonden. <a href="%enrollment_url%" class="alert-link">Bekijk mijn inschrijving</a>'
