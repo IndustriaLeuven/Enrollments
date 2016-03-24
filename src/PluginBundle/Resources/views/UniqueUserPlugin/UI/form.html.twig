@@ -2,7 +2,7 @@
     {{ 'plugin.unique_user.ui.duplicate_submission'|trans({'%enrollment_url%': url('app_get_enrollment_submission', {
         'form': form.id,
         'enrollment': enrollments.first.id
-    })}) }}
+    })})|raw }}
 </div>
 <script>
     document.location.href = "{{ url('app_get_enrollment_submission', {

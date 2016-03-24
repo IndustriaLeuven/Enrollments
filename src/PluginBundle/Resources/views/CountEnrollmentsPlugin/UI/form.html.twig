@@ -1,15 +1,15 @@
 {% if enrollmentCount >= pluginData.maxEnrollments %}
     {% if pluginData.denyEnrollments %}
         <div class="alert alert-danger">
-            {{ 'plugin.enrollment_count.ui.event_full_closed'|trans }}
+            {{ 'plugin.enrollment_count.ui.event_full_closed'|trans|raw }}
         </div>
     {% else %}
         <div class="alert alert-warning">
-            {{ 'plugin.enrollment_count.event_full'|transchoice(enrollmentCount-pluginData.maxEnrollments, {'%count%': enrollmentCount-pluginData.maxEnrollments}) }}
+            {{ 'plugin.enrollment_count.event_full'|transchoice(enrollmentCount-pluginData.maxEnrollments, {'%count%': enrollmentCount-pluginData.maxEnrollments})|raw }}
         </div>
     {% endif %}
 {% else %}
     <div class="alert alert-info">
-        {{ 'plugin.enrollment_count.event_open'|transchoice(pluginData.maxEnrollments-enrollmentCount, {'%count%': pluginData.maxEnrollments-enrollmentCount}) }}
+        {{ 'plugin.enrollment_count.event_open'|transchoice(pluginData.maxEnrollments-enrollmentCount, {'%count%': pluginData.maxEnrollments-enrollmentCount})|raw }}
     </div>
 {% endif %}

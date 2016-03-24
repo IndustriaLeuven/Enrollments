@@ -1,3 +1,3 @@
 <div class="alert alert-warning">
-    {{ 'plugin.role_differentiation.ui.logged_out_warning'|trans({'%login_url%': url('login', {'target': app.request.requestUri})}) }}
+    {{ 'plugin.role_differentiation.ui.logged_out_warning'|trans({'%login_url%': url('login', {'target': app.request.requestUri})})|raw }}
 </div>
