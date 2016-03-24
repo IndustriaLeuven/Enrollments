@@ -1,7 +1,7 @@
-<h4>{% trans %}Form template{% endtrans %}</h4>
+<h4>{{ 'plugin.form_template.title'|trans }}</h4>
 <dl class="dl-horizontal">
-   <dt>{% trans %}Form Type{% endtrans %}</dt><dd>{{ pluginData.formType }}</dd>
-   <dt>{% trans %}Admin enrollment list fields{% endtrans %}</dt><dd>
+   <dt>{{ 'plugin.form_template.conf.formType'|trans }}</dt><dd>{{ pluginData.formType }}</dd>
+   <dt>{{ 'plugin.form_template.conf.admin_enrollment_list_fields'|trans }}</dt><dd>
       {% for field in pluginData.admin_enrollment_list_fields %}
          {{ field }}<br>
       {% endfor %}

@@ -51,8 +51,11 @@ class UniqueFieldsPluginListener implements EventSubscriberInterface
     {
         $this->buildPluginForm($event, self::PLUGIN_NAME)
             ->add('fields', BootstrapCollectionType::class, [
+                'label' => 'plugin.unique_fields.conf.fields',
                 'allow_add' => true,
+                'add_button_text' => 'plugin.unique_fields.conf.fields.add_button',
                 'allow_delete' => true,
+                'delete_button_text' => 'plugin.unique_fields.conf.fields.delete_button',
                 'type' => TextType::class,
             ])
         ;
@@ -84,7 +87,7 @@ class UniqueFieldsPluginListener implements EventSubscriberInterface
             foreach($fieldPath as $fieldName)
                 if($field->has($fieldName))
                     $field = $field->get($fieldName);
-            $formError = new FormError('This value is not allowed to be present in multiple enrollments.');
+            $formError = new FormError('plugin.unique_fields.error.duplicate_value');
             $field->addError($formError);
         }
         switch($event->getType()) {

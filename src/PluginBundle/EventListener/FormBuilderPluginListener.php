@@ -66,10 +66,11 @@ class FormBuilderPluginListener implements EventSubscriberInterface
     {
         $this->buildPluginForm($event, self::PLUGIN_NAME)
             ->add('fields', BootstrapCollectionType::class, [
+                'label' => 'plugin.form_builder.conf.fields',
                 'allow_add' => true,
-                'add_button_text' => 'Add field',
+                'add_button_text' => 'plugin.form_builder.conf.fields.add_button',
                 'allow_delete' => true,
-                'delete_button_text' => 'Remove field',
+                'delete_button_text' => 'plugin.form_builder.conf.fields.delete_button',
                 'required' => false,
                 'type' => FormBuilderPluginConfigFormFieldType::class,
                 'options' => [

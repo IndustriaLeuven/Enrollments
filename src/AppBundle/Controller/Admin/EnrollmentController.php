@@ -248,6 +248,7 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
     {
         return $this->createFormBuilder()
             ->add('delete', SubmitType::class, [
+                'label' => 'admin.form.delete',
                 'button_class' => 'danger'
             ])
             ->setMethod('DELETE')
@@ -264,6 +265,7 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
     {
         $deleteForm = $this->createFormBuilder()
             ->add('delete', SubmitType::class, [
+                'label' => 'admin.form.delete',
                 'button_class' => 'danger'
             ])
             ->setMethod('DELETE')
@@ -339,7 +341,9 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
                 'choices_as_values' => true,
                 'choices' => $event->getChoices(),
             ])
-            ->add('submit', 'submit')
+            ->add('submit', 'submit', [
+                'label' => 'form.submit',
+            ])
             ->setMethod('POST')
             ->setAction($this->generateUrl('admin_batch_form_enrollment', ['form' => $form->getId()]))
             ->getForm()

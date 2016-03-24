@@ -83,9 +83,9 @@ class PricingPluginListener implements EventSubscriberInterface
     {
         $this->buildPluginForm($event, self::PLUGIN_NAME)
             ->add('formula', TextareaType::class, [
+                'label' => 'plugin.pricing.conf.formula',
                 'attr' => [
-                    'help_text' => "Available functions: if(condition, ifTrue, ifFalse); concat(strings...)<br>".
-                        "Available variables: formData, _locale",
+                    'help_text' => 'plugin.pricing.conf.formula.help',
                 ],
                 'required' => false,
                 'constraints' => [
@@ -97,9 +97,9 @@ class PricingPluginListener implements EventSubscriberInterface
                 ]
             ])
             ->add('payment_expression', TextareaType::class, [
+                'label' => 'plugin.pricing.conf.payment_expression',
                 'attr' => [
-                    'help_text' => "Available functions: if(condition, ifTrue, ifFalse); concat(strings...)<br>".
-                        "Available variables: formData, totalPrice, _locale",
+                    'help_text' => 'plugin.pricing.conf.payment_expression.help',
                 ],
                 'required' => false,
                 'constraints' => [
@@ -131,10 +131,10 @@ class PricingPluginListener implements EventSubscriberInterface
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
 
-        $event->setSimpleFacet('pricing', 'money', [
-            'Paid only' => ['pricing' => ['status' => 'paid']],
-            'Unpaid only' => ['pricing' => ['status' => 'unpaid']],
-            'All' => ['pricing' => ['status' => null]],
+        $event->setSimpleFacet('plugin.pricing.facet.payment', 'money', [
+            'plugin.pricing.facet.payment.paid_only' => ['pricing' => ['status' => 'paid']],
+            'plugin.pricing.facet.payment.unpaid_only' => ['pricing' => ['status' => 'unpaid']],
+            'plugin.facet.all' => ['pricing' => ['status' => null]],
         ]);
 
         $queryData = $event->getQueryString()->get('pricing', []);
@@ -185,7 +185,7 @@ class PricingPluginListener implements EventSubscriberInterface
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
         $plugin_name = self::PLUGIN_NAME;
-        $event->setAction(self::PLUGIN_NAME.'_mark_paid', 'Mark paid', function(Enrollment $enrollment) use($plugin_name) {
+        $event->setAction(self::PLUGIN_NAME.'_mark_paid', 'plugin.pricing.batch.mark_paid', function(Enrollment $enrollment) use($plugin_name) {
             if(!$enrollment->getPluginData()->has($plugin_name))
                 return;
             $pluginData = $enrollment->getPluginData()->get($plugin_name);
@@ -211,9 +211,12 @@ class PricingPluginListener implements EventSubscriberInterface
         $this->buildEnrollmentEditForm($event, self::PLUGIN_NAME)
             ->setData($event->getEnrollment()->getPluginData()->get(self::PLUGIN_NAME))
             ->add('totalPrice', MoneyType::class, [
+                'label' => 'plugin.pricing.enrollment.totalPrice',
                 'disabled' => true,
             ])
-            ->add('paidAmount', MoneyType::class)
+            ->add('paidAmount', MoneyType::class, [
+                'label' => 'plugin.pricing.enrollment.paidAmount',
+            ])
         ;
     }
 

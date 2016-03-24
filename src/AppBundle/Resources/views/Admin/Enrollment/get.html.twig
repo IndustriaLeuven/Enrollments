@@ -1,8 +1,8 @@
 {% extends 'AppBundle:Admin/Enrollment:skeleton.html.twig' %}
-{% block title %}{% trans %}View{% endtrans %} | {{ parent() }}{% endblock %}
+{% block title %}{{ 'admin.navigation.view'|trans }} | {{ parent() }}{% endblock %}
 {% block content %}
     <div class="panel-heading">
-        <h3 class="panel-title">{{ icon('file-text-o') }} {% trans %}Enrollment for{% endtrans %} {{ form.name }}</h3>
+        <h3 class="panel-title">{{ icon('file-text-o') }} {{ 'admin.enrollment.view.title'|trans({'%name%': form.name}) }}</h3>
     </div>
     <div class="panel-body">
         {% for template in data.templates %}

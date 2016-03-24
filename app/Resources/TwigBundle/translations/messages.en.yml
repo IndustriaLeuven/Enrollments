@@ -1,0 +1,9 @@
+app.error.message: Error message: %message%
+app.error.title: Oops! An error occured.
+app.error.description: This should not have happened...
+app.error.403.title: Access denied
+app.error.403.description: You do not have access to this page
+app.error.404.title: Page not found
+app.error.404.description: The page you requested does not exist.
+app.error.503.title: Maintenance
+app.error.503.description: The application is currently undergoing maintenance. Please try again later.

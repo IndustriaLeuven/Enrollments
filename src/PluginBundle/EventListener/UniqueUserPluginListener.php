@@ -92,7 +92,7 @@ class UniqueUserPluginListener implements EventSubscriberInterface
 
         if($this->hasEnrollments($event)) {
             $event->getSubmittedForm()
-                ->addError(new FormError('This form can only be submitted once per user'));
+                ->addError(new FormError('plugin.unique_user.error.duplicate_submission'));
         }
     }
     /**

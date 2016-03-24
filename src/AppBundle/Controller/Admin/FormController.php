@@ -127,6 +127,7 @@ class FormController extends BaseController implements ClassResourceInterface
     {
         return $this->createFormBuilder()
             ->add('delete', SubmitType::class, [
+                'label' => 'admin.form.delete',
                 'button_class' => 'danger'
             ])
             ->setMethod('DELETE')
@@ -143,6 +144,7 @@ class FormController extends BaseController implements ClassResourceInterface
     {
         $submittedForm = $this->createFormBuilder()
             ->add('delete', SubmitType::class, [
+                'label' => 'admin.form.delete',
                 'button_class' => 'danger'
             ])
             ->setMethod('DELETE')
@@ -170,12 +172,15 @@ class FormController extends BaseController implements ClassResourceInterface
     private function buildPluginForm(Form $form = null)
     {
         $formBuilder = $this->createFormBuilder($form, ['data_class'=>Form::class]);
-        $formBuilder->add('name', TextType::class);
+        $formBuilder->add('name', TextType::class, [
+            'label' => 'admin.form.name',
+        ]);
 
         $authserverGroupsLoader = new AuthserverGroupsChoiceLoader($this->get('authserver.client'), ['exportable' => '1']);
 
         foreach(['editFormGroups', 'listEnrollmentsGroups', 'editEnrollmentsGroups'] as $field)
             $formBuilder->add($field, BootstrapCollectionType::class, [
+                'label' => 'admin.form.'.$field,
                 'type' => ChoiceType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
@@ -190,7 +195,9 @@ class FormController extends BaseController implements ClassResourceInterface
 
         $this->getEventDispatcher()->dispatch(PluginEvents::BUILD_FORM, new PluginBuildFormEvent($formBuilder->get('plugin_data'), $form));
         /* @var $buildConfigEvent PluginBuildFormEvent */
-        return $formBuilder->add('submit', SubmitType::class);
+        return $formBuilder->add('submit', SubmitType::class, [
+            'label' => 'form.submit',
+        ]);
     }
 
 }

@@ -12,15 +12,15 @@
           {% endblock %}
         </span>
         </h1>
-        <h1>{% block error_title %}Oops! An error occured.{% endblock %} <small>{{ status_code }} {{ status_text }}</small></h1>
+        <h1>{% block error_title %}{{ 'app.error.title'|trans }}{% endblock %} <small>{{ status_code }} {{ status_text }}</small></h1>
       </div>
     </div>
     <div class="row">
       <div class="col-xs-12 col-md-6 col-md-offset-3">
         {% block error_description %}
-        <p>This should not have happened.</p>
+        <p>{{ 'app.error.description'|trans }}</p>
         {% endblock %}
-        <p class="text-muted">Error message: {{ exception.message }}</p>
+        <p class="text-muted">{{ 'app.error.message'|trans({'%message%': exception.message}) }}</p>
       </div>
     </div>
   </div>

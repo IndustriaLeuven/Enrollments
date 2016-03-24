@@ -21,6 +21,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class FormTemplatePluginListener implements EventSubscriberInterface
 {
@@ -60,12 +61,16 @@ class FormTemplatePluginListener implements EventSubscriberInterface
     {
         $this->buildPluginForm($event, self::PLUGIN_NAME)
             ->add('formType', ChoiceType::class, [
+                'label' => 'plugin.form_template.conf.formType',
                 'choice_loader' => new FinderChoiceLoader(Finder::create()->files()->in($this->searchDir), '.php'),
             ])
             ->add('admin_enrollment_list_fields', BootstrapCollectionType::class, [
+                'label' => 'plugin.form_template.conf.admin_enrollment_list_fields',
                 'allow_add' => true,
+                'add_button_text' => 'plugin.form_template.conf.admin_enrollment_list_field.add_button',
                 'allow_delete' => true,
-                'type' => 'text',
+                'delete_button_text' => 'plugin.form_template.conf.admin_enrollment_list_field.delete_button',
+                'type' => TextType::class,
             ])
         ;
     }

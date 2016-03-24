@@ -1,0 +1,9 @@
+app.error.message: Fout boodschap: %message%
+app.error.title: Oeps! Er is een fout opgetreden
+app.error.description: Dat was niet de bedoeling...
+app.error.403.title: Toegang geweigerd
+app.error.403.description: Je hebt geen toegang tot deze pagina
+app.error.404.title: Pagina niet gevonden
+app.error.404.description: De pagina die je opvraagde is nergens terug te vinden
+app.error.503.title: Onderhoud
+app.error.503.description: Deze applicatie is op dit moment in onderhoud. Probeer het later eens opnieuw!

@@ -29,25 +29,27 @@ class FormBuilderPluginConfigConstraintType extends AbstractType
     {
         $builder
             ->add('type', ChoiceType::class, [
+                'label' => 'plugin.form_builder.conf.fields.constraints.type',
                 'choices' => [
-                    'NotBlank' => NotBlank::class,
-                    'Blank' => Blank::class,
-                    'Email' => Email::class,
-                    'Length' => Length::class,
-                    'Url' => Url::class,
-                    'Regex' => Regex::class,
-                    'Choice' => Choice::class,
-                    'Range' => Range::class,
-                    'EqualTo' => EqualTo::class,
-                    'NotEqualTo' => NotEqualTo::class,
-                    'LessThan' => LessThan::class,
-                    'LessThanOrEqual' => LessThanOrEqual::class,
-                    'GreaterThan' => GreaterThan::class,
-                    'GreaterThanOrEqual' => GreaterThanOrEqual::class,
+                    'plugin.form_builder.conf.fields.constraints.type.choice.NotBlank' => NotBlank::class,
+                    'plugin.form_builder.conf.fields.constraints.type.choice.Blank' => Blank::class,
+                    'plugin.form_builder.conf.fields.constraints.type.choice.Email' => Email::class,
+                    'plugin.form_builder.conf.fields.constraints.type.choice.Length' => Length::class,
+                    'plugin.form_builder.conf.fields.constraints.type.choice.Url' => Url::class,
+                    'plugin.form_builder.conf.fields.constraints.type.choice.Regex' => Regex::class,
+                    'plugin.form_builder.conf.fields.constraints.type.choice.Choice' => Choice::class,
+                    'plugin.form_builder.conf.fields.constraints.type.choice.Range' => Range::class,
+                    'plugin.form_builder.conf.fields.constraints.type.choice.EqualTo' => EqualTo::class,
+                    'plugin.form_builder.conf.fields.constraints.type.choice.NotEqualTo' => NotEqualTo::class,
+                    'plugin.form_builder.conf.fields.constraints.type.choice.LessThan' => LessThan::class,
+                    'plugin.form_builder.conf.fields.constraints.type.choice.LessThanOrEqual' => LessThanOrEqual::class,
+                    'plugin.form_builder.conf.fields.constraints.type.choice.GreaterThan' => GreaterThan::class,
+                    'plugin.form_builder.conf.fields.constraints.type.choice.GreaterThanOrEqual' => GreaterThanOrEqual::class,
                 ],
                 'choices_as_values' => true,
             ])
             ->add('options', TextType::class, [
+                'label' => 'plugin.form_builder.conf.fields.constraints.options',
                 'constraints' => [
                     new NotBlank(),
                     new ExpressionLanguage([
@@ -57,8 +59,7 @@ class FormBuilderPluginConfigConstraintType extends AbstractType
                 ],
                 'data' => 'null',
                 'attr' => [
-                    'help_text' => 'Expression for the options for the validator.<br>'.
-                        'For applicable options for each constraint, see <a href="https://symfony.com/doc/2.8/reference/constraints.html">validation constraint reference</a>',
+                    'help_text' => 'plugin.form_builder.conf.fields.constraints.options.help',
                 ],
             ])
         ;

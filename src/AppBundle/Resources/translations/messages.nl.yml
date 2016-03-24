@@ -1,0 +1,47 @@
+label.name: Naam
+form.submit: Verzenden
+admin.actions: Acties
+admin.items_per_page: 'Items per pagina'
+app.enrollment_registered: Je inschrijving is opgeslaan. Hieronder vind je een kopie.
+app.menu.forms: '.icon-list-alt Formulieren'
+app.menu.documentation: '.icon-book Documentatie'
+
+# Forms
+admin.form.name: Naam
+admin.form.editFormGroups: 'Groepen die de configuratie van dit formulier mogen aanpassen'
+admin.form.listEnrollmentsGroups: 'Groepen die inschrijvingen van dit formulier mogen bekijken'
+admin.form.editEnrollmentsGroups: 'Groupen die inschrijvingen van dit formulier mogen bewerken'
+admin.form.delete: Verwijder
+admin.form.list.title: Formulieren
+admin.form.edit.title: 'Bewerk formulier %name%'
+admin.form.view.title: 'Formulier %name%'
+admin.form.new.title: 'Nieuw formulier'
+admin.form.delete.title: 'Verwijder formulie %name%'
+admin.form.title: Formulieren
+
+# Documentation
+admin.documentation.title: Documentatie
+admin.documentation.file: Bestand
+admin.documentation.description: Beschrijving
+
+# Enrollments
+admin.enrollment.view.title: 'Inschrijving voor %name%'
+admin.enrollment.edit.title: 'Bewerk inschrijving voor %name%'
+admin.enrollment.title: Inschrijvingen
+admin.enrollment.delete.title: 'Verwijder inschrijving voor %name%'
+admin.enrollment.list.title: 'Inschrijvingen voor %name%'
+admin.enrollment.list.num_results: '{0} Geen resultaten|%count% resultaat|%count% resultaten'
+admin.enrollment.download: 'Download lijst'
+admin.enrollment.no_settings: 'Er zijn geen plugin instellingen om te bewerken'
+
+# Navigation
+admin.navigation.title: Navigatie
+admin.navigation.view: Bekijk
+admin.navigation.edit: Bewerk
+admin.navigation.delete: Verwijder
+admin.navigation.copy: Kopieer
+admin.navigation.list: Lijst
+admin.navigation.new: Nieuw
+admin.navigation.enrollments: Inschrijvingen
+admin.navigation.form_admin: 'Formulier beheer'
+admin.navigation.form: 'Inschrijvingsformulier'

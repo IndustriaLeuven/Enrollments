@@ -2,7 +2,7 @@
 {% block content %}
     <div class="panel-heading clearfix">
         {% include 'AppBundle:Admin/Enrollment:cget_header_buttons.html.twig' %}
-        <h3 class="panel-title">{{ icon('file-text-o') }} {% trans %}Enrollments for{% endtrans %} {{ form.name }} {{ label(data.totalItemCount~' results') }}</h3>
+        <h3 class="panel-title">{{ icon('file-text-o') }} {{ 'admin.enrollment.list.title'|trans({'%name%': form.name}) }} {{ label('admin.enrollment.list.num_results'|transchoice(data.totalItemCount, {'%count%': data.totalItemCount})) }}</h3>
     </div>
     {% set use_batch = batch_form.action.vars.choices|length > 0 %}
     {% if use_batch %}
@@ -15,7 +15,7 @@
                     {% for columnDef in event.getFields('html') %}
                         <th>{{ columnDef.columnHeader }}</th>
                     {% endfor %}
-                    <th>Actions</th>
+                    <th>{{ 'admin.actions'|trans }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,14 +32,14 @@
                         <td>
                             {% spaceless %}
                                 <div class="btn-group btn-group-sm">
-                                    <a class="btn btn-info" href="{{ url('admin_get_form_enrollment', {form: form.id, enrollment: obj.id}) }}" title="View">
-                                        {{ icon('eye') }}<span class="sr-only">{% trans %}View{% endtrans %}</span>
+                                    <a class="btn btn-info" href="{{ url('admin_get_form_enrollment', {form: form.id, enrollment: obj.id}) }}" title="{{ 'admin.navigation.view'|trans }}">
+                                        {{ icon('eye') }}<span class="sr-only">{{ 'admin.navigation.view'|trans }}</span>
                                     </a>
-                                    <a class="btn btn-default {% if not is_granted('EDIT_ENROLLMENT', form) and not is_granted('ROLE_ADMIN') %}disabled{% endif %}" href="{{ url('admin_edit_form_enrollment', {form: form.id, enrollment: obj.id}) }}" title="Edit">
-                                        {{ icon('edit') }}<span class="sr-only">{% trans %}Edit{% endtrans %}</span>
+                                    <a class="btn btn-default {% if not is_granted('EDIT_ENROLLMENT', form) and not is_granted('ROLE_ADMIN') %}disabled{% endif %}" href="{{ url('admin_edit_form_enrollment', {form: form.id, enrollment: obj.id}) }}" title="{{ 'admin.navigation.edit'|trans }}">
+                                        {{ icon('edit') }}<span class="sr-only">{{ 'admin.navigation.edit'|trans }}</span>
                                     </a>
-                                    <a class="btn btn-danger {% if not is_granted('EDIT_ENROLLMENT', form) and not is_granted('ROLE_ADMIN') %}disabled{% endif %}" href="{{ url('admin_remove_form_enrollment', {form: form.id, enrollment: obj.id}) }}" title="Delete">
-                                        {{ icon('trash-o') }}<span class="sr-only">{% trans %}Delete{% endtrans %}</span>
+                                    <a class="btn btn-danger {% if not is_granted('EDIT_ENROLLMENT', form) and not is_granted('ROLE_ADMIN') %}disabled{% endif %}" href="{{ url('admin_remove_form_enrollment', {form: form.id, enrollment: obj.id}) }}" title="{{ 'admin.navigation.delete'|trans }}">
+                                        {{ icon('trash-o') }}<span class="sr-only">{{ 'admin.navigation.delete'|trans }}</span>
                                     </a>
                                 </div>
                             {% endspaceless %}

@@ -22,7 +22,7 @@ trait PluginConfigurationHelperTrait
     {
         $builder = $event->getFormBuilder()
             ->add($name, FieldsetType::class, [
-                'legend' => ucfirst(trim(strtolower(preg_replace(array('/([A-Z])/', '/[_\s]+/'), array('_$1', ' '), $name)))),
+                'legend' => 'plugin.'.$name.'.title',
                 'attr' => [
                     'doc_page' => $name.'.md',
                 ],
@@ -33,7 +33,7 @@ trait PluginConfigurationHelperTrait
             ])
             ->get($name)
             ->add('enable', CheckboxType::class, [
-                'label' => 'Enable',
+                'label' => 'plugin.label.enabled',
                 'required' => false,
                 'data' => !$event->isNew()&&$event->getForm()->getPluginData()->has($name),
             ]);
