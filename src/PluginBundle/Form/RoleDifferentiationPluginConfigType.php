@@ -41,7 +41,7 @@ class RoleDifferentiationPluginConfigType extends AbstractType
                 'placeholder' => 'plugin.role_differentation.conf.rules.target_form.deny_access',
             ])
             ->get('target_form')
-            ->addModelTransformer(new ReversedTransformer(new EntityToIdObjectTransformer($options['em'], 'AppBundle:Form')))
+            ->addModelTransformer(new IgnoreTransformErrorsTransformer(new ReversedTransformer(new EntityToIdObjectTransformer($options['em'], 'AppBundle:Form'))))
             ->addModelTransformer(new CallbackTransformer(function($object) {
                 if($object)
                     return ['id' => $object];
