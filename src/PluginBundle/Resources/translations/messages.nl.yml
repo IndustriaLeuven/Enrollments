@@ -121,3 +121,6 @@ plugin.unique_fields.error.duplicate_value: 'Deze waarde mag geen tweemaal gebru
 plugin.unique_user.title: 'Één inschrijving per gebruiker'
 plugin.unique_user.error.duplicate_submission: 'Dit formulier kan slechts éénmaal per gebruiker ingezonden worden.'
 plugin.unique_user.ui.duplicate_submission: 'Je hebt al een inschrijving verzonden. <a href="%enrollment_url%" class="alert-link">Bekijk mijn inschrijving</a>'
+
+# Internal form plugin
+plugin.internal_form.title: 'Intern formulier'

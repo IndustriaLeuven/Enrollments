@@ -121,3 +121,6 @@ plugin.unique_fields.error.duplicate_value: 'This value is not allowed to be pre
 plugin.unique_user.title: 'One submission per user'
 plugin.unique_user.error.duplicate_submission: 'This form can only be submitted once per user.'
 plugin.unique_user.ui.duplicate_submission: 'You already submitted an enrollment. <a href="%enrollment_url%" class="alert-link">Show my enrollment</a>'
+
+# Internal form plugin
+plugin.internal_form.title: 'Internal form'
