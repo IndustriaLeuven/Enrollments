@@ -21,6 +21,8 @@ class SubmitButtonListener implements EventSubscriberInterface
     {
         if($event->getFormBuilder()->getDisabled())
             return;
+        if(!$event->getFormBuilder()->count())
+            return;
         if(!$event->getFormBuilder()->has('actions')) {
             $event->getFormBuilder()->add('actions', FormActionsType::class);
         }
