@@ -124,3 +124,7 @@ plugin.unique_user.ui.duplicate_submission: 'You already submitted an enrollment
 
 # Internal form plugin
 plugin.internal_form.title: 'Internal form'
+
+# Divert enrollments plugin
+plugin.divert_enrollments.title: 'Divert enrollments'
+plugin.divert_enrollments.conf.target: 'Store enrollments in'

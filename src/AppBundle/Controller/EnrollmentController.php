@@ -43,7 +43,7 @@ class EnrollmentController extends BaseController implements ClassResourceInterf
             if(!$submittedForm->getErrors(true)->count()) {
                 $this->getEntityManager()->flush();
                 return $this->redirectToRoute('app_get_enrollment_submission', [
-                    'form' => $form->getId(),
+                    'form' => $enrollment->getForm()->getId(),
                     'enrollment' => $enrollment->getId(),
                 ]);
             }

@@ -124,3 +124,7 @@ plugin.unique_user.ui.duplicate_submission: 'Je hebt al een inschrijving verzond
 
 # Internal form plugin
 plugin.internal_form.title: 'Intern formulier'
+
+# Divert enrollments plugin
+plugin.divert_enrollments.title: 'Inschrijvingen omleiden'
+plugin.divert_enrollments.conf.target: 'Sla inschrijvingen op in'
