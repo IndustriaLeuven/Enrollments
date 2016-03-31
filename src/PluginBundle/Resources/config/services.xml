@@ -41,7 +41,7 @@
             </argument>
             <tag name="kernel.event_subscriber" />
         </service>
-        <service class="PluginBundle\EventListener\EmailConfirmationPluginListener">
+        <service class="PluginBundle\EventListener\EmailPluginListener">
             <argument type="service" id="twig" />
             <argument type="service" id="braincrafted_bootstrap.flash" />
             <argument type="service" id="mailer" />
