@@ -1,0 +1,14 @@
+<h4>{{ 'plugin.email.title'|trans }}</h4>
+{% for name,config in pluginData if config.enable %}
+    <h5>{{ ('plugin.email.conf.'~name~'.title')|trans }}</h5>
+    <dl class="dl-horizontal">
+        <dt>{{ 'plugin.email.conf.email_subject'|trans }}</dt>
+        <dd>
+            <pre>{{ config.emailSubject }}</pre>
+        </dd>
+        <dt>{{ 'plugin.email.conf.email_body'|trans }}</dt>
+        <dd>
+            <pre>{{ config.emailBody }}</pre>
+        </dd>
+    </dl>
+{% endfor %}

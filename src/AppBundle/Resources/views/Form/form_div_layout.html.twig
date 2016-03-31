@@ -4,9 +4,13 @@
         {% if attr.help_text is defined and attr.help_text is not empty %}
             {% set help_text = attr.help_text %}
         {% endif %}
+        {% if attr.help_text_arguments is defined %}
+            {% set help_text_arguments = attr.help_text_arguments %}
+        {% endif %}
         {% set help_text = help_text|default('') %}
+        {% set help_text_arguments = help_text_arguments|default('') %}
         {% if help_text is not empty %}
-            <span class="help-block">{{ help_text|trans({}, translation_domain)|raw }}</span>
+            <span class="help-block">{{ help_text|trans({'%arguments%':help_text_arguments}, translation_domain)|raw }}</span>
         {% endif %}
     {% endspaceless %}
 {% endblock form_help %}

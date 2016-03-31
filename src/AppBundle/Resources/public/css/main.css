@@ -35,6 +35,11 @@ footer .container {
     user-select: none;
 }
 
+#form_plugin_data fieldset fieldset {
+    /* Move nested fieldsets by a 20px margin */
+    margin-left: 20px;
+}
+
 .env-staging .navbar, .env-dev .navbar {
     background-color: #f00;
     border-color: #c00;

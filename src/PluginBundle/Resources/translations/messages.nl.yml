@@ -110,6 +110,15 @@ plugin.role_differentation.conf.rules.target_form: Ga naar formulier
 plugin.role_differentation.conf.rules.target_form.deny_access: Weiger toegang
 plugin.role_differentiation.ui.logged_out_warning: '<p>Prijzen kunnen veranderen als je inlogt! Op dit moment ben je niet ingelogd.</p><p><a href="%login_url%" class="alert-link">Wil je je inloggen?</a></p>'
 
+# Email plugin
+plugin.email.title: Email
+plugin.email.conf.enroll.title: Bij inschrijving
+plugin.email.conf.paid.title: Bij inschrijving gemarkeerd als betaald
+plugin.email.conf.paid_partially.title: Bij inschrijving gemarkeerd als gedeeltelijk betaald
+plugin.email.conf.email_subject: Email onderwerp
+plugin.email.conf.email_body: Email tekst
+plugin.email.twig_template: 'Twig template code. Bekijk de <a href="http://twig.sensiolabs.org/docs/templates.html">template designer documentation</a> voor syntax en beschikbare functies.<br>Beschikbare variabelen: %arguments%'
+
 # Unique fields plugin
 plugin.unique_fields.title: 'Unieke velden'
 plugin.unique_fields.conf.fields: Velden
