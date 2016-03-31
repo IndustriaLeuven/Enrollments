@@ -19,8 +19,10 @@ use AppBundle\Event\UIEvents;
 use AppBundle\Plugin\Table\CallbackTableColumnDefinition;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormStaticControlType;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\MoneyType;
+use PluginBundle\Event\PricingPaidAmountEditedEvent;
 use PluginBundle\ExpressionLanguage\LogicExpressionProvider;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
@@ -180,17 +182,21 @@ class PricingPluginListener implements EventSubscriberInterface
         }));
     }
 
-    public function onAdminEnrollmentBatch(EnrollmentBatchEvent $event)
+    public function onAdminEnrollmentBatch(EnrollmentBatchEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
     {
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
         $plugin_name = self::PLUGIN_NAME;
-        $event->setAction(self::PLUGIN_NAME.'_mark_paid', 'plugin.pricing.batch.mark_paid', function(Enrollment $enrollment) use($plugin_name) {
+        $event->setAction(self::PLUGIN_NAME.'_mark_paid', 'plugin.pricing.batch.mark_paid', function(Enrollment $enrollment) use($event, $plugin_name, $eventDispatcher) {
             if(!$enrollment->getPluginData()->has($plugin_name))
                 return;
             $pluginData = $enrollment->getPluginData()->get($plugin_name);
-            if(!isset($pluginData['paidAmount'])||$pluginData['paidAmount'] == 0)
+            if(!isset($pluginData['paidAmount']))
+                $pluginData['paidAmount'] = 0;
+            if($pluginData['paidAmount'] == 0) {
                 $enrollment->getPluginData()->add($plugin_name, ['paidAmount' => $pluginData['totalPrice']]);
+                $eventDispatcher->dispatch(PricingPaidAmountEditedEvent::EVENT_NAME, new PricingPaidAmountEditedEvent($event->getForm(), $enrollment, $pluginData['paidAmount'], $pluginData['totalPrice']));
+            }
         });
 
     }
@@ -220,9 +226,18 @@ class PricingPluginListener implements EventSubscriberInterface
         ;
     }
 
-    public function onAdminEnrollmentEditSubmit(EnrollmentEditSubmitEvent $event)
+    public function onAdminEnrollmentEditSubmit(EnrollmentEditSubmitEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
     {
+        if(!$event->getEnrollment()->getPluginData()->has(self::PLUGIN_NAME))
+            return;
+
+        $previousPluginData = $event->getEnrollment()->getPluginData()->get(self::PLUGIN_NAME);
+        if(!isset($previousPluginData['totalPrice']))
+            $previousPluginData['totalPrice'] = 0;
+        if(!isset($previousPluginData['paidAmount']))
+            $previousPluginData['paidAmount'] = 0;
         $this->submitEnrollmentEditForm($event, self::PLUGIN_NAME);
+        $eventDispatcher->dispatch(PricingPaidAmountEditedEvent::EVENT_NAME, new PricingPaidAmountEditedEvent($event->getForm(), $event->getEnrollment(), $previousPluginData['paidAmount'], $previousPluginData['totalPrice']));
     }
 
     public function onUIForm(SubmittedFormTemplateEvent $event)
@@ -245,7 +260,7 @@ class PricingPluginListener implements EventSubscriberInterface
         ]);
     }
 
-    public function onFormSubmit(SubmitFormEvent $event)
+    public function onFormSubmit(SubmitFormEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
     {
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
@@ -255,7 +270,17 @@ class PricingPluginListener implements EventSubscriberInterface
             'formData' => $formData,
             '_locale' => $this->requestStack->getMasterRequest()->attributes->get('_locale', 'en'),
         ]);
+        $previousPluginData = $event->getEnrollment()->getPluginData()->get(self::PLUGIN_NAME);
         $event->getEnrollment()->getPluginData()->add(self::PLUGIN_NAME,['totalPrice' => $totalPrice]);
+        if($event->getType() === SubmitFormEvent::TYPE_EDIT) {
+            if($previousPluginData === null)
+                $previousPluginData = [];
+            if(!isset($previousPluginData['totalPrice']))
+                $previousPluginData['totalPrice'] = 0;
+            if(!isset($previousPluginData['paidAmount']))
+                $previousPluginData['paidAmount'] = 0;
+            $eventDispatcher->dispatch(PricingPaidAmountEditedEvent::EVENT_NAME, new PricingPaidAmountEditedEvent($event->getForm(), $event->getEnrollment(), $previousPluginData['paidAmount'], $previousPluginData['totalPrice']));
+        }
     }
 
     public function onUISuccess(EnrollmentTemplateEvent $event)
@@ -280,6 +305,5 @@ class PricingPluginListener implements EventSubscriberInterface
                 'paymentDetails' => $paymentDetails,
             ]);
         }
-
     }
 }
