@@ -5,7 +5,6 @@ namespace PluginBundle\EventListener;
 use AppBundle\Entity\User;
 use AppBundle\Event\AdminEvents;
 use AppBundle\Event\Form\BuildFormEvent;
-use AppBundle\Event\Form\SetDataEvent;
 use AppBundle\Event\Form\SubmitFormEvent;
 use AppBundle\Event\FormEvents;
 use AppBundle\Event\Plugin\PluginBuildFormEvent;
@@ -50,8 +49,8 @@ class PrefillUserDataPluginListener implements EventSubscriberInterface
             PluginEvents::BUILD_FORM => 'onPluginBuildForm',
             PluginEvents::SUBMIT_FORM => 'onPluginSubmitForm',
             AdminEvents::FORM_GET => 'onAdminShowForm',
-            FormEvents::BUILD => 'onFormBuild',
-            FormEvents::SUBMIT => 'onFormSubmit',
+            FormEvents::BUILD => ['onFormBuild', -5],
+            FormEvents::SUBMIT => ['onFormSubmit', 5],
         ];
     }
 

@@ -76,7 +76,7 @@ class PricingPluginListener implements EventSubscriberInterface
             AdminEvents::ENROLLMENT_EDIT => 'onAdminEnrollmentEdit',
             AdminEvents::ENROLLMENT_EDIT_SUBMIT => 'onAdminEnrollmentEditSubmit',
             UIEvents::FORM => ['onUIForm', -253],
-            FormEvents::SUBMIT => 'onFormSubmit',
+            FormEvents::SUBMIT => ['onFormSubmit', -4],
             UIEvents::SUCCESS => ['onUISuccess', -253],
         ];
     }

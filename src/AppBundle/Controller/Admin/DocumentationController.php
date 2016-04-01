@@ -13,12 +13,9 @@ class DocumentationController extends Controller implements ClassResourceInterfa
 {
     const DOC_DIR = '/../../../../documentation/plugins/';
 
-    /**
-     * @View
-     */
     public function cgetAction()
     {
-        return $this->sidebarAction();
+        return $this->redirectToRoute('admin_get_documentation', ['doc'=>'index.md']);
     }
 
     /**

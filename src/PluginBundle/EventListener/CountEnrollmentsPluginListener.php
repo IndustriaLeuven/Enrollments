@@ -62,7 +62,7 @@ class CountEnrollmentsPluginListener implements EventSubscriberInterface
             AdminEvents::ENROLLMENT_LIST => 'onAdminEnrollmentList',
             AdminEvents::ENROLLMENT_DELETE => 'onAdminEnrollmentDelete',
             UIEvents::FORM => ['onUIForm', 256], // Has to be before RoleDifferentiationPluginListener, because enrollments are counted on the root form
-            FormEvents::SUBMIT => 'onFormSubmit',
+            FormEvents::SUBMIT => ['onFormSubmit', -5],
         ];
     }
 
