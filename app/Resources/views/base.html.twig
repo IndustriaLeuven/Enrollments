@@ -60,6 +60,14 @@
                 <span class="text-muted">{{ 'app.name'|trans }}</span>
             </div>
             <div class="col-xs-4 pull-right text-right text-muted">
+                {% set locales = ['en', 'nl'] %}
+                {% for locale in locales %}
+                    {% if app.request.attributes.get('_locale') != locale %}
+                        <a href="?_locale={{ locale }}">
+                            <img src="{{ asset('images/flag-'~locale~'.png') }}">
+                        </a>
+                    {% endif %}
+                {% endfor %}
                 {% spaceless %}
                     <span title="Env: {{ app.environment }}">
                                 {% if app.environment == 'prod' %}

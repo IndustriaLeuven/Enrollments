@@ -1,6 +1,13 @@
 assetic:
     debug:          %kernel.debug%
     use_controller: false
+    assets:
+        flag_en:
+            inputs: "../vendor/t1st3/famfamfam-flags/dist/png/us.png"
+            output: "images/flag-en.png"
+        flag_nl:
+            inputs: "../vendor/t1st3/famfamfam-flags/dist/png/nl.png"
+            output: "images/flag-nl.png"
     filters:
         cssrewrite: ~
         less:

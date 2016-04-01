@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ea19312e92c99dfc08d01175983a0744",
-    "content-hash": "ef945dfdf3e3db1c8ce74d3713602756",
+    "hash": "5ed267b66ec2a7df9e2838e820c85b6e",
+    "content-hash": "2225ae824125a2c2c20259c3b90e8561",
     "packages": [
         {
             "name": "adamquaile/symfony-fieldset-bundle",
@@ -3677,6 +3677,52 @@
             "time": "2016-01-14 12:01:11"
         },
         {
+            "name": "t1st3/famfamfam-flags",
+            "version": "0.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/t1st3/famfamfam-flags.git",
+                "reference": "37efc40be0563d2bb1be65e6ee6ef3a5a10e499d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/t1st3/famfamfam-flags/zipball/37efc40be0563d2bb1be65e6ee6ef3a5a10e499d",
+                "reference": "37efc40be0563d2bb1be65e6ee6ef3a5a10e499d",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "component": {
+                    "files": [
+                        "dist/*"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "t1st3",
+                    "email": "contact@tiste.org",
+                    "homepage": "http://www.tiste.org/",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "FamFamFam Flags icon pack",
+            "homepage": "https://github.com/t1st3/famfamfam-flags",
+            "keywords": [
+                "famfamfam",
+                "flag",
+                "gif",
+                "icon",
+                "img",
+                "png"
+            ],
+            "time": "2016-02-15 09:42:50"
+        },
+        {
             "name": "twbs/bootstrap",
             "version": "v3.3.6",
             "source": {
@@ -3790,17 +3836,17 @@
         },
         {
             "name": "vierbergenlars/authclient-bundle",
-            "version": "dev-master",
+            "version": "v0.4.1",
             "target-dir": "vierbergenlars/Bundle/AuthClientBundle",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/vierbergenlars/authclient-bundle.git",
-                "reference": "42693e8a04e59ee823e3b9f9b6888d72e4160a5a"
+                "reference": "15e33355f81a83aef986d7c2b3286f4c80e30093"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/vierbergenlars/authclient-bundle/get/dfc5970dfc51ba61ac33df4c73bc08eca5c45afd.zip",
-                "reference": "42693e8a04e59ee823e3b9f9b6888d72e4160a5a",
+                "url": "https://bitbucket.org/vierbergenlars/authclient-bundle/get/15e33355f81a83aef986d7c2b3286f4c80e30093.zip",
+                "reference": "15e33355f81a83aef986d7c2b3286f4c80e30093",
                 "shasum": ""
             },
             "require": {
@@ -3808,9 +3854,9 @@
                 "doctrine/orm": "~2.0",
                 "hwi/oauth-bundle": "~0.3",
                 "php": ">=5.3.2",
-                "symfony/framework-bundle": "~2.3",
+                "symfony/framework-bundle": "~2.3|^3.0.0",
                 "symfony/monolog-bundle": "~2.1",
-                "symfony/security-bundle": "~2.3"
+                "symfony/security-bundle": "~2.3|^3.0.0"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -3830,7 +3876,7 @@
             ],
             "description": "Symfony VlAuthClientBundle",
             "homepage": "https://bitbucket.org/vierbergenlars/authclient-bundle",
-            "time": "2016-01-28 22:51:45"
+            "time": "2016-04-01 20:41:55"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
@@ -4080,9 +4126,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "vierbergenlars/authclient-bundle": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
