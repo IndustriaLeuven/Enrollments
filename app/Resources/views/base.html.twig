@@ -12,6 +12,13 @@
             }
         </style>
     {% endif %}
+    {% if date()|date('d-m') == '01-04' %}
+        <style>
+            body {
+                font-family: "Comic Sans MS", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            }
+        </style>
+    {% endif %}
     {% block head %}
     {% endblock %}
 </head>
