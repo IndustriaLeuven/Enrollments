@@ -22,7 +22,7 @@
             return components;
         }
 
-        $('[data-pricing-reload]').on('change', function () {
+        $('input,textarea,select').on('change', function () {
             var $_locale = '{{ app.request.attributes.get('_locale')|e('js') }}';
             var serializedData = $('form').serializeArray();
             $('form [disabled]').each(function(_, element) {
@@ -45,7 +45,6 @@
             var paymentDetails = {{ paymentDetailsJavascript|raw }};
             $('#pricing_payment_details').text(paymentDetails);
             {% endif %}
-        });
-        $('[data-pricing-reload]:eq(0)').trigger('change');
+        }).eq(0).trigger('change');
     });
 </script>

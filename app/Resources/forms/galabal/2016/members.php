@@ -12,9 +12,6 @@ return function(FormBuilderInterface $formBuilder)
 {
     $formBuilder
         ->add('name', TextType::class, [
-            'attr' => [
-                'data-pricing-reload' => true,
-            ],
             'constraints' => [
                 new NotBlank()
             ],
@@ -38,15 +35,11 @@ return function(FormBuilderInterface $formBuilder)
             'data' => true,
             'disabled' => true,
             'label' => 'Party&emsp;&mdash;&emsp;&euro;15',
-            'attr' => [
-                'data-pricing-reload' => true,
-            ],
         ])
         ->add('diner', CheckboxType::class, [
             'label' => 'Diner&emsp;&mdash;&emsp;&euro;35',
             'required' => false,
             'attr' => [
-                'data-pricing-reload' => true,
                 'data-onload' => 'onchange',
                 'onchange' => '$(this).prop("checked")?$("#form_vegetarian").prop("disabled", false):$("#form_vegetarian").prop("disabled", true).prop("checked", false)',
             ],

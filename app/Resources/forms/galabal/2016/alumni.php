@@ -16,11 +16,7 @@ use Symfony\Component\Validator\Constraints\Valid;
 return new FormDefinition(function(FormBuilderInterface $formBuilder)
 {
     $formBuilder
-        ->add('name', TextType::class, [
-            'attr' => [
-                'data-pricing-reload' => true,
-            ],
-        ])
+        ->add('name', TextType::class)
         ->add('email', EmailType::class, [
             'constraints' => [
                 new NotBlank(),
@@ -38,7 +34,6 @@ return new FormDefinition(function(FormBuilderInterface $formBuilder)
             'attr' => [
                 'data-onload' => 'onchange',
                 'onchange' => '$(this).prop("checked")?$("#form_plus_one_data").show():$("#form_plus_one_data").hide()',
-                'data-pricing-reload' => true,
             ],
         ])
         ->add('plus_one_data', FormType::class, [
@@ -76,15 +71,11 @@ return new FormDefinition(function(FormBuilderInterface $formBuilder)
             'data' => true,
             'disabled' => true,
             'label' => 'Party&emsp;&mdash;&emsp;&euro;15',
-            'attr' => [
-                'data-pricing-reload' => true,
-            ],
         ])
         ->add('diner', CheckboxType::class, [
             'label' => 'Diner&emsp;&mdash;&emsp;&euro;35',
             'required' => false,
             'attr' => [
-                'data-pricing-reload' => true,
                 'data-onload' => 'onchange',
                 'onchange' => 'if($(this).prop("checked")) {
                         $("#form_events_reception").prop("checked", true).prop("disabled", true);
