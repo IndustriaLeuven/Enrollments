@@ -1,10 +1,12 @@
-{% if is_granted('ROLE_ADMIN') %}
-    <div class="btn-group pull-right">
-        <a class="btn btn-default" href="{{ url('admin_get_form', {form: form.id}) }}" title="Form admin">
+<div class="btn-group pull-right">
+    {% if is_granted('EDIT', form) or is_granted('ROLE_ADMIN') %}
+        <a class="btn btn-default" href="{{ url('admin_get_form', {form: form.id}) }}">
             {{ icon('cog') }} {{ 'admin.navigation.form_admin'|trans }}
         </a>
-        <a class="btn btn-default" href="{{ url('admin_get_form_enrollments', {form: form.id}) }}" title="List enrollments">
+    {% endif %}
+    {% if is_granted('LIST_ENROLLMENTS', form) or is_granted('ROLE_ADMIN') %}
+        <a class="btn btn-default" href="{{ url('admin_get_form_enrollments', {form: form.id}) }}">
             {{ icon('file-text-o') }} {{ 'admin.navigation.enrollments'|trans }}
         </a>
-    </div>
-{% endif %}
+    {% endif %}
+</div>

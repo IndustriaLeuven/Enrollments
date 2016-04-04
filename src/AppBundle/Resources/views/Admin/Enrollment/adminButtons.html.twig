@@ -1,0 +1,16 @@
+{% if app.request.attributes.get('_route') starts with 'admin_' %}
+    <div class="btn-group pull-right">
+        <a class="btn btn-default" href="{{ url('app_get_enrollment_submission', {form: form.id, enrollment: enrollment.id}) }}">
+            {{ icon('globe') }} {{ 'admin.navigation.enrollment_public'|trans }}
+        </a>
+    </div>
+{% elseif is_granted('LIST_ENROLLMENTS', form) or is_granted('ROLE_ADMIN') %}
+    <div class="btn-group pull-right">
+        <a class="btn btn-default" href="{{ url('admin_get_form_enrollment', {form: form.id, enrollment: enrollment.id}) }}">
+            {{ icon('cog') }} {{ 'admin.navigation.enrollment_admin'|trans }}
+        </a>
+        <a class="btn btn-default" href="{{ url('admin_get_form_enrollments', {form: form.id}) }}">
+            {{ icon('file-text-o') }} {{ 'admin.navigation.enrollments'|trans }}
+        </a>
+    </div>
+{% endif %}

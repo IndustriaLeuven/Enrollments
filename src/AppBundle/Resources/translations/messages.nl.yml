@@ -45,3 +45,5 @@ admin.navigation.new: Nieuw
 admin.navigation.enrollments: Inschrijvingen
 admin.navigation.form_admin: 'Formulier beheer'
 admin.navigation.form: 'Inschrijvingsformulier'
+admin.navigation.enrollment_admin: 'Inschrijving beheer'
+admin.navigation.enrollment_public: 'Bevestingingspagina'

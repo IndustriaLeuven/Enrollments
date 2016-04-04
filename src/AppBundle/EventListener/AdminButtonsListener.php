@@ -2,6 +2,7 @@
 
 namespace AppBundle\EventListener;
 
+use AppBundle\Event\UI\EnrollmentTemplateEvent;
 use AppBundle\Event\UI\SubmittedFormTemplateEvent;
 use AppBundle\Event\UIEvents;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
@@ -12,13 +13,19 @@ class AdminButtonsListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            UIEvents::FORM => ['addAdminButtons', -255]
+            UIEvents::FORM => ['addFormAdminButtons', -255],
+            UIEvents::SUCCESS => ['addEnrollmentAdminButtons', -255],
         ];
     }
 
-    public function addAdminButtons(SubmittedFormTemplateEvent $event)
+    public function addFormAdminButtons(SubmittedFormTemplateEvent $event)
     {
         $event->addTemplate(new TemplateReference('AppBundle', 'Admin/Form', 'adminButtons', 'html', 'twig'));
     }
 
+
+    public function addEnrollmentAdminButtons(EnrollmentTemplateEvent $event)
+    {
+        $event->addTemplate(new TemplateReference('AppBundle', 'Admin/Enrollment', 'adminButtons', 'html', 'twig'));
+    }
 }

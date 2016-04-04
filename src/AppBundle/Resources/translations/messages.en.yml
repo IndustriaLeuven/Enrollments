@@ -45,3 +45,5 @@ admin.navigation.new: Create
 admin.navigation.enrollments: Enrollments
 admin.navigation.form_admin: 'Form admin'
 admin.navigation.form: 'Enrollment form'
+admin.navigation.enrollment_admin: 'Enrollment admin'
+admin.navigation.enrollment_public: 'Confirmation page'
