@@ -69,6 +69,7 @@ class EmailPluginListener implements EventSubscriberInterface
             'verbatim'
         ], [
             // Allowed filters
+            'abs',
             'batch',
             'capitalize',
             'convert_encoding',
