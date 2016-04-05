@@ -40,3 +40,12 @@ the initial form, but only on the target form.
 
 All data that is entered in the target form is saved to the enrollments list of the initial form
 
+## `PluginDataBag`
+
+### `Form` PluginDataBag
+
+ * `rules`
+
+### `Enrollment` PluginDataBag
+
+Undocumented

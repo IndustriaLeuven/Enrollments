@@ -43,3 +43,15 @@ Because this expression is compiled to both javascript and PHP, the same subset 
 The variable `formData` is an array containing all fields from the submitted form, in the same format as they will be stored in the database.
 The variable `totalPrice` is a number containing the result from the price calculation defined by the [formula field](#formula)
 The variable `_locale` is a string containing the language code for the language of the page the user is visiting.
+
+## `PluginDataBag`
+
+### `Form` PluginDataBag
+
+ * `formula`
+ * `payment_expression`
+
+### `Enrollment` PluginDataBag
+
+ * `totalPrice`
+ * `paidAmount`

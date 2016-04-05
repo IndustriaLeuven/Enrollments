@@ -33,3 +33,13 @@ If the path refers to an array of fields instead of a value, the complete array 
 > For the path is `plus_one_data`, the values `{name: "Koen Van Kerckhoven", email: "koen.van.kerckhoven@industria.be"}`,
 > `{name: "ABC", email: "koen.van.kerckhoven@industria.be"}` and `{name: "Koen Van Kerckhoven", email: "koen@industria.be"}`
 > are regarded as different.
+
+## `PluginDataBag`
+
+### `Form` PluginDataBag
+
+ * `fields`
+
+### `Enrollment` PluginDataBag
+
+(None)

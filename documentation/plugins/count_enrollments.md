@@ -27,3 +27,15 @@ The variable `formData` is an array containing all fields from the submitted for
 > **Warning:** When accessing an item in a sub-array, you must first make sure this sub array item exists.
 > (Instead of using `if(formData['events']['diner'], ..., ...)`, use `if(formData['events'] and formData['events']['diner'], ..., ...)`.
 > When this rule is not followed, a PHP error will occur when the sub-array does not exist, and the enrollment cannot be registered.
+
+## `PluginDataBag`
+
+### `Form` PluginDataBag
+
+ * `maxEnrollments`
+ * `denyEnrollments`
+ * `countExpression`
+
+### `Enrollment` PluginDataBag
+
+(None)

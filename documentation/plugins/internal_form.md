@@ -10,3 +10,12 @@ There are two use-cases for this plugin:
   directs the user to based on his role
 - With the [`DivertEnrollmentsPlugin`](divert_enrollments.md), to protect the target form from direct enrollments.
 
+## `PluginDataBag`
+
+### `Form` PluginDataBag
+
+(None)
+
+### `Enrollment` PluginDataBag
+
+(None)

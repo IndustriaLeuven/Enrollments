@@ -16,3 +16,13 @@ Protecting from submissions directly to the target form is possible by:
 
 - Disabling all plugins that create a form on the target form
 - Using the [`InternalFormPlugin`](internal_form.md) on the target form
+
+## `PluginDataBag`
+
+### `Form` PluginDataBag
+
+ * `target`
+
+### `Enrollment` PluginDataBag
+
+(None)

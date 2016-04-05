@@ -182,7 +182,12 @@ You can also validate date ranges. Values to compare to should be given as any d
 
 * `value` **Required**: The value to compare to
 
+## `PluginDataBag`
 
+### `Form` PluginDataBag
 
+ * `fields`
 
+### `Enrollment` PluginDataBag
 
+(None)

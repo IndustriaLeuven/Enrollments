@@ -66,3 +66,14 @@ If a path points to a field that is not defined, an empty value will be shown.
 > * The path to get to value `"Lars Vierbergen"` is `name`
 > * The path to get to value `"koen.van.kerckhoven@industria.be"` is `plus_one_data.email`
 > * The path to determine if they are going to the reception is `events.reception`
+
+## `PluginDataBag`
+
+### `Form` PluginDataBag
+
+ * `formType`
+ * `admin_enrollment_list_fields`
+
+### `Enrollment` PluginDataBag
+
+(None)
