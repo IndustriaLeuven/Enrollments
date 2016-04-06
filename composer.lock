@@ -3836,17 +3836,17 @@
         },
         {
             "name": "vierbergenlars/authclient-bundle",
-            "version": "v0.4.2",
+            "version": "v0.4.3",
             "target-dir": "vierbergenlars/Bundle/AuthClientBundle",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/vierbergenlars/authclient-bundle.git",
-                "reference": "644d20d494d8801ce09e1f082ee0e48d8b20ae54"
+                "reference": "20b3e984e3becb421658afe08af7f5ca4d6f0f65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/vierbergenlars/authclient-bundle/get/644d20d494d8801ce09e1f082ee0e48d8b20ae54.zip",
-                "reference": "644d20d494d8801ce09e1f082ee0e48d8b20ae54",
+                "url": "https://bitbucket.org/vierbergenlars/authclient-bundle/get/20b3e984e3becb421658afe08af7f5ca4d6f0f65.zip",
+                "reference": "20b3e984e3becb421658afe08af7f5ca4d6f0f65",
                 "shasum": ""
             },
             "require": {
@@ -3876,7 +3876,7 @@
             ],
             "description": "Symfony VlAuthClientBundle",
             "homepage": "https://bitbucket.org/vierbergenlars/authclient-bundle",
-            "time": "2016-04-01 23:23:15"
+            "time": "2016-04-05 10:58:53"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
