@@ -37,12 +37,10 @@ return function(FormBuilderInterface $formBuilder)
             'label' => 'Party&emsp;&mdash;&emsp;&euro;17',
         ])
         ->add('diner', CheckboxType::class, [
-            'label' => 'Diner&emsp;&mdash;&emsp;&euro;38',
+            'label' => 'Diner&emsp;(Sold out!)',
             'required' => false,
-            'attr' => [
-                'data-onload' => 'onchange',
-                'onchange' => '$(this).prop("checked")?$("#form_vegetarian").prop("disabled", false):$("#form_vegetarian").prop("disabled", true).prop("checked", false)',
-            ],
+            'data' => false,
+            'disabled' => true,
         ])
     ;
 };
