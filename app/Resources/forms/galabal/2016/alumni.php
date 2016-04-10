@@ -68,9 +68,9 @@ return new FormDefinition(function(FormBuilderInterface $formBuilder)
 
     $formBuilder->get('events')
         ->add('party', CheckboxType::class, [
-            'data' => true,
+            'data' => false,
             'disabled' => true,
-            'label' => 'Party&emsp;&mdash;&emsp;&euro;15',
+            'label' => 'Party&emsp;(No online tickets left!)',
         ])
         ->add('diner', CheckboxType::class, [
             'label' => 'Diner&emsp;&mdash;&emsp;&euro;35',
