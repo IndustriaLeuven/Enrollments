@@ -86,10 +86,10 @@ Event emitted when the submission form gets submitted.
 If the submitted form has errors added to it during this event, it will not be stored in the database, but the form with errors
 will be presented to the user.
 
+9001. Add data present in disabled fields to the submission
 255. Re-emits the `FormEvents::SUBMIT` event with the form entity swapped out for the differentiated one/the one that was used to submit the form **Stops propagation** [`PluginBundle:RoleDifferentiation`](role_differentiation.md)
 11. Adds an error on the form when the user already has an enrollment for this form entity [`PluginBundle:UniqueUser`](unique_user.md)
 10. Checks for duplicate entries in fields that are supposed to be unique and adds errors on the form for them. Creates/updates unique field data [`PluginBundle:UniqueFields`](unique_fields.md)
-5. If a user is logged in, makes sure the `name` field is filled in with the name of the user [`PluginBundle:PrefillUserData`](prefill_user_data.md)
 0. Includes the form template. If the returned object is an instance of `FormDefinitionInterface`, it calls the `handleSubmission` method with the submitted form and the enrollment entity [`PluginBundle:FormTemplate`](form_template.md)
 04. Calculates and stores the total price for the enrollment [`PluginBundle:Pricing`](pricing.md)
     * Emits `PricingPaidAmountEditedEvent::EVENT_NAME` when the total price *changed* (so not on the initial submission)

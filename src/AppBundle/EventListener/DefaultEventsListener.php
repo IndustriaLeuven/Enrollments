@@ -6,6 +6,7 @@ use AppBundle\Entity\Enrollment;
 use AppBundle\Entity\Form;
 use AppBundle\Event\Form\BuildFormEvent;
 use AppBundle\Event\Form\SetDataEvent;
+use AppBundle\Event\Form\SubmitFormEvent;
 use AppBundle\Event\FormEvents;
 use AppBundle\Event\UI\SubmittedFormTemplateEvent;
 use AppBundle\Event\UI\EnrollmentTemplateEvent;
@@ -16,6 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class DefaultEventsListener implements EventSubscriberInterface
 {
@@ -37,7 +39,8 @@ class DefaultEventsListener implements EventSubscriberInterface
     {
         return [
             UIEvents::FORM => 'uiFormEvent',
-            UIEvents::SUCCESS => 'uiSuccessEvent'
+            UIEvents::SUCCESS => 'uiSuccessEvent',
+            FormEvents::SUBMIT => ['formSubmitEvent', 9001], // It's over ninethousand. This is a patch-up event handler that needs to be run before any other plugins
         ];
     }
 
@@ -47,9 +50,40 @@ class DefaultEventsListener implements EventSubscriberInterface
             $formBuilder->setData($enrollment->getData());
         $buildFormEvent = new BuildFormEvent($formEntity, $formBuilder);
         $eventDispatcher->dispatch(FormEvents::BUILD, $buildFormEvent);
+        if($enrollment) {
+            // Remove all default 'data' on fields, this data is stored by the form anyways.
+            $children = new \AppendIterator();
+            $children->append(new \IteratorIterator($formBuilder));
+            foreach($children as $child) {
+                /* @var $child \Symfony\Component\Form\FormBuilderInterface */
+                $children->append(new \IteratorIterator($child));
+                $child->setData(null);
+            }
+        }
         $form = $buildFormEvent->getFormBuilder()->getForm();
         $eventDispatcher->dispatch(FormEvents::SETDATA, new SetDataEvent($formEntity, $form, $enrollment));
         return $form;
+    }
+
+    public function formSubmitEvent(SubmitFormEvent $event)
+    {
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $data = $event->getEnrollment()->getData();
+        $children = new \AppendIterator();
+        $children->append(new \IteratorIterator($event->getSubmittedForm()));
+        foreach($children as $child) {
+            /* @var $child \Symfony\Component\Form\Form */
+            $children->append(new \IteratorIterator($child));
+            if($child->getConfig()->getDisabled()) {
+                $propertyPath = $child->getPropertyPath()->__toString();
+                $parent = $child;
+                while(($parent = $parent->getParent())&&!$parent->isRoot()) {
+                    $propertyPath = $parent->getPropertyPath().$propertyPath;
+                }
+                $propertyAccessor->setValue($data, $propertyPath, $child->getData());
+            }
+        }
+        $event->getEnrollment()->setData($data);
     }
 
     public function uiFormEvent(SubmittedFormTemplateEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)

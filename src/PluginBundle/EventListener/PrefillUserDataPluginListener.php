@@ -50,7 +50,6 @@ class PrefillUserDataPluginListener implements EventSubscriberInterface
             PluginEvents::SUBMIT_FORM => 'onPluginSubmitForm',
             AdminEvents::FORM_GET => 'onAdminShowForm',
             FormEvents::BUILD => ['onFormBuild', -5],
-            FormEvents::SUBMIT => ['onFormSubmit', 5],
         ];
     }
 
@@ -100,23 +99,6 @@ class PrefillUserDataPluginListener implements EventSubscriberInterface
                         ->setData($primaryEmail[0]['addr']);
             }
         }
-    }
-
-    public function onFormSubmit(SubmitFormEvent $event)
-    {
-        if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
-            return;
-        if(!($user = $this->getUser()))
-            return;
-        if($event->getSubmittedForm()->has('name'))
-            /*
-             * The construct array+array will merge two arrays together. Array keys that are present in both arrays
-             * will keep the data that was present in the first array, keys that only exist in the second array will
-             * be added on the end of the array
-             * When an already filled form is edited by an admin, the name field will already be present in the
-             * original enrollment data, so it will not be overwritten by the name of the admin.
-             */
-            $event->getEnrollment()->setData($event->getEnrollment()->getData()+['name' => $user->getRealname()]);
     }
 
     /**
