@@ -80,7 +80,7 @@ class FormBuilderPluginConfigFormFieldType extends AbstractType
                         'variables' => [],
                     ])
                 ],
-                'data' => '{}',
+                'empty_data' => '{}',
                 'attr' => [
                     'help_text' => 'plugin.form_builder.conf.fields.options.help',
                 ],

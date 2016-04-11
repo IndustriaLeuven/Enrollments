@@ -57,7 +57,7 @@ class FormBuilderPluginConfigConstraintType extends AbstractType
                         'variables' => [],
                     ])
                 ],
-                'data' => 'null',
+                'empty_data' => 'null',
                 'attr' => [
                     'help_text' => 'plugin.form_builder.conf.fields.constraints.options.help',
                 ],
