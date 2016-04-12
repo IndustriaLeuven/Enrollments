@@ -34,7 +34,7 @@ class FormAccessVoter extends Voter
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
         /* @var $subject Form */
-        if($attribute === 'EDIT' && $subject->getCreatedBy() === $token->getUsername())
+        if($subject->getCreatedBy() === $token->getUser())
             return true;
         $availableRoles = array_map(function (RoleInterface $role) {
             return $role->getRole();
@@ -42,15 +42,15 @@ class FormAccessVoter extends Voter
 
         $requiredRoles = [];
         switch($attribute) {
-            case 'EDIT':
-                $requiredRoles = $subject->getEditFormGroups();
-                break;
             case 'LIST_ENROLLMENTS':
-                $requiredRoles = $subject->getListEnrollmentsGroups();
-                break;
+                $requiredRoles = array_merge($requiredRoles, $subject->getListEnrollmentsGroups());
+                /* no break */
             case 'EDIT_ENROLLMENT':
-                $requiredRoles = $subject->getEditEnrollmentsGroups();
-                break;
+                $requiredRoles = array_merge($requiredRoles, $subject->getEditEnrollmentsGroups());
+                /* no break */
+            case 'EDIT':
+                $requiredRoles = array_merge($requiredRoles, $subject->getEditFormGroups());
+                /* no break */
         }
 
         $requiredRoles = array_map(function($groupName) {
