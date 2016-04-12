@@ -14,3 +14,7 @@
         {% endif %}
     {% endspaceless %}
 {% endblock form_help %}
+{% block bs_static_widget %}
+    {% set attr = attr|merge({ 'class': (attr.class|default('') ~ ' form-control-static')|trim }) %}
+    <p id="{{ id }}" {%- for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ value|trans }}</p>
+{% endblock %}

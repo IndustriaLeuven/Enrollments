@@ -161,8 +161,8 @@ class CountEnrollmentsPluginListener implements EventSubscriberInterface
             return;
         $pluginData = $event->getForm()->getPluginData()->get(self::PLUGIN_NAME);
         $event->setSimpleFacet('plugin.count_enrollments.facet.waiting_list', 'group', [
-            'plugin.count_enrollments.facet.participants' => ['waiting_list' => 'no'],
-            'plugin.count_enrollments.facet.waiting_list' => ['waiting_list' => 'yes'],
+            'plugin.count_enrollments.facet.waiting_list.participants' => ['waiting_list' => 'no'],
+            'plugin.count_enrollments.facet.waiting_list.waiting_list' => ['waiting_list' => 'yes'],
             'plugin.facet.all' => ['waiting_list' => null],
         ]);
 
