@@ -11,6 +11,7 @@ use AppBundle\Event\PluginEvents;
 use AppBundle\Event\UI\SubmittedFormTemplateEvent;
 use AppBundle\Form\AuthserverGroupsChoiceLoader;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
+use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -26,11 +27,36 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class FormController extends BaseController implements ClassResourceInterface
 {
+    /**
+     * List only forms which have already passed the deadline.
+     * The most recent forms will be listed at the top.
+     * @Get()
+     * @param Request $request
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     */
+    public function listAction(Request $request)
+    {
+        $queryBuilder = $this->getEntityManager()
+            ->getRepository('AppBundle:Form')
+            ->createQueryBuilder('f')
+            ->where('f.pluginData.endDate < now')
+            ->orderBy('f.createdAt', 'DESC')
+        ;
+        return $this->paginate($queryBuilder, $request);
+    }
+
+    /**
+     * Only list forms that have yet to reach the registration deadline.
+     * Again, the most recent forms will be listed at the top.
+     * @param Request $request
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     */
     public function cgetAction(Request $request)
     {
         $queryBuilder = $this->getEntityManager()
             ->getRepository('AppBundle:Form')
             ->createQueryBuilder('f')
+            ->where('f.pluginData.endDate > now')
             ->orderBy('f.createdAt', 'DESC')
         ;
         return $this->paginate($queryBuilder, $request);
