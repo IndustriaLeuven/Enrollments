@@ -30,16 +30,24 @@ class FormController extends BaseController implements ClassResourceInterface
     /**
      * List only forms which have already passed the deadline.
      * The most recent forms will be listed at the top.
+     * @View("AppBundle:Admin/Form:cget.html.twig")
      * @Get()
      * @param Request $request
      * @return \Knp\Component\Pager\Pagination\PaginationInterface
      */
     public function listAction(Request $request)
     {
+        $juneThisYear = (new \DateTime())->setDate((new \DateTime())->format('Y'),7,1); // First of june, "this" year.
+        if (new \DateTime() < $juneThisYear) {
+            $currentAcademicYear = $juneThisYear->setDate($juneThisYear->format('Y')-1,7,1); // First of june, "last" year.
+        } else {
+            $currentAcademicYear = $juneThisYear;
+        }
         $queryBuilder = $this->getEntityManager()
             ->getRepository('AppBundle:Form')
             ->createQueryBuilder('f')
-            ->where('f.pluginData.endDate < now')
+            ->where('f.createdAt <= :cay')
+            ->setParameter('cay', $currentAcademicYear->format('Y-m-d'))
             ->orderBy('f.createdAt', 'DESC')
         ;
         return $this->paginate($queryBuilder, $request);
@@ -53,10 +61,17 @@ class FormController extends BaseController implements ClassResourceInterface
      */
     public function cgetAction(Request $request)
     {
+        $juneThisYear = (new \DateTime())->setDate((new \DateTime())->format('Y'),7,1); // First of june, "this" year.
+        if (new \DateTime() < $juneThisYear) {
+            $currentAcademicYear = $juneThisYear->setDate($juneThisYear->format('Y')-1,7,1); // First of june, "last" year.
+        } else {
+            $currentAcademicYear = $juneThisYear;
+        }
         $queryBuilder = $this->getEntityManager()
             ->getRepository('AppBundle:Form')
             ->createQueryBuilder('f')
-            ->where('f.pluginData.endDate > now')
+            ->where('f.createdAt > :cay')
+            ->setParameter('cay', $currentAcademicYear->format('Y-m-d'))
             ->orderBy('f.createdAt', 'DESC')
         ;
         return $this->paginate($queryBuilder, $request);
