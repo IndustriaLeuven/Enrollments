@@ -28,8 +28,7 @@ return function(FormBuilderInterface $formBuilder)
 
         ->add('group',TextType::class,['label'=>'Groep (als je die al weet)','required' => false,
             'constraints'=>[
-                new NotBlank(),
-                new Length(max(3))
+                new Length(['max'=>3])
             ],
         ])
 
@@ -46,7 +45,6 @@ return function(FormBuilderInterface $formBuilder)
 
         ->add('vegetarian', CheckboxType::class, ['label'=>'Vegetarisch',
             'required' => false,
-            'disabled' => true
         ])
 
         ->add('Comments', TextareaType::class,['label'=>'Opmerkingen (medicatie, ...', 'required'=> false,
