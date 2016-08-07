@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
-new Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Length;
 
 return function(FormBuilderInterface $formBuilder)
 {
@@ -47,7 +47,7 @@ return function(FormBuilderInterface $formBuilder)
             'required' => false,
         ])
 
-        ->add('Comments', TextareaType::class,['label'=>'Opmerkingen (medicatie, ...', 'required'=> false,
+        ->add('comments', TextareaType::class,['label'=>'Opmerkingen (medicatie, ...', 'required'=> false,
             'constraints'=>[
                 new NotBlank(),
         ],
