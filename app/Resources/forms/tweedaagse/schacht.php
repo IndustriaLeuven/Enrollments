@@ -5,6 +5,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -21,7 +22,7 @@ return function(FormBuilderInterface $formBuilder)
             'constraints' => [new NotBlank()],
         ])
 
-        ->add('Birthdate', BirthDayType::class,['label'=>'Geboortedatum',
+        ->add('Birthdate', BirthdayType::class,['label'=>'Geboortedatum', 'input' => 'string',
         'constraints'=>[new NotBlank()],
         ])
 
