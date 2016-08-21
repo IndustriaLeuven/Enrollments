@@ -45,4 +45,10 @@ imports:
 EOL
 fi
 
+if [[ "$($CLIC application:variable:get \"$CLIC_APPNAME\" app/environment)" == "staging" ]]; then
+    touch .staging
+else
+    rm .staging
+fi
+
 exec $CLIC application:execute "$CLIC_APPNAME" redeploy
