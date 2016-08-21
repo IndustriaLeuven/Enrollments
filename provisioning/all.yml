@@ -1,0 +1,45 @@
+- hosts: localhost
+  tasks:
+    - name: Add wheezy-backports apt repository
+      apt_repository: repo="deb http://ftp.us.debian.org/debian wheezy-backports main" state=present
+    - name: Install packages
+      apt: name={{ item }} state=present update_cache=yes
+      with_items:
+        - apache2
+        - libapache2-mod-php5
+        - php5
+        - php5-curl
+        - git
+        - nodejs-legacy
+        - curl
+        - python-mysqldb
+        - mysql-server
+        - phpmyadmin
+    - name: Reconfigure PHPMyAdmin for apache
+      shell: "DEBIAN_FRONTEND=noninteractive DEBCONF_DB_OVERRIDE=Pipe dpkg-reconfigure phpmyadmin <<EOF\n
+Name: phpmyadmin/reconfigure-webserver\n
+Template: phpmyadmin/reconfigure-webserver\n
+Value: apache2\n
+Owners: phpmyadmin\n
+EOF"
+      notify:
+        - reload httpd
+    - name: Install npm
+      shell: curl https://www.npmjs.com/install.sh | sh creates=/usr/bin/npm
+    - name: Enable php5 apache module
+      apache2_module: name=php5 state=present
+      notify: reload httpd
+    - name: Install composer
+      shell: creates=/usr/local/bin/composer php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/local/bin --filename=composer
+    - name: Set document root to web/
+      lineinfile: regexp='DocumentRoot' line='DocumentRoot /var/www/web' dest=/etc/apache2/sites-available/000-default.conf state=present
+      notify: reload httpd
+    - name: Allow all .htaccess rules
+      lineinfile: insertafter='DocumentRoot' line='<Directory /var/www/web>\nAllowOverride All\n</Directory>' dest=/etc/apache2/sites-available/000-default.conf
+      notify: reload httpd
+    - name: Enable mod_rewrite
+      command: a2enmod rewrite creates=/etc/apache2/mods-enabled/rewrite.load
+      notify: reload httpd
+  handlers:
+   - name: reload httpd
+     service: name=apache2 state=reloaded

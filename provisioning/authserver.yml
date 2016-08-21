@@ -1,0 +1,53 @@
+- hosts: localhost
+  tasks:
+    - name: Clone latest authserver version
+      git: repo=https://github.com/vierbergenlars/authserver dest=/var/www/authserver depth=1 force=yes
+    - name: Start mysql
+      service: name=mysql state=started
+    - name: Create mysql user
+      mysql_user: name=authserver password=authserver priv=*.*:ALL state=present
+    - name: Create mysql database
+      mysql_db: name=authserver state=present
+    - name: Create app/config/parameters.yml
+      copy: src=parameters-authserver.yml dest=/var/www/authserver/app/config/parameters.yml
+    - name: composer install
+      composer: working_dir=/var/www/authserver
+    - name: npm install
+      npm: path=/var/www/authserver
+    - name: Clear cache, install assets and migrate database
+      command: php app/console {{ item }} -e prod -n chdir=/var/www/authserver
+      with_items:
+        - cache:clear
+        - assets:install
+        - braincrafted:bootstrap:install
+        - assetic:dump
+        - doctrine:migrations:migrate
+    - name: Create admin user 'admin'
+      command: php app/console app:adduser --super-admin admin admin admin@vbgn.be -n -e prod chdir=/var/www/authserver
+      register: adduser
+      changed_when: adduser.rc == 0
+      failed_when: False
+    - name: Set password of admin user to 'admin'
+      command: php app/console app:passwd admin admin -n -e prod chdir=/var/www/authserver
+      when: adduser.rc != 0
+    - name: Insert cooperation OAuth application and admin API key
+      mysql_db: name=authserver state=import target=/vagrant/provisioning/authserver.sql
+    - name: Make cache & logs writeable by webserver
+      file: path=/var/www/authserver/{{ item }} owner=www-data mode=0777 recurse=yes state=directory
+      with_items:
+        - app
+        - app/cache
+        - app/logs
+    - name: Symlink /var/www/web to /var/www/authserver/web
+      file: state=link src=/var/www/authserver/web dest=/var/www/web
+    - name: Remove HTTPS redirection
+      command: 'sed -e "/Redirect to HTTPS/,+3d" -i /var/www/authserver/web/.htaccess'
+    - name: "
+    Some helpful information.\n
+    Webserver running at http://192.168.80.2/\n
+    Username: admin\n
+    Password: admin\n
+    \n
+    "
+      service: name=apache2 state=started
+
