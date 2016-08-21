@@ -33,13 +33,13 @@ fi;
 $CLIC application:variable:set "$CLIC_APPNAME" mail/sender --description="Sender address of mails"  --default-existing-value
 
 $CLIC application:variable:set "$CLIC_APPNAME" app/oauth/server --description="URL to the homepage of Authserver" --default-existing-value
-printf "Create a new OAuth application at $(tput setaf 2)$($CLIC application:variable:get "$CLIC_APPNAME" app/oauth/server)$(tput sgr0)\n"
+printf "Create a new OAuth application at $(tput setaf 2)$($CLIC application:variable:get "$CLIC_APPNAME" app/oauth/server)/admin/oauth/clients$(tput sgr0)\n"
 printf "Scopes: $(tput setaf 3)profile:realname, profile:groups, property:read & property:write$(tput sgr0)\n"
 printf "Redirect URI: $(tput setaf 3)[URL to homepage of this application]/login/oauth\n"
 $CLIC application:variable:set "$CLIC_APPNAME" app/oauth/client_id --description="OAuth Client ID" --default-existing-value
 $CLIC application:variable:set "$CLIC_APPNAME" app/oauth/secret --description="OAuth Client Secret" --default-existing-value
 
-printf "Create a new API key at $(tput setaf 2)$($CLIC application:variable:get "$CLIC_APPNAME" app/oauth/server)$(tput sgr0)\n"
+printf "Create a new API key at $(tput setaf 2)$($CLIC application:variable:get "$CLIC_APPNAME" app/oauth/server)/admin/apikeys$(tput sgr0)\n"
 printf "Scopes: $(tput setaf 3)Group::read & Profile::read:email$(tput sgr0)\n"
 $CLIC application:variable:set "$CLIC_APPNAME" app/api/username --description="API Key username" --default-existing-value
 $CLIC application:variable:set "$CLIC_APPNAME" app/api/password --description="API Key password" --default-existing-value

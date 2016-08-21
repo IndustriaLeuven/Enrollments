@@ -35,7 +35,7 @@ parameters:
     authserver_api_username: $($CLIC application:variable:get "$CLIC_APPNAME" app/api/username --filter=json_encode)
     authserver_api_password: $($CLIC application:variable:get "$CLIC_APPNAME" app/api/password --filter=json_encode)
 
-    homepage_redirect: $(if [[ "$($CLIC application:variable:get \"$CLIC_APPNAME\" app/homepage_redirect)" != "." ]]; then $CLIC application:variable:get "$CLIC_APPNAME" app/homepage_redirect --filter=json_encode; else echo 'null'; fi)
+    homepage_redirect: $(if [[ "$($CLIC application:variable:get "$CLIC_APPNAME" app/homepage_redirect)" != "." ]]; then $CLIC application:variable:get "$CLIC_APPNAME" app/homepage_redirect --filter=json_encode; else echo 'null'; fi)
 EOL
 
 if [[ ! -e app/config/parameters.yml ]]; then
@@ -45,7 +45,7 @@ imports:
 EOL
 fi
 
-if [[ "$($CLIC application:variable:get \"$CLIC_APPNAME\" app/environment)" == "staging" ]]; then
+if [[ "$($CLIC application:variable:get "$CLIC_APPNAME" app/environment)" == "staging" ]]; then
     touch .staging
 else
     rm .staging
