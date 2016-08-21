@@ -17,7 +17,6 @@
         "fortawesome/font-awesome": "^4.5",
         "friendsofsymfony/rest-bundle": "^1.0",
         "guzzlehttp/guzzle": "^6.1",
-        "incenteev/composer-parameter-handler": "~2.0",
         "knplabs/knp-markdown-bundle": "^1.4",
         "knplabs/knp-menu-bundle": "^2.1",
         "knplabs/knp-paginator-bundle": "^2.5",
@@ -39,20 +38,6 @@
     },
     "conflict": {
         "braincrafted/bootstrap-bundle": "2.2.0"
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
-        ],
-        "post-update-cmd": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
-        ]
     },
     "config": {
         "bin-dir": "bin"
