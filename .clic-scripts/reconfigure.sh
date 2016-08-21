@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e # Quit script on error
 
-if [[ ! tty -s ]]; then
+if ! tty -s; then
     printf "$(tput setab 1)You are not on a terminal, so we cannot ask you configuration questions.$(tput sgr0)\n"
     printf "Run $(tput setaf 2)$CLIC application:execute \"$CLIC_APPNAME\" reconfigure$(tput sgr0) in a terminal to configure interactively"
     exit 1
