@@ -16,3 +16,6 @@ parameters:
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
+framework:
+    session:
+        cookie_secure: false
