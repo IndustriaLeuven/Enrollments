@@ -46,6 +46,8 @@ $CLIC application:variable:set "$CLIC_APPNAME" app/api/password --description="A
 
 $CLIC application:variable:set "$CLIC_APPNAME" app/homepage_redirect --description="URL to redirect users hitting the homepage of this application to. (Use . to leave empty)" --default-existing-value --default="."
 
+$CLIC application:variable:set "$CLIC_APPNAME" app/rollbar_access_token --description="Project access token 'post_server_item' from the project at https://rollbar.com/" --default-existing-value --default=none
+
 $CLIC application:variable:set "$CLIC_APPNAME" app/configured 1
 
 exec $CLIC application:execute "$CLIC_APPNAME" configure

@@ -36,6 +36,8 @@ parameters:
     authserver_api_password: $($CLIC application:variable:get "$CLIC_APPNAME" app/api/password --filter=json_encode)
 
     homepage_redirect: $(if [[ "$($CLIC application:variable:get "$CLIC_APPNAME" app/homepage_redirect)" != "." ]]; then $CLIC application:variable:get "$CLIC_APPNAME" app/homepage_redirect --filter=json_encode; else echo 'null'; fi)
+
+    rollbar_access_token: $($CLIC application:variable:get "$CLIC_APPNAME" app/rollbar_access_token --filter=json_encode)
 EOL
 
 if [[ ! -e app/config/parameters.yml ]]; then
