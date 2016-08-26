@@ -42,4 +42,4 @@ source .clic-scripts/deploy.inc.sh
 
 $CLIC config:set "applications[$CLIC_APPNAME][archive-url]" "$tarball_url"
 
-printf "\x1b[30;42mUpdate finished\x1b[0m"
+printf "\x1b[30;42mUpdate finished\x1b[0m\n"

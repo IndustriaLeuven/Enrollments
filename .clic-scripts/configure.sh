@@ -49,7 +49,7 @@ fi
 
 if [[ "$($CLIC application:variable:get "$CLIC_APPNAME" app/environment)" == "staging" ]]; then
     touch .staging
-else
+elif [[ -e .staging ]]; then
     rm .staging
 fi
 
