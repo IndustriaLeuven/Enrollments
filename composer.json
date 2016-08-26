@@ -1,8 +1,5 @@
 {
-    "name": "gimler/symfony-rest-edition",
-    "license": "MIT",
     "type": "project",
-    "description": "The \"Symfony REST Edition\" distribution",
     "autoload": {
         "psr-4": { "": "src/" }
     },
@@ -21,20 +18,19 @@
         "knplabs/knp-menu-bundle": "^2.1",
         "knplabs/knp-paginator-bundle": "^2.5",
         "league/csv": "^8.0",
-        "rollbar/rollbar": "^0.15.0",
-        "sensio/distribution-bundle": "~4.0",
+        "rollbar/rollbar": "^0.18.0",
         "sensio/framework-extra-bundle": "^3.0.2",
         "stof/doctrine-extensions-bundle": "^1.2",
         "symfony/assetic-bundle": "~2.3",
         "symfony/monolog-bundle": "~2.4",
         "symfony/swiftmailer-bundle": "~2.3",
-        "symfony/symfony": "~2.7|^3.0.0",
+        "symfony/symfony": "~2.8|^3.0.0",
         "t1st3/famfamfam-flags": "^0.5.1",
         "twbs/bootstrap": "^3.3",
         "vierbergenlars/authclient-bundle": "^0.4.0"
     },
     "require-dev": {
-        "sensio/generator-bundle": "~2.3"
+        "sensio/generator-bundle": "~2.3|~3.0"
     },
     "conflict": {
         "braincrafted/bootstrap-bundle": "2.2.0"
@@ -44,13 +40,6 @@
     },
     "extra": {
         "symfony-app-dir": "app",
-        "symfony-web-dir": "web",
-        "symfony-assets-install": "relative",
-        "incenteev-parameters": {
-            "file": "app/config/parameters.yml"
-        },
-        "branch-alias": {
-            "dev-master": "2.7-dev"
-        }
+        "symfony-web-dir": "web"
     }
 }
