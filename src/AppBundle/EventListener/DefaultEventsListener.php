@@ -14,7 +14,7 @@ use AppBundle\Event\UIEvents;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\ButtonBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -57,7 +57,8 @@ class DefaultEventsListener implements EventSubscriberInterface
             foreach($children as $child) {
                 /* @var $child \Symfony\Component\Form\FormBuilderInterface */
                 $children->append(new \IteratorIterator($child));
-                $child->setData(null);
+                if(!$child instanceof ButtonBuilder)
+                    $child->setData(null);
             }
         }
         $form = $buildFormEvent->getFormBuilder()->getForm();
