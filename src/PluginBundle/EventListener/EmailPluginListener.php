@@ -136,6 +136,7 @@ class EmailPluginListener implements EventSubscriberInterface
             'random',
             'range',
             'url',
+            'qrcode_data_uri',
         ]);
         $this->twig->addExtension(new \Twig_Extension_Sandbox($sandboxPolicy, true));
         foreach($twig->getFilters() as $filter)
