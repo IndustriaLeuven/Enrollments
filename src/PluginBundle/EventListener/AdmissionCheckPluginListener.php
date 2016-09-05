@@ -7,6 +7,8 @@ use AppBundle\Event\Admin\EnrollmentEditEvent;
 use AppBundle\Event\Admin\EnrollmentEditSubmitEvent;
 use AppBundle\Event\Admin\EnrollmentListEvent;
 use AppBundle\Event\AdminEvents;
+use AppBundle\Event\Form\SubmitFormEvent;
+use AppBundle\Event\FormEvents;
 use AppBundle\Event\Plugin\PluginBuildFormEvent;
 use AppBundle\Event\Plugin\PluginSubmitFormEvent;
 use AppBundle\Event\PluginEvents;
@@ -68,6 +70,7 @@ class AdmissionCheckPluginListener implements EventSubscriberInterface
             AdminEvents::ENROLLMENT_GET => 'onAdminEnrollmentGet',
             AdminEvents::ENROLLMENT_EDIT => 'onAdminEnrollmentEdit',
             AdminEvents::ENROLLMENT_EDIT_SUBMIT => 'onAdminEnrollmentEditSubmit',
+            FormEvents::SUBMIT => 'onFormSubmit',
             UIEvents::SUCCESS => ['onUISuccess', -255], // After PricingPlugin
             AdmissionCheckEvent::EVENT_NAME => 'onAdmissionCheck',
             EmailEvent::ENROLL_EVENT => ['onEmail', 10],
@@ -216,5 +219,13 @@ class AdmissionCheckPluginListener implements EventSubscriberInterface
         $attachmentId = $event->getMessage()->embed($attachment);
 
         $event->addVariable('admission_check_qrcode_url', $attachmentId);
+    }
+
+    public function onFormSubmit(SubmitFormEvent $event)
+    {
+        if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
+            return;
+        if($event->getType() === SubmitFormEvent::TYPE_CREATE)
+            $event->getEnrollment()->getPluginData()->add(self::PLUGIN_NAME, ['used' => false]);
     }
 }
