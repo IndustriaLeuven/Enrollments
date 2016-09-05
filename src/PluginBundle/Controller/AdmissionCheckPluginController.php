@@ -44,8 +44,10 @@ class AdmissionCheckPluginController extends Controller
         $admissionEvent->setEnrollment($enrollment);
         $this->get('event_dispatcher')->dispatch(AdmissionCheckEvent::EVENT_NAME, $admissionEvent);
 
-        $enrollment->getPluginData()->add(AdmissionCheckPluginListener::PLUGIN_NAME, ['used' => true]);
-        $em->flush();
+        if($admissionEvent->isValid()) {
+            $enrollment->getPluginData()->add(AdmissionCheckPluginListener::PLUGIN_NAME, ['used' => true]);
+            $em->flush();
+        }
 
         return $admissionEvent;
     }
