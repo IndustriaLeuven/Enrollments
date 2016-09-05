@@ -49,6 +49,7 @@ Event emitted when the results of an already filled form have to be shown to the
     * Emit `FormEvents::BUILD` with form entity and enrollment from `UIEvents::FORM`
     * Emit `FormEvents::SETDATA` with the form entity and enrollment from `UIEvents::FORM` and the form built from the formbuilder from `FormEvents::BUILD`
 0253. Add payment information [`PluginBundle:Pricing`](pricing.md)
+0255. Add admittance QR-code [`PluginBunde:AdmissionCheck`](admission_check.md)
 
 ### `FormEvents::BUILD`
 

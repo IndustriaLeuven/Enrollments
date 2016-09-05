@@ -1,0 +1,6 @@
+<h4>{{ 'plugin.admission_check.title'|trans }}</h4>
+{% if pluginData.used %}
+    {{ label_danger('plugin.admission_check.label.used'|trans) }}
+{% else %}
+    {{ label_success('plugin.admission_check.label.unused'|trans) }}
+{% endif %}

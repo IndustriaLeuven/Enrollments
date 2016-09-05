@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             new AdamQuaile\Bundle\FieldsetBundle\AdamQuaileFieldsetBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new vierbergenlars\Bundle\AuthClientBundle\VlAuthClientBundle(),
+            new Endroid\Bundle\QrCodeBundle\EndroidQrCodeBundle(),
             new AppBundle\AppBundle(),
             new PluginBundle\PluginBundle(),
         );

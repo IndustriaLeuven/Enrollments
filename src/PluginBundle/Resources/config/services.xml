@@ -68,5 +68,9 @@
         <service class="PluginBundle\EventListener\InternalFormPluginListener">
             <tag name="kernel.event_subscriber" />
         </service>
+        <service class="PluginBundle\EventListener\AdmissionCheckPluginListener">
+            <argument>%secret%</argument>
+            <tag name="kernel.event_subscriber" />
+        </service>
    </services>
 </container>
