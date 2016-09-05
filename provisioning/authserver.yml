@@ -32,6 +32,7 @@
       when: adduser.rc != 0
     - name: Insert cooperation OAuth application and admin API key
       mysql_db: name=authserver state=import target=/vagrant/provisioning/authserver.sql
+      failed_when: False
     - name: Make cache & logs writeable by webserver
       file: path=/var/www/authserver/{{ item }} owner=www-data mode=0777 recurse=yes state=directory
       with_items:
