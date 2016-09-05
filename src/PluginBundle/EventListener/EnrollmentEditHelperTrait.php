@@ -19,7 +19,7 @@ trait EnrollmentEditHelperTrait
     {
         return $event->getFormBuilder()
             ->add($name, FieldsetType::class, [
-                'legend' => ucfirst(trim(strtolower(preg_replace(array('/([A-Z])/', '/[_\s]+/'), array('_$1', ' '), $name)))),
+                'legend' => 'plugin.'.$name.'.title',
                 'label' => false,
             ])
             ->get($name)
