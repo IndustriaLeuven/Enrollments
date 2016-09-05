@@ -15,10 +15,13 @@ use AppBundle\Event\UI\SubmittedFormTemplateEvent;
 use AppBundle\Event\UIEvents;
 use AppBundle\Plugin\Table\CallbackTableColumnDefinition;
 use AppBundle\Util;
+use Endroid\QrCode\Factory\QrCodeFactory;
 use PluginBundle\Event\AdmissionCheckEvent;
+use PluginBundle\Event\EmailEvent;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class AdmissionCheckPluginListener implements EventSubscriberInterface
 {
@@ -32,15 +35,27 @@ class AdmissionCheckPluginListener implements EventSubscriberInterface
      * @var string
      */
     private $secret;
+    /**
+     * @var QrCodeFactory
+     */
+    private $qrCodeFactory;
+    /**
+     * @var UrlGeneratorInterface
+     */
+    private $urlGenerator;
 
     /**
      * EntranceCheckPluginListener constructor.
      *
+     * @param QrCodeFactory $qrCodeFactory
+     * @param UrlGeneratorInterface $urlGenerator
      * @param string $secret
      */
-    public function __construct($secret)
+    public function __construct(QrCodeFactory $qrCodeFactory, UrlGeneratorInterface $urlGenerator, $secret)
     {
         $this->secret = $secret;
+        $this->qrCodeFactory = $qrCodeFactory;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public static function getSubscribedEvents()
@@ -55,6 +70,9 @@ class AdmissionCheckPluginListener implements EventSubscriberInterface
             AdminEvents::ENROLLMENT_EDIT_SUBMIT => 'onAdminEnrollmentEditSubmit',
             UIEvents::SUCCESS => ['onUISuccess', -255], // After PricingPlugin
             AdmissionCheckEvent::EVENT_NAME => 'onAdmissionCheck',
+            EmailEvent::ENROLL_EVENT => ['onEmail', 10],
+            EmailEvent::PAID_EVENT => ['onEmail', 10],
+            EmailEvent::PAID_PARTIALLY_EVENT => ['onEmail', 10],
         ];
     }
 
@@ -175,5 +193,28 @@ class AdmissionCheckPluginListener implements EventSubscriberInterface
         } else {
             $event->addReasonedVote(AdmissionCheckEvent::VALIDITY_DENY, self::PLUGIN_NAME, 'plugin.admission_check.reason.used');
         }
+    }
+
+    public function onEmail(EmailEvent $event)
+    {
+        if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
+            return;
+
+        $admissionUrl = $this->urlGenerator->generate('plugin_admission_check_check', [
+            'enrollment' => Util::shortuuid_encode($event->getEnrollment()->getId()),
+            'signature' => Util::base64_encode_urlsafe(hash_hmac('sha256', $event->getEnrollment()->getId(), $this->secret, true)),
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        $qrCode = $this->qrCodeFactory->createQrCode();
+        $qrCode->setText($admissionUrl);
+
+        $attachment = \Swift_Image::newInstance($qrCode->get())
+            ->setFilename('admission_ticket.png')
+            ->setContentType($qrCode->getContentType())
+        ;
+
+        $attachmentId = $event->getMessage()->embed($attachment);
+
+        $event->addVariable('admission_check_qrcode_url', $attachmentId);
     }
 }

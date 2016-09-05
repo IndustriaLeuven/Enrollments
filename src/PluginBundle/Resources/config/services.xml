@@ -69,6 +69,8 @@
             <tag name="kernel.event_subscriber" />
         </service>
         <service class="PluginBundle\EventListener\AdmissionCheckPluginListener">
+            <argument type="service" id="endroid_qrcode.factory" />
+            <argument type="service" id="router" />
             <argument>%secret%</argument>
             <tag name="kernel.event_subscriber" />
         </service>
