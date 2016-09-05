@@ -98,6 +98,10 @@ plugin.pricing.enrollment.paid: Paid
 plugin.pricing.enrollment.paid_partially: Partially paid
 plugin.pricing.enrollment.paid_partially.amount: '&euro;&nbsp;%amount% paid'
 
+plugin.pricing.admission_check.reason.missing_config: 'Pricing: FATAL: missing configuration.'
+plugin.pricing.admission_check.reason.fully_paid: 'Pricing: Ticket was fully paid.'
+plugin.pricing.admission_check.reason.unpaid: 'Pricing: Ticket was not fully paid.'
+
 # Role differentiation plugin
 plugin.role_differentiation.title: 'Role differentiation'
 plugin.role_differentiation.conf.help: Configuration is applied from top to bottom

@@ -98,6 +98,10 @@ plugin.pricing.enrollment.paid: Betaald
 plugin.pricing.enrollment.paid_partially: Gedeeltelijk betaald
 plugin.pricing.enrollment.paid_partially.amount: '&euro;&nbsp;%amount% betaald'
 
+plugin.pricing.admission_check.reason.missing_config: 'Prijzen: FATAL: configuratie mist.'
+plugin.pricing.admission_check.reason.fully_paid: 'Prijzen: Ticket is volledig betaald.'
+plugin.pricing.admission_check.reason.unpaid: 'Prijzen: Ticket is niet volledig betaald.'
+
 # Role differentiation plugin
 plugin.role_differentiation.title: 'Onderscheid tussen groepen'
 plugin.role_differentiation.conf.help: Instellingen worden van boven naar onder toegepast.
