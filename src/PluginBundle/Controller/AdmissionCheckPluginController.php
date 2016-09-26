@@ -25,7 +25,7 @@ class AdmissionCheckPluginController extends Controller
         $admissionEvent = new AdmissionCheckEvent();
         $admissionEvent->addReason(AdmissionCheckEvent::VALIDITY_ABSTAIN, AdmissionCheckPluginListener::PLUGIN_NAME, 'plugin.admission_check.reason.abstain');
         $enrollmentUuid = Util::shortuuid_decode($enrollment);
-        if(Util::base64_decode_urlsafe($signature) !== hash_hmac('sha256', $enrollmentUuid, $this->container->getParameter('secret'), true)) {
+        if(Util::base64_decode_urlsafe($signature) !== hash_hmac('sha256', $enrollmentUuid, $this->container->getParameter('urlsign_key'), true)) {
             $admissionEvent->addReasonedVote(AdmissionCheckEvent::VALIDITY_DENY, AdmissionCheckPluginListener::PLUGIN_NAME, 'plugin.admission_check.reason.bad_signature');
             return $admissionEvent;
         }

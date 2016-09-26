@@ -26,4 +26,5 @@ parameters:
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
+    urlsign_key:       ThisKeyIsNotSoSecretChangeIt
 
