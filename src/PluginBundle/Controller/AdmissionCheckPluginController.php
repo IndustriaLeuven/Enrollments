@@ -37,8 +37,8 @@ class AdmissionCheckPluginController extends Controller
             return $admissionEvent;
         }
 
-        if(!$this->isGranted('EDIT_ENROLLMENT', $enrollment->getForm())) {
-            throw $this->createAccessDeniedException('You do not have edit permissions on this form.');
+        if(!$this->isGranted('EDIT_ENROLLMENT', $enrollment->getForm()) && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('You do not have edit permissions on the enrollments of this form.');
         }
 
         $admissionEvent->setEnrollment($enrollment);
