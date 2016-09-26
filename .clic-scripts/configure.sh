@@ -3,6 +3,11 @@ set -e # Quit script on error
 
 $CLIC application:variable:get "$CLIC_APPNAME" app/configured >/dev/null 2>/dev/null || $CLIC application:execute "$CLIC_APPNAME" reconfigure
 
+# Automatically set up urlsign_key variable if it does not yet exist
+if ! $CLIC application:variable:get "$CLIC_APPNAME" app/urlsign_key >/dev/null 2>/dev/null; then
+    $CLIC application:variable:set "$CLIC_APPNAME" app/urlsign_key "$(pwgen -s 100)"
+fi
+
 mail_transport="$($CLIC application:variable:get "$CLIC_APPNAME" mail/transport)"
 
 cat > app/config/parameters-clic.yml <<EOL
@@ -26,6 +31,7 @@ parameters:
 
     locale:            en
     secret:            '$(pwgen -s 100)'
+    urlsign_key:        $($CLIC application:variable:get "$CLIC_APPNAME" app/urlsign_key --filter=json_encode)
 
     oauth_client_server: $($CLIC application:variable:get "$CLIC_APPNAME" app/oauth/server --filter=json_encode)
     oauth_client_id:     $($CLIC application:variable:get "$CLIC_APPNAME" app/oauth/client_id --filter=json_encode)

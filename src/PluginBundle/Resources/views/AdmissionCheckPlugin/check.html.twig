@@ -1,0 +1,43 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 col-sm-push-1 col-sm-10 col-md-push-2 col-md-8 col-lg-push-3 col-lg-6">
+                {# @var data \PluginBundle\Event\AdmissionCheckEvent #}
+                <div class="panel {% if data.valid %}panel-success{% else %}panel-danger{% endif %}">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            {% if data.valid %}
+                                {{ 'plugin.admission_check.check.title.granted'|trans({'%form_name%': data.enrollment.form.name}) }}
+                            {% else %}
+                                {{ 'plugin.admission_check.check.title.denied'|trans({'%form_name%': data.enrollment?data.enrollment.form.name:'???'}) }}
+                            {% endif %}
+                        </h3>
+                    </div>
+                    {% if data %}
+                        <ul class="list-group">
+                            {% for reason in data.reasons %}
+                                <li class="list-group-item">{{ reason|trans }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {% if data.enrollment %}
+                        <div class="panel-footer">
+                            <a href="{{ url('admin_get_form_enrollment', {form: data.enrollment.form.id, enrollment: data.enrollment.id }) }}" class="btn btn-default">
+                                {{ icon('cog') }} {{ 'admin.navigation.enrollment_admin'|trans }}
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block head %}
+    {{ parent() }}
+    <style type="text/css">
+        body {
+            background-color: {% if data.valid %}green{% else %}red{% endif %};
+        }
+    </style>
+{% endblock %}

@@ -49,6 +49,7 @@ Event emitted when the results of an already filled form have to be shown to the
     * Emit `FormEvents::BUILD` with form entity and enrollment from `UIEvents::FORM`
     * Emit `FormEvents::SETDATA` with the form entity and enrollment from `UIEvents::FORM` and the form built from the formbuilder from `FormEvents::BUILD`
 0253. Add payment information [`PluginBundle:Pricing`](pricing.md)
+0255. Add admittance QR-code [`PluginBunde:AdmissionCheck`](admission_check.md)
 
 ### `FormEvents::BUILD`
 
@@ -91,6 +92,7 @@ will be presented to the user.
 11. Adds an error on the form when the user already has an enrollment for this form entity [`PluginBundle:UniqueUser`](unique_user.md)
 10. Checks for duplicate entries in fields that are supposed to be unique and adds errors on the form for them. Creates/updates unique field data [`PluginBundle:UniqueFields`](unique_fields.md)
 0. Includes the form template. If the returned object is an instance of `FormDefinitionInterface`, it calls the `handleSubmission` method with the submitted form and the enrollment entity [`PluginBundle:FormTemplate`](form_template.md)
+0. If form is being created, sets its admission status to unused. [`PluginBundle:AdmissionCheck`](admission_check.md)
 04. Calculates and stores the total price for the enrollment [`PluginBundle:Pricing`](pricing.md)
     * Emits `PricingPaidAmountEditedEvent::EVENT_NAME` when the total price *changed* (so not on the initial submission)
 05. Store/update the number of persons enrolled by this submission. Adds an error to the form if the number of enrolled persons goes over the limit and deny enrollments is enabled [`PluginBundle:CountEnrollments`](count_enrollments.md)

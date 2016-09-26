@@ -98,6 +98,10 @@ plugin.pricing.enrollment.paid: Betaald
 plugin.pricing.enrollment.paid_partially: Gedeeltelijk betaald
 plugin.pricing.enrollment.paid_partially.amount: '&euro;&nbsp;%amount% betaald'
 
+plugin.pricing.admission_check.reason.missing_config: 'Prijzen: FATAL: configuratie mist.'
+plugin.pricing.admission_check.reason.fully_paid: 'Prijzen: Ticket is volledig betaald.'
+plugin.pricing.admission_check.reason.unpaid: 'Prijzen: Ticket is niet volledig betaald.'
+
 # Role differentiation plugin
 plugin.role_differentiation.title: 'Onderscheid tussen groepen'
 plugin.role_differentiation.conf.help: Instellingen worden van boven naar onder toegepast.
@@ -137,3 +141,27 @@ plugin.internal_form.title: 'Intern formulier'
 # Divert enrollments plugin
 plugin.divert_enrollments.title: 'Inschrijvingen omleiden'
 plugin.divert_enrollments.conf.target: 'Sla inschrijvingen op in'
+
+# Admission check plugin
+plugin.admission_check.title: 'Toegangscontrole'
+
+plugin.admission_check.ui.qr_code.title: 'Toegangs ticket'
+plugin.admission_check.ui.qr_code.body: "U zult deze code moeten tonen aan de inkom van het evenement."
+
+plugin.admission_check.check.title.denied: '%form_name%: Toegang GEWEIGERD'
+plugin.admission_check.check.title.granted: '%form_name%: Toegang TOEGESTAAN'
+
+plugin.admission_check.label.used: 'Gebruikt voor toegang'
+plugin.admission_check.label.unused: 'Ongebruikt voor toegang'
+
+plugin.admission_check.facet.used: 'Toegangscontrole'
+plugin.admission_check.facet.used.used_only: 'Alleen gebruikte'
+plugin.admission_check.facet.used.unused_only: 'Alleen ongebruikte'
+
+plugin.admission_check.used.help_text: 'Markeert deze inschrijving als gebruikt voor toegang. Elke inschrijving kan slechts éénmaal gebruikt worden om toegang te verkrijgen.'
+
+plugin.admission_check.reason.bad_signature: 'Toegangscontrole: Ondertekening ongeldig. Je gebruikte een nagemaakte of kapotte link.'
+plugin.admission_check.reason.no_enrollment: 'Toegangscontrole: De inschrijving waarvoor deze link was gegenereerd bestaat niet.'
+plugin.admission_check.reason.abstain: 'Toegangscontrole: Geen enkele plugin stemde op de geldigheid van deze inschrijving.'
+plugin.admission_check.reason.unused: 'Toegangscontrole: Deze inschrijving is nog niet gebruikt om iemand binnen te laten.'
+plugin.admission_check.reason.used: 'Toegangscontrole: Deze inschrijving is al gebruikt om iemand binnen te laten.'

@@ -98,6 +98,10 @@ plugin.pricing.enrollment.paid: Paid
 plugin.pricing.enrollment.paid_partially: Partially paid
 plugin.pricing.enrollment.paid_partially.amount: '&euro;&nbsp;%amount% paid'
 
+plugin.pricing.admission_check.reason.missing_config: 'Pricing: FATAL: missing configuration.'
+plugin.pricing.admission_check.reason.fully_paid: 'Pricing: Ticket was fully paid.'
+plugin.pricing.admission_check.reason.unpaid: 'Pricing: Ticket was not fully paid.'
+
 # Role differentiation plugin
 plugin.role_differentiation.title: 'Role differentiation'
 plugin.role_differentiation.conf.help: Configuration is applied from top to bottom
@@ -137,3 +141,28 @@ plugin.internal_form.title: 'Internal form'
 # Divert enrollments plugin
 plugin.divert_enrollments.title: 'Divert enrollments'
 plugin.divert_enrollments.conf.target: 'Store enrollments in'
+
+# Admission check plugin
+plugin.admission_check.title: 'Admission check'
+
+plugin.admission_check.ui.qr_code.title: 'Admission ticket'
+plugin.admission_check.ui.qr_code.body: "You will have to show this code at the entrance of the event."
+
+plugin.admission_check.check.title.denied: '%form_name%: Admission DENIED'
+plugin.admission_check.check.title.granted: '%form_name%: Admission GRANTED'
+
+plugin.admission_check.label.used: 'Used for admission'
+plugin.admission_check.label.unused: 'Unused for admission'
+
+plugin.admission_check.facet.used: 'Admission check'
+plugin.admission_check.facet.used.used_only: 'Used only'
+plugin.admission_check.facet.used.unused_only: 'Unused only'
+
+plugin.admission_check.used.help_text: 'Marks this enrollment as already used for admission. Each enrollment can only be used form admission once.'
+
+plugin.admission_check.reason.bad_signature: 'Admission check: Signature mismatch. You followed a forged or damaged URL.'
+plugin.admission_check.reason.no_enrollment: 'Admission check: The enrollment for which this URL was generated does not exist.'
+plugin.admission_check.reason.abstain: 'Admission check: No plugins voted on validity of this admission.'
+plugin.admission_check.reason.unused: 'Admission check: This enrollment was not yet used to admit someone.'
+plugin.admission_check.reason.used: 'Admission check: This enrollment is already used to admit someone.'
+

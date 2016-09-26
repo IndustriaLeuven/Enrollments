@@ -68,5 +68,11 @@
         <service class="PluginBundle\EventListener\InternalFormPluginListener">
             <tag name="kernel.event_subscriber" />
         </service>
+        <service class="PluginBundle\EventListener\AdmissionCheckPluginListener">
+            <argument type="service" id="endroid_qrcode.factory" />
+            <argument type="service" id="router" />
+            <argument>%urlsign_key%</argument>
+            <tag name="kernel.event_subscriber" />
+        </service>
    </services>
 </container>

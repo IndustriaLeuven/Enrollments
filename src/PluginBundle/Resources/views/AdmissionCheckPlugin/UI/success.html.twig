@@ -1,0 +1,17 @@
+{% if not (app.request.attributes.get('_route') starts with 'admin_') %}
+    <div class="thumbnail text-center">
+        <h3>{{ form.name }}&ensp;<small>{{ 'plugin.admission_check.ui.qr_code.title'|trans }}</small></h3>
+        <img src="{{ qrcode_data_uri(url('plugin_admission_check_check', {enrollment:enrollment_id, signature: signature}), {
+        }) }}">
+        <div class="caption">
+            <p>{{ 'plugin.admission_check.ui.qr_code.body'|trans }}</p>
+            {% if app.environment == 'dev' %}
+                <p>
+                    <a href="{{ url('plugin_admission_check_check', {enrollment: enrollment_id, signature: signature}) }}">
+                        QR code URL: {{ url('plugin_admission_check_check', {enrollment: enrollment_id, signature: signature}) }}
+                    </a>
+                </p>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

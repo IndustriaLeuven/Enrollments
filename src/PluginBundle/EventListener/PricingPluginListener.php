@@ -19,6 +19,7 @@ use AppBundle\Event\UIEvents;
 use AppBundle\Plugin\Table\CallbackTableColumnDefinition;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormStaticControlType;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\MoneyType;
+use PluginBundle\Event\AdmissionCheckEvent;
 use PluginBundle\Event\PricingPaidAmountEditedEvent;
 use PluginBundle\ExpressionLanguage\LogicExpressionProvider;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
@@ -78,6 +79,7 @@ class PricingPluginListener implements EventSubscriberInterface
             UIEvents::FORM => ['onUIForm', -253],
             FormEvents::SUBMIT => ['onFormSubmit', -4],
             UIEvents::SUCCESS => ['onUISuccess', -253],
+            AdmissionCheckEvent::EVENT_NAME => 'onAdmissionCheck',
         ];
     }
 
@@ -126,6 +128,27 @@ class PricingPluginListener implements EventSubscriberInterface
         $event->addTemplate(new TemplateReference('PluginBundle', 'PricingPlugin', 'Admin/get', 'html', 'twig'), [
             'pluginData' => $event->getForm()->getPluginData()->get(self::PLUGIN_NAME),
         ]);
+    }
+
+    public function onAdmissionCheck(AdmissionCheckEvent $event)
+    {
+        if(!$event->getEnrollment()->getPluginData()->has(self::PLUGIN_NAME))
+            return;
+        $pluginData = $event->getEnrollment()->getPluginData()->get(self::PLUGIN_NAME);
+        if(!$pluginData || !isset($pluginData['totalPrice'])) {
+            $event->addReasonedVote(AdmissionCheckEvent::VALIDITY_DENY, self::PLUGIN_NAME, 'plugin.pricing.admission_check.reason.missing_config');
+            return;
+        }
+        if(!isset($pluginData['paidAmount']) && $pluginData['totalPrice'] !== 0) {
+            $event->addReasonedVote(AdmissionCheckEvent::VALIDITY_DENY, self::PLUGIN_NAME, 'plugin.pricing.admission_check.reason.unpaid');
+
+            return;
+        }
+        if($pluginData['paidAmount'] >= $pluginData['totalPrice']) {
+            $event->addReasonedVote(AdmissionCheckEvent::VALIDITY_GRANT, self::PLUGIN_NAME, 'plugin.pricing.admission_check.reason.fully_paid');
+        } else {
+            $event->addReasonedVote(AdmissionCheckEvent::VALIDITY_DENY, self::PLUGIN_NAME, 'plugin.pricing.admission_check.reason.unpaid');
+        }
     }
 
     public function onAdminEnrollmentList(EnrollmentListEvent $event)

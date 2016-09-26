@@ -13,8 +13,8 @@ class AdminButtonsListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            UIEvents::FORM => ['addFormAdminButtons', -255],
-            UIEvents::SUCCESS => ['addEnrollmentAdminButtons', -255],
+            UIEvents::FORM => ['addFormAdminButtons', -9000],
+            UIEvents::SUCCESS => ['addEnrollmentAdminButtons', -9000],
         ];
     }
 

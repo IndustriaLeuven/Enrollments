@@ -25,6 +25,10 @@ admin:
     prefix: /admin
     type: rest
 
+plugin:
+    resource: "@PluginBundle/Resources/config/routing.yml"
+    type: rest
+
 home:
     path: /
     defaults:

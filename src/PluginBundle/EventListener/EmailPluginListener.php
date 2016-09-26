@@ -15,8 +15,10 @@ use AppBundle\Event\UI\SubmittedFormTemplateEvent;
 use AppBundle\Plugin\PluginDataBag;
 use Braincrafted\Bundle\BootstrapBundle\Session\FlashMessage;
 use PluginBundle\Constraints\TwigTemplate;
+use PluginBundle\Event\EmailEvent;
 use PluginBundle\Event\PricingPaidAmountEditedEvent;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -31,6 +33,12 @@ class EmailPluginListener implements EventSubscriberInterface
     const EMAIL_TYPE_PAID = 'paid';
     const EMAIL_TYPE_PAID_PARTIALLY = 'paid_partially';
     use PluginConfigurationHelperTrait;
+
+    static private $mailTypeToEventsMap = [
+        self::EMAIL_TYPE_ENROLL => EmailEvent::ENROLL_EVENT,
+        self::EMAIL_TYPE_PAID => EmailEvent::PAID_EVENT,
+        self::EMAIL_TYPE_PAID_PARTIALLY => EmailEvent::PAID_PARTIALLY_EVENT,
+    ];
 
     /**
      * @var \Twig_Environment
@@ -128,6 +136,7 @@ class EmailPluginListener implements EventSubscriberInterface
             'random',
             'range',
             'url',
+            'qrcode_data_uri',
         ]);
         $this->twig->addExtension(new \Twig_Extension_Sandbox($sandboxPolicy, true));
         foreach($twig->getFilters() as $filter)
@@ -150,6 +159,9 @@ class EmailPluginListener implements EventSubscriberInterface
             AdminEvents::FORM_GET => 'onAdminFormGet',
             FormEvents::SUBMIT => ['onFormSubmit', -255], // After everything that might cancel the form event
             PricingPaidAmountEditedEvent::EVENT_NAME => 'onPluginPricingPaidAmountEdited',
+            EmailEvent::ENROLL_EVENT => 'onEmail',
+            EmailEvent::PAID_EVENT => 'onEmail',
+            EmailEvent::PAID_PARTIALLY_EVENT => 'onEmail',
         ];
     }
 
@@ -180,8 +192,27 @@ class EmailPluginListener implements EventSubscriberInterface
         ]);
     }
 
+    public function onEmail(EmailEvent $event, $eventName)
+    {
+        // No check if plugin is enabled here, because the EmailEvent is emitted from this plugin.
+        $pluginData = $event->getForm()->getPluginData()->get(self::PLUGIN_NAME);
+        $formData = $event->getEnrollment()->getData();
+        $mailType = array_search($eventName, self::$mailTypeToEventsMap);
+        // Render email subject & body
+        $emailSubject = $this->twig->createTemplate($pluginData[$mailType]['emailSubject'])->render($event->getVariables());
+        $emailBody = $this->twig->createTemplate($pluginData[$mailType]['emailBody'])->render($event->getVariables());
 
-    public function onFormSubmit(SubmitFormEvent $event)
+        $event->getMessage()
+            ->setSubject($emailSubject)
+            ->setBody($emailBody, 'text/html')
+            ->addPart(html_entity_decode(strip_tags($emailBody)), 'text/plain')
+            ->addTo($formData['email'], isset($formData['name'])?$formData['name']:null)
+            ->setFrom($this->emailSender)
+        ;
+    }
+
+
+    public function onFormSubmit(SubmitFormEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
     {
         $this->upgradePluginConfiguration($event->getForm());
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
@@ -196,14 +227,14 @@ class EmailPluginListener implements EventSubscriberInterface
         ];
 
         try {
-            $this->sendForEmailType($event->getForm(), $event->getEnrollment(), self::EMAIL_TYPE_ENROLL, $templateData);
+            $this->sendForEmailType($event->getForm(), $event->getEnrollment(), self::EMAIL_TYPE_ENROLL, $templateData, $eventDispatcher);
         } catch(\Exception $error) {
             $this->flashMessage->alert('Unfortunately, an error occurred while sending your confirmation mail: '.$error->getMessage());
         }
 
     }
 
-    public function onPluginPricingPaidAmountEdited(PricingPaidAmountEditedEvent $event)
+    public function onPluginPricingPaidAmountEdited(PricingPaidAmountEditedEvent $event, $eventName, EventDispatcherInterface $eventDispatcher)
     {
         $form = $event->getForm();
         $this->upgradePluginConfiguration($form);
@@ -222,10 +253,11 @@ class EmailPluginListener implements EventSubscriberInterface
         ];
 
         try {
-            if ($pricingData['paidAmount'] < $pricingData['totalPrice'])
-                $this->sendForEmailType($form, $enrollment, self::EMAIL_TYPE_PAID_PARTIALLY, $templateData);
-            else
-                $this->sendForEmailType($form, $enrollment, self::EMAIL_TYPE_PAID, $templateData);
+            if ($pricingData['paidAmount'] < $pricingData['totalPrice']) {
+                $this->sendForEmailType($form, $enrollment, self::EMAIL_TYPE_PAID_PARTIALLY, $templateData, $eventDispatcher);
+            } else {
+                $this->sendForEmailType($form, $enrollment, self::EMAIL_TYPE_PAID, $templateData, $eventDispatcher);
+            }
         } catch(\Exception $ex) {
             $this->flashMessage->alert('An error occurred while sending the payment amount change email: '.$ex->getMessage());
         }
@@ -286,13 +318,14 @@ class EmailPluginListener implements EventSubscriberInterface
 
     /**
      * Sends an email message for an email type
+     *
      * @param Form $form Form to get the templates from
      * @param Enrollment $enrollment Enrollment to get the name and email data from
      * @param string $name Email type name
      * @param array $variables Map of names of variables to their content
-     * @throws \Exception
+     * @param EventDispatcherInterface $eventDispatcher Event dispatcher
      */
-    private function sendForEmailType(Form $form, Enrollment $enrollment, $name, $variables)
+    private function sendForEmailType(Form $form, Enrollment $enrollment, $name, $variables, EventDispatcherInterface $eventDispatcher)
     {
         $pluginData = $form->getPluginData()->get(self::PLUGIN_NAME);
         if(!isset($pluginData[$name])||!isset($pluginData[$name]['enable'])||!$pluginData[$name]['enable'])
@@ -302,18 +335,15 @@ class EmailPluginListener implements EventSubscriberInterface
         if(!isset($formData['email'])) // There is no email address to send the confirmation to
             return;
 
-        // Render email subject & body
-        $emailSubject = $this->twig->createTemplate($pluginData[$name]['emailSubject'])->render($variables);
-        $emailBody = $this->twig->createTemplate($pluginData[$name]['emailBody'])->render($variables);
+        if(!isset(self::$mailTypeToEventsMap[$name]))
+            return;
 
-        // Create email message
-        $message = \Swift_Message::newInstance($emailSubject, $emailBody, 'text/html')
-            ->addPart(html_entity_decode(strip_tags($emailBody)), 'text/plain')
-            ->addTo($formData['email'], isset($formData['name'])?$formData['name']:null)
-            ->setFrom($this->emailSender);
+        $event = new EmailEvent($form, $enrollment, $variables);
+
+        $eventDispatcher->dispatch(self::$mailTypeToEventsMap[$name], $event);
 
         // Send email message
-        $this->mailer->send($message);
+        $this->mailer->send($event->getMessage());
     }
 
     private function upgradePluginConfiguration(Form $form)

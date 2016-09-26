@@ -1,0 +1,9 @@
+{% if data.pluginData.has('admission_check') %}
+    {% if data.pluginData.get('admission_check').used|default(false) %}
+        {{ label_danger('plugin.admission_check.label.used'|trans) }}
+    {% else %}
+        {{ label_success('plugin.admission_check.label.unused'|trans) }}
+    {% endif %}
+{% else %}
+    &mdash;
+{% endif %}

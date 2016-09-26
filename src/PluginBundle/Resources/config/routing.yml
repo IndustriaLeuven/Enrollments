@@ -1,0 +1,4 @@
+plugin_entrance_check:
+  resource: '@PluginBundle/Controller/AdmissionCheckPluginController.php'
+  type: rest
+  name_prefix: plugin_admission_check_
