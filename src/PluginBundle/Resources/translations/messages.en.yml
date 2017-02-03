@@ -46,6 +46,7 @@ plugin.form_builder.conf.fields.type.choice.ChoiceType: Multiple choice
 plugin.form_builder.conf.fields.type.choice.DateType: Date
 plugin.form_builder.conf.fields.type.choice.DateTimeType: Date and time
 plugin.form_builder.conf.fields.type.choice.TimeType: Time
+plugin.form_builder.conf.fields.type.choice.BirthdayType: Birthday
 plugin.form_builder.conf.fields.show_in_enrollment_list: Show this field in the enrollments list
 plugin.form_builder.conf.fields.required: This field is required (client-side hint only, has to be validated with a constraint)
 plugin.form_builder.conf.fields.disabled: This field is disabled

@@ -46,6 +46,7 @@ plugin.form_builder.conf.fields.type.choice.ChoiceType: Meerkeuze
 plugin.form_builder.conf.fields.type.choice.DateType: Datum
 plugin.form_builder.conf.fields.type.choice.DateTimeType: Datum en tijd
 plugin.form_builder.conf.fields.type.choice.TimeType: Tijd
+plugin.form_builder.conf.fields.type.choice.BirthdayType: Geboortedatum
 plugin.form_builder.conf.fields.show_in_enrollment_list: Laat dit veld zien in de inschrijvingslijst
 plugin.form_builder.conf.fields.required: Dit veld is vereist  (client-side hint only, en moet gevalideerd worden met een beperking)
 plugin.form_builder.conf.fields.disabled: Dit veld is uitgeschakeld
