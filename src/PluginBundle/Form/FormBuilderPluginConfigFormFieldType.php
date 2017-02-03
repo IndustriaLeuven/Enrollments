@@ -6,6 +6,7 @@ namespace PluginBundle\Form;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
 use PluginBundle\Constraints\ExpressionLanguage;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -46,7 +47,8 @@ class FormBuilderPluginConfigFormFieldType extends AbstractType
                     'plugin.form_builder.conf.fields.type.choice.ChoiceType' => ChoiceType::class,
                     'plugin.form_builder.conf.fields.type.choice.DateType' => DateType::class,
                     'plugin.form_builder.conf.fields.type.choice.DateTimeType' => DateTimeType::class,
-                    'plugin.form_builder.conf.fields.type.choice.TimeType' => TimeType::class
+                    'plugin.form_builder.conf.fields.type.choice.TimeType' => TimeType::class,
+                    'plugin.form_builder.conf.fields.type.choice.BirthdayType' => BirthdayType::class
                 ],
                 'choices_as_values' => true,
             ])
