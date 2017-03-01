@@ -71,18 +71,10 @@ return new FormDefinition(function(FormBuilderInterface $formBuilder)
             'label' => 'Party&emsp;&mdash;&emsp;Free',
         ])
         ->add('diner', CheckboxType::class, [
-            'label' => 'Diner&emsp;&mdash;&emsp;&euro;35',
+            'label' => 'Diner&emsp;(Sold out!)',
             'required' => false,
-            'attr' => [
-                'data-onload' => 'onchange',
-                'onchange' => 'if($(this).prop("checked")) {
-                        $("#form_events_reception").prop("checked", true).prop("disabled", true);
-                        $("#form_vegetarian, #form_plus_one_data_vegetarian").prop("disabled", false);
-                    } else {
-                        $("#form_events_reception").prop("disabled", $(this).prop("disabled"));
-                        $("#form_vegetarian, #form_plus_one_data_vegetarian").prop("disabled", true).prop("checked", false);
-                    }',
-            ],
+            'data' => false,
+            'disabled' => true,
         ])
         ->add('reception', CheckboxType::class, [
             'label' => 'Reception&emsp;&mdash;&emsp;Free',
