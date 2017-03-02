@@ -79,6 +79,8 @@ plugin.form_template.conf.formType: Formulier type (configuratie bestand)
 plugin.form_template.conf.admin_enrollment_list_fields: Velden om te laten zien in de inschrijvingslijst
 plugin.form_template.conf.admin_enrollment_list_field.add_button: Veld toevoegen
 plugin.form_template.conf.admin_enrollment_list_field.delete_button: Veld verwijderen
+plugin.form_template.conf.config: Formulier configuratie
+plugin.form_template.alert.config: 'Bewerk de formulierinstellingen opnieuw om instellingen voor de geconfigureerde formulier template in te stellen.'
 
 # Prefill user data plugin
 plugin.prefill_user_data.title: 'Vul gebruikersgegevens op voorhand in'
