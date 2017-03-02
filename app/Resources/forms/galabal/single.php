@@ -32,17 +32,22 @@ return new GalabalFormDefinition(function(FormBuilderInterface $formBuilder, $se
         ])
         ->get('events')
         ->add('party', CheckboxType::class, [
-            'label' => 'Party&emsp;&mdash;&emsp;&euro;'.$settings['party_price'],
+            'label' => 'Party&emsp;&mdash;&emsp;'.$settings['party_price'],
             'data' => true,
             'disabled' => true,
         ])
         ->add('diner', CheckboxType::class, [
-            'label' => 'Diner&emsp;'.($settings['dinner_available']?'&mdash;&emsp;&euro;'.$settings['dinner_price']: '(Sold out)'),
+            'label' => 'Diner&emsp;&mdash;&emsp;'.$settings['dinner_price'],
             'required' => false,
             'disabled' => !$settings['dinner_available'],
             'attr' => [
                 'data-onload' => 'onchange',
                 'onchange' => '$(this).prop("checked")?$("#form_vegetarian").prop("disabled", false):$("#form_vegetarian").prop("disabled", true).prop("checked", false)',
             ],
+        ]);
+    if($settings['show_reception'])
+        $formBuilder->get('events')->add('reception', CheckboxType::class, [
+            'label' => 'Reception&emsp;&mdash;&emsp;Free',
+            'required' => false,
         ]);
 });
