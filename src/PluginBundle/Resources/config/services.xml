@@ -10,6 +10,7 @@
         <service class="PluginBundle\EventListener\FormTemplatePluginListener">
             <argument>%kernel.root_dir%/Resources/forms</argument>
             <argument type="service" id="braincrafted_bootstrap.flash" />
+            <argument type="service" id="form.factory" />
             <tag name="kernel.event_subscriber" />
         </service>
         <service class="PluginBundle\EventListener\FormBuilderPluginListener">

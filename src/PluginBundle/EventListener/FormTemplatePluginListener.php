@@ -26,6 +26,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormFactory;
 
 class FormTemplatePluginListener implements EventSubscriberInterface
 {
@@ -40,15 +41,23 @@ class FormTemplatePluginListener implements EventSubscriberInterface
      * @var FlashMessage
      */
     private $flashMessage;
+    /**
+     * @var FormFactory
+     */
+    private $formFactory;
 
     /**
      * FormTemplatePluginListener constructor.
+     *
      * @param string $searchDir
+     * @param FlashMessage $flashMessage
+     * @param FormFactory $formFactory
      */
-    public function __construct($searchDir, FlashMessage $flashMessage)
+    public function __construct($searchDir, FlashMessage $flashMessage, FormFactory $formFactory)
     {
         $this->searchDir = $searchDir;
         $this->flashMessage = $flashMessage;
+        $this->formFactory = $formFactory;
     }
 
     public static function getSubscribedEvents()
@@ -95,6 +104,10 @@ class FormTemplatePluginListener implements EventSubscriberInterface
                 'label' => 'plugin.form_template.conf.config'
             ]);
             $formDefinition->buildConfigForm($pluginForm->get('config'));
+            if($pluginForm->get('config')->count() == 0) {
+                // If the form template does not add any configuration, remove the config form
+                $pluginForm->remove('config');
+            }
         }
     }
 
@@ -105,14 +118,27 @@ class FormTemplatePluginListener implements EventSubscriberInterface
         if(isset($prevConfig['formType']))
             $prevFormType = $prevConfig['formType'];
         $this->submitPluginForm($event, self::PLUGIN_NAME);
+        if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
+            return; // Plugin is not enabled
 
         $newConfig = $event->getForm()->getPluginData()->get(self::PLUGIN_NAME);
         $newFormType = null;
         if(isset($newConfig['formType']))
             $newFormType = $newConfig['formType'];
 
-        if($prevFormType !== $newFormType)
-            $this->flashMessage->alert('plugin.form_template.alert.config');
+        if($prevFormType !== $newFormType) {
+            // Changed form type
+            $formDefinition = $this->getFormDefinitionSafe($newFormType);
+            $formBuilder = $this->formFactory->createBuilder();
+            $formDefinition->buildConfigForm($formBuilder);
+            // Check if new form type has config options
+            if($formBuilder->count() > 0) {
+                $this->flashMessage->alert('plugin.form_template.alert.config');
+            }
+            // Clear existing form template config
+            unset($newConfig['config']);
+            $event->getForm()->getPluginData()->set(self::PLUGIN_NAME, $newConfig);
+        }
     }
 
     public function onAdminShowForm(SubmittedFormTemplateEvent $event)
