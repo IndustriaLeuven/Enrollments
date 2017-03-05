@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__.'/_generic.php';
+require_once __DIR__.'/_generic.php';
 
 use AppBundle\Entity\Enrollment;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
