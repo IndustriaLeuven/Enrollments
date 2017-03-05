@@ -26,6 +26,8 @@ trait PluginConfigurationHelperTrait
                 'attr' => [
                     'doc_page' => $name.'.md',
                 ],
+                'virtual' => false,
+                'mapped' => false,
                 'label' => false,
                 'validation_groups' => function(FormInterface $form) {
                     return $form->get('enable')->getData()?['Default']:false;
