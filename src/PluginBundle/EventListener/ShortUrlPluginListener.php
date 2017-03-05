@@ -14,6 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -27,15 +28,20 @@ class ShortUrlPluginListener implements EventSubscriberInterface
      * @var EntityManager
      */
     private $em;
+    /**
+     * @var UrlGeneratorInterface
+     */
+    private $urlGenerator;
 
     /**
      * ShortUrlPluginListener constructor.
      *
      * @param EntityManager $em
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, UrlGeneratorInterface $urlGenerator)
     {
         $this->em = $em;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public static function getSubscribedEvents()
@@ -52,8 +58,13 @@ class ShortUrlPluginListener implements EventSubscriberInterface
         $shortUrl = $event->isNew()?null:$this->getShortUrl($event->getForm());
         $this->buildPluginForm($event, self::PLUGIN_NAME)
             ->add('slug', TextType::class, [
-                'label' => 'plugin.short_url.conf.slug',
+                'label' => false,
                 'data' => $shortUrl?$shortUrl->getSlug():null,
+                'attr' => [
+                    'input_group' => [
+                        'prepend' => '.icon-globe '.$this->getSlugPrefix(),
+                    ]
+                ],
                 'constraints' => [
                     new Regex('/[a-z0-9-]+/'),
                     new Callback(function ($slug, ExecutionContextInterface $context) use($shortUrl) {
@@ -108,6 +119,13 @@ class ShortUrlPluginListener implements EventSubscriberInterface
     private function getShortUrl(Form $form)
     {
         return $this->em->getRepository(ShortUrl::class)->findOneBy(['form' => $form]);
+    }
+
+    private function getSlugPrefix()
+    {
+        $fullUrl = $this->urlGenerator->generate('plugin_short_url_goto', ['slug' => ':slug:'], UrlGeneratorInterface::ABSOLUTE_URL);
+        $lastSlug = strrpos($fullUrl, ':slug:');
+        return substr($fullUrl, 0, $lastSlug);
     }
 
 }
