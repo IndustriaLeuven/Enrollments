@@ -17,11 +17,6 @@ class FinderChoiceLoader implements ChoiceLoaderInterface
     private $finder;
 
     /**
-     * @var string
-     */
-    private $extension;
-
-    /**
      * @var array
      */
     private $choices;
@@ -30,10 +25,9 @@ class FinderChoiceLoader implements ChoiceLoaderInterface
      * FinderChoiceLoader constructor.
      * @param Finder $finder
      */
-    public function __construct(Finder $finder, $extension)
+    public function __construct(Finder $finder)
     {
         $this->finder = $finder;
-        $this->extension = $extension;
     }
 
     /**

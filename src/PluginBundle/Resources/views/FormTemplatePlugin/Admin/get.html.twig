@@ -6,4 +6,7 @@
          {{ field }}<br>
       {% endfor %}
    </dd>
+   {% if pluginData.config is defined %}
+      <dt>{{ 'plugin.form_template.conf.config'|trans }}</dt><dd><pre>{{ pluginData.config|yaml_encode(1) }}</pre></dd>
+   {% endif %}
 </dl>

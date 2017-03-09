@@ -8,6 +8,7 @@ Vagrant.configure(2) do |config|
     config.vm.define "enrollments", primary: true do |enrollments|
         enrollments.vm.network "private_network", ip: "192.168.80.7"
         enrollments.vm.synced_folder "src", "/var/www/src", create: true
+        enrollments.vm.synced_folder "app/Resources/forms", "/var/www/app/Resources/forms", create: true
         enrollments.vm.synced_folder "documentation", "/var/www/documentation", create: true
         enrollments.vm.provision :shell, inline: "PYTHONUNBUFFERED=1 sudo ansible-playbook /vagrant/provisioning/enrollments.yml --connection=local"
     end

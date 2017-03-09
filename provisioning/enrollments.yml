@@ -5,13 +5,17 @@
       with_items:
         - app/cache
         - app/logs
+        - app/Resources
         - web
     - name: Copy static files
       command: cp -r /vagrant/{{ item }} /var/www/{{ item|dirname }}
       with_items:
         - app/config
         - app/DoctrineMigrations
-        - app/Resources
+        - app/Resources/TwigBundle
+        - app/Resources/less
+        - app/Resources/translations
+        - app/Resources/views
         - app/AppKernel.php
         - app/AppCache.php
         - app/console

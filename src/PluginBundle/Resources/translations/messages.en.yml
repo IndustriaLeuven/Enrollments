@@ -79,6 +79,8 @@ plugin.form_template.conf.formType: Form type (configuration file)
 plugin.form_template.conf.admin_enrollment_list_fields: Fields to show in the enrollments list
 plugin.form_template.conf.admin_enrollment_list_field.add_button: Add field
 plugin.form_template.conf.admin_enrollment_list_field.delete_button: Remove field
+plugin.form_template.conf.config: Form configuration
+plugin.form_template.alert.config: 'Edit the form settings again to change configuration parameters of the selected form template'
 
 # Prefill user data plugin
 plugin.prefill_user_data.title: 'Prefill user data'

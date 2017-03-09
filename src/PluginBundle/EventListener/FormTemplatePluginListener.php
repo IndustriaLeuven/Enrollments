@@ -15,13 +15,18 @@ use AppBundle\Event\UI\SubmittedFormTemplateEvent;
 use AppBundle\Form\FinderChoiceLoader;
 use AppBundle\Plugin\Table\CallbackTableColumnDefinition;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
+use Braincrafted\Bundle\BootstrapBundle\Session\FlashMessage;
+use PluginBundle\Form\FormDefinition;
 use PluginBundle\Form\FormDefinitionInterface;
+use PluginBundle\Form\NullFormDefinition;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormFactory;
 
 class FormTemplatePluginListener implements EventSubscriberInterface
 {
@@ -32,14 +37,27 @@ class FormTemplatePluginListener implements EventSubscriberInterface
      * @var string
      */
     private $searchDir;
+    /**
+     * @var FlashMessage
+     */
+    private $flashMessage;
+    /**
+     * @var FormFactory
+     */
+    private $formFactory;
 
     /**
      * FormTemplatePluginListener constructor.
+     *
      * @param string $searchDir
+     * @param FlashMessage $flashMessage
+     * @param FormFactory $formFactory
      */
-    public function __construct($searchDir)
+    public function __construct($searchDir, FlashMessage $flashMessage, FormFactory $formFactory)
     {
         $this->searchDir = $searchDir;
+        $this->flashMessage = $flashMessage;
+        $this->formFactory = $formFactory;
     }
 
     public static function getSubscribedEvents()
@@ -59,10 +77,14 @@ class FormTemplatePluginListener implements EventSubscriberInterface
 
     public function onPluginBuildForm(PluginBuildFormEvent $event)
     {
-        $this->buildPluginForm($event, self::PLUGIN_NAME)
+        $pluginForm = $this->buildPluginForm($event, self::PLUGIN_NAME)
             ->add('formType', ChoiceType::class, [
                 'label' => 'plugin.form_template.conf.formType',
-                'choice_loader' => new FinderChoiceLoader(Finder::create()->files()->in($this->searchDir), '.php'),
+                'choice_loader' => new FinderChoiceLoader(Finder::create()
+                        ->files()
+                        ->in($this->searchDir)
+                        ->name('*.php')
+                        ->notName('_*')),
             ])
             ->add('admin_enrollment_list_fields', BootstrapCollectionType::class, [
                 'label' => 'plugin.form_template.conf.admin_enrollment_list_fields',
@@ -73,11 +95,50 @@ class FormTemplatePluginListener implements EventSubscriberInterface
                 'type' => TextType::class,
             ])
         ;
+        if(!$event->isNew()) {
+            $formDefinition = new NullFormDefinition();
+            $pluginData = $event->getForm()->getPluginData()->get(self::PLUGIN_NAME);
+            if(isset($pluginData['formType']))
+                $formDefinition = $this->getFormDefinitionSafe($pluginData['formType']);
+            $pluginForm->add('config', FormType::class, [
+                'label' => 'plugin.form_template.conf.config'
+            ]);
+            $formDefinition->buildConfigForm($pluginForm->get('config'));
+            if($pluginForm->get('config')->count() == 0) {
+                // If the form template does not add any configuration, remove the config form
+                $pluginForm->remove('config');
+            }
+        }
     }
 
     public function onPluginSubmitForm(PluginSubmitFormEvent $event)
     {
+        $prevConfig = $event->getForm()->getPluginData()->get(self::PLUGIN_NAME);
+        $prevFormType = null;
+        if(isset($prevConfig['formType']))
+            $prevFormType = $prevConfig['formType'];
         $this->submitPluginForm($event, self::PLUGIN_NAME);
+        if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
+            return; // Plugin is not enabled
+
+        $newConfig = $event->getForm()->getPluginData()->get(self::PLUGIN_NAME);
+        $newFormType = null;
+        if(isset($newConfig['formType']))
+            $newFormType = $newConfig['formType'];
+
+        if($prevFormType !== $newFormType) {
+            // Changed form type
+            $formDefinition = $this->getFormDefinitionSafe($newFormType);
+            $formBuilder = $this->formFactory->createBuilder();
+            $formDefinition->buildConfigForm($formBuilder);
+            // Check if new form type has config options
+            if($formBuilder->count() > 0) {
+                $this->flashMessage->alert('plugin.form_template.alert.config');
+            }
+            // Clear existing form template config
+            unset($newConfig['config']);
+            $event->getForm()->getPluginData()->set(self::PLUGIN_NAME, $newConfig);
+        }
     }
 
     public function onAdminShowForm(SubmittedFormTemplateEvent $event)
@@ -123,17 +184,42 @@ class FormTemplatePluginListener implements EventSubscriberInterface
         $event->removeField(EnrollmentListEvent::ALL_TYPES, '_.data');
     }
 
+    /**
+     * Fetches a form definition from a form definition file
+     * @param string $formType
+     * @return FormDefinition
+     */
+    private function getFormDefinition($formType) {
+        $formDefinition = @include $this->searchDir.'/'.$formType;
+        if(!$formDefinition) {
+            throw new FileNotFoundException('File '.$formType.' does not exist.');
+        }
+        if(is_callable($formDefinition)) // Wrap function in a form definition class
+            $formDefinition = new FormDefinition($formDefinition);
+        if(!($formDefinition instanceof FormDefinitionInterface))
+            throw new \DomainException('Callback returned from '.$formType.' is not a function or an instance of '.FormDefinitionInterface::class);
+        return $formDefinition;
+    }
+
+    private function getFormDefinitionSafe($formType) {
+        try {
+            return $this->getFormDefinition($formType);
+        } catch(\Exception $e) {
+            return new NullFormDefinition($e);
+        }
+        catch(\Error $e) {
+            return new NullFormDefinition($e);
+        }
+    }
+
     public function onFormBuild(BuildFormEvent $event)
     {
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
         $configuration = $event->getForm()->getPluginData()->get(self::PLUGIN_NAME);
-        $callback = @include $this->searchDir.'/'.$configuration['formType'];
-        if(!$callback)
-            throw new FileNotFoundException('File '.$configuration['formType'].' does not exist.');
-        if(!is_callable($callback))
-            throw new \BadFunctionCallException('Callback returned from '. $configuration['formType'].' is not callable.');
-        $callback($event->getFormBuilder());
+        $formDefinition = $this->getFormDefinition($configuration['formType']);
+        $config = isset($configuration['config'])?$configuration['config']:[];
+        $formDefinition->buildForm($event->getFormBuilder(), $config);
     }
 
     public function onFormSubmit(SubmitFormEvent $event)
@@ -141,10 +227,8 @@ class FormTemplatePluginListener implements EventSubscriberInterface
         if(!$event->getForm()->getPluginData()->has(self::PLUGIN_NAME))
             return;
         $configuration = $event->getForm()->getPluginData()->get(self::PLUGIN_NAME);
-        $callback = @include $this->searchDir.'/'.$configuration['formType'];
-        if(!$callback)
-            throw new FileNotFoundException('File '.$configuration['formType'].' does not exist.');
-        if($callback instanceof FormDefinitionInterface)
-            $callback->handleSubmission($event->getSubmittedForm(), $event->getEnrollment());
+        $formDefinition = $this->getFormDefinition($configuration['formType']);
+        $config = isset($configuration['config'])?$configuration['config']:[];
+        $formDefinition->handleSubmission($event->getSubmittedForm(), $event->getEnrollment(), $config);
     }
 }
