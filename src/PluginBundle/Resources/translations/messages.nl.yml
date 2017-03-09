@@ -166,3 +166,6 @@ plugin.admission_check.reason.no_enrollment: 'Toegangscontrole: De inschrijving 
 plugin.admission_check.reason.abstain: 'Toegangscontrole: Geen enkele plugin stemde op de geldigheid van deze inschrijving.'
 plugin.admission_check.reason.unused: 'Toegangscontrole: Deze inschrijving is nog niet gebruikt om iemand binnen te laten.'
 plugin.admission_check.reason.used: 'Toegangscontrole: Deze inschrijving is al gebruikt om iemand binnen te laten.'
+
+# Short URL plugin
+plugin.short_url.title: 'Korte link'

@@ -1,0 +1,6 @@
+<h4>{{ 'plugin.short_url.title'|trans }}</h4>
+<p>
+    <a href="{{ url('plugin_short_url_goto', {slug: shorturl.slug}) }}">
+        {{ icon('link') }} {{ url('plugin_short_url_goto', {slug: shorturl.slug}) }}
+    </a>
+</p>

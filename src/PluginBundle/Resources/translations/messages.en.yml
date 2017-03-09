@@ -167,3 +167,5 @@ plugin.admission_check.reason.abstain: 'Admission check: No plugins voted on val
 plugin.admission_check.reason.unused: 'Admission check: This enrollment was not yet used to admit someone.'
 plugin.admission_check.reason.used: 'Admission check: This enrollment is already used to admit someone.'
 
+# Short URL plugin
+plugin.short_url.title: 'Short URL'

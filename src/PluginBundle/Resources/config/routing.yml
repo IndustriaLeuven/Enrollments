@@ -2,3 +2,8 @@ plugin_entrance_check:
   resource: '@PluginBundle/Controller/AdmissionCheckPluginController.php'
   type: rest
   name_prefix: plugin_admission_check_
+
+plugin_short_url:
+  resource: '@PluginBundle/Controller/ShortUrlPluginController.php'
+  type: rest
+  name_prefix: plugin_short_url_
