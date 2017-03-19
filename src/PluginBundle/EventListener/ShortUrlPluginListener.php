@@ -60,6 +60,7 @@ class ShortUrlPluginListener implements EventSubscriberInterface
             ->add('slug', TextType::class, [
                 'label' => false,
                 'data' => $shortUrl?$shortUrl->getSlug():null,
+                'required' => false,
                 'attr' => [
                     'input_group' => [
                         'prepend' => '.icon-globe '.$this->getSlugPrefix(),
