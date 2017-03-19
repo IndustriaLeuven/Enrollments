@@ -90,12 +90,12 @@ class ShortUrlPluginListener implements EventSubscriberInterface
             $this->em->flush();
             return;
         }
-        if(!$shortUrl) {
-            $shortUrl = new ShortUrl();
-            $shortUrl->setForm($event->getForm());
-            $this->em->persist($shortUrl);
-        }
         if($event->getForm()->getPluginData()->has(self::PLUGIN_NAME)) {
+            if(!$shortUrl) {
+                $shortUrl = new ShortUrl();
+                $shortUrl->setForm($event->getForm());
+                $this->em->persist($shortUrl);
+            }
             $pluginData = $event->getForm()->getPluginData()->get(self::PLUGIN_NAME);
             $shortUrl->setSlug($pluginData['slug']);
             unset($pluginData['slug']);
