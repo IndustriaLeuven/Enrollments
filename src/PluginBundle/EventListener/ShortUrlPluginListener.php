@@ -87,11 +87,9 @@ class ShortUrlPluginListener implements EventSubscriberInterface
         $this->submitPluginForm($event, self::PLUGIN_NAME);
         if($event->getType() === PluginSubmitFormEvent::TYPE_DELETE) {
             // Remove the shorturl and be done with it.
-            $this->em->remove($shortUrl);
-            $this->em->flush();
-            return;
-        }
-        if($event->getForm()->getPluginData()->has(self::PLUGIN_NAME)) {
+            if($shortUrl)
+                $this->em->remove($shortUrl);
+        } elseif($event->getForm()->getPluginData()->has(self::PLUGIN_NAME)) {
             if(!$shortUrl) {
                 $shortUrl = new ShortUrl();
                 $shortUrl->setForm($event->getForm());
