@@ -14,6 +14,7 @@
             {{ self.render_link('admin_new_form', {copy_from: form.id}, 'clone', 'admin.navigation.copy'|trans, true) }}
         {% endif %}
         {{ self.render_link('admin_get_forms', {}, 'list', 'admin.navigation.list'|trans, false) }}
+        {{ self.render_link('admin_list_form', {}, 'list', 'admin.navigation.listold'|trans, false) }}
         {{ self.render_link('admin_new_form', {}, 'plus', 'admin.navigation.new'|trans, true) }}
     </div>
 </div>

@@ -41,6 +41,7 @@ admin.navigation.edit: Edit
 admin.navigation.delete: Delete
 admin.navigation.copy: Copy
 admin.navigation.list: List
+admin.navigation.listold: List old
 admin.navigation.new: Create
 admin.navigation.enrollments: Enrollments
 admin.navigation.form_admin: 'Form admin'

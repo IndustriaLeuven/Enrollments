@@ -11,6 +11,7 @@ use AppBundle\Event\PluginEvents;
 use AppBundle\Event\UI\SubmittedFormTemplateEvent;
 use AppBundle\Form\AuthserverGroupsChoiceLoader;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
+use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -26,11 +27,51 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class FormController extends BaseController implements ClassResourceInterface
 {
-    public function cgetAction(Request $request)
+    /**
+     * List only forms which have already passed the deadline.
+     * The most recent forms will be listed at the top.
+     * @View("AppBundle:Admin/Form:cget.html.twig")
+     * @Get()
+     * @param Request $request
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     */
+    public function listAction(Request $request)
     {
+        $juneThisYear = (new \DateTime())->setDate((new \DateTime())->format('Y'),7,1); // First of june, "this" year.
+        if (new \DateTime() < $juneThisYear) {
+            $currentAcademicYear = $juneThisYear->setDate($juneThisYear->format('Y')-1,7,1); // First of june, "last" year.
+        } else {
+            $currentAcademicYear = $juneThisYear;
+        }
         $queryBuilder = $this->getEntityManager()
             ->getRepository('AppBundle:Form')
             ->createQueryBuilder('f')
+            ->where('f.createdAt <= :cay')
+            ->setParameter('cay', $currentAcademicYear->format('Y-m-d'))
+            ->orderBy('f.createdAt', 'DESC')
+        ;
+        return $this->paginate($queryBuilder, $request);
+    }
+
+    /**
+     * Only list forms that have yet to reach the registration deadline.
+     * Again, the most recent forms will be listed at the top.
+     * @param Request $request
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     */
+    public function cgetAction(Request $request)
+    {
+        $juneThisYear = (new \DateTime())->setDate((new \DateTime())->format('Y'),7,1); // First of june, "this" year.
+        if (new \DateTime() < $juneThisYear) {
+            $currentAcademicYear = $juneThisYear->setDate($juneThisYear->format('Y')-1,7,1); // First of june, "last" year.
+        } else {
+            $currentAcademicYear = $juneThisYear;
+        }
+        $queryBuilder = $this->getEntityManager()
+            ->getRepository('AppBundle:Form')
+            ->createQueryBuilder('f')
+            ->where('f.createdAt > :cay')
+            ->setParameter('cay', $currentAcademicYear->format('Y-m-d'))
             ->orderBy('f.createdAt', 'DESC')
         ;
         return $this->paginate($queryBuilder, $request);

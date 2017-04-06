@@ -41,6 +41,7 @@ admin.navigation.edit: Bewerk
 admin.navigation.delete: Verwijder
 admin.navigation.copy: Kopieer
 admin.navigation.list: Lijst
+admin.navigation.listold: Lijst oude
 admin.navigation.new: Nieuw
 admin.navigation.enrollments: Inschrijvingen
 admin.navigation.form_admin: 'Formulier beheer'
